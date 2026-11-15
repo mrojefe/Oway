@@ -1,5 +1,5 @@
 # Taking over a project
-Created: 2026-11-15T15:00:00Z · Last edited: 2026-11-15T15:00:00Z
+Created: 2026-11-15T15:00:00Z · Last edited: 2026-11-15T15:40:00Z
 
 How Oway joins a project that already has code or docs, including a project on CGSpec 0.3. Written from the CampusNest test run. Comment on any line.
 
@@ -72,4 +72,4 @@ An agent alone cannot finish Step 0. It writes what is missing in `_oway/project
 
 ## Upgrade mode
 
-When Oway itself gets a new version, the same steps run with the change list of that version in place of the table above.
+When Oway itself gets a new version, `oway upgrade` runs the same steps with the change list of each release in place of the table above: `--dry-run` shows the moves, then it moves files with `git mv`, sets the version in `config.json`, writes a ledger line and rebuilds the indexes. Change lists live with the tool (`engine/oway/upgrades/`), one per release that moves files; a project newer than the tool is refused.

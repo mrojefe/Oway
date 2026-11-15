@@ -1,5 +1,5 @@
 # Versioning, docs and Git
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
 Git is where the truth lives, so its management is part of the method, not an extra.
 
@@ -40,6 +40,11 @@ Force-push, rewrite history, `git reset --hard`, force-delete a branch, or merge
 - **The product:** Semantic Versioning. Each slice records its impact (patch, minor, major); a release check refuses a version number that is too small. Each release has a changelog, waits for your approval, gets a smoke test right after deploy, and has a rollback plan written before it ships.
 - **The design:** one folder per version in `design/versions/vN/` (see [Design](design.md)).
 - **Oway itself:** the project records which Oway version it uses in `_oway/config.json`; upgrading Oway is a planned change that re-runs the checks.
+
+## Upgrades and feedback (agreed Nov 15)
+
+- **Upgrade.** Each Oway release that moves or renames project files ships a change list. `oway upgrade` applies them in order, from the version in `_oway/config.json` to the tool's version (see [Taking over a project](takeover.md#upgrade-mode)).
+- **Feedback.** A gap found while using Oway in a project goes back as a GitHub issue on the Oway repo, labelled `feedback`, as the CampusNest test did. `oway feedback "title" --body "..."` removes secrets, e-mail addresses and personal paths, saves the note in `_oway/feedback/`, and prints the issue link and a `gh` command. It never sends anything itself: a lead or you send it.
 
 ## The pipeline on every push
 

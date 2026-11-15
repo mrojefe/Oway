@@ -44,7 +44,7 @@ Role first, then team: LeadDev, KeeperQA. The last column gives the CGSpec v0.3 
 | **OwayHelpers** | Setup-only helpers under LeadOway: interview the owner, write the profile, set the watcher and quota tracking | During setup | |
 | **LeadKeeper** | The top watcher. Verifies what the team keepers report and is the only keeper that talks to a lead; every verified warning also goes to the owner | One per project | |
 | **KeeperX** (KeeperQA, KeeperOway...) | Read-only watcher of one team, awake only while it works; reports to LeadKeeper only | One per team | Sentinel (in the literature) |
-| **Teams** | Product (scope), UIX (design, only with a UI), Dev (builds), QA (tests and judges) | One of each per project | Product Owner, TeamWork, TeamQA |
+| **Teams** | Product (scope), UIX (design, only with a UI), Dev (builds and proves each item), QA (judges the finished slice) | One of each per project | Product Owner, TeamWork, TeamQA |
 | **LeadX** (LeadProduct, LeadUIX, LeadDev, LeadQA) | Runs a team. Only leads talk to the owner | One per team | Team main |
 | **LeadXBoard** | Runs its team's boards, writes the summary; never gives an opinion | One per team | Council chair |
 | **LeadXScout** / **ScoutX** | Runs the team's scouts / a short-lived explorer with one zone and its own skills | One / a capped number | |

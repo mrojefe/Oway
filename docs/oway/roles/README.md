@@ -15,6 +15,7 @@ One card per role, from the [role card template](../templates/role-card.md). The
 | uix | [LeadUIX](uix/leaduix.md) | Runs the UIX team: designs with the owner |
 | uix | [UIX worker](uix/uix-worker.md) | UIX1, UIX2...: build the design artifacts |
 | dev | [LeadDev](dev/leaddev.md) | Runs the Dev team: plans how each slice is built |
+| dev | [DevProof](dev/devproof.md) | Drafts the proof matrix, writes the verifiers and proof tests; never builds |
 | dev | [DevOps](dev/devops.md) | Builds the product's environments, infrastructure and migrations |
 | dev | [Dev builder](dev/dev-builder.md) | A builder picked for the project: DevBackend, DevFrontend, DevData, DevAI or DevMobile |
 | qa | [LeadQA](qa/leadqa.md) | Runs the QA team: tests and judges |

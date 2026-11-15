@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, index, keeper, ledger, proof, setup, stophook
+from . import doctor, feedback, index, keeper, ledger, proof, setup, stophook, upgrade
 from .project import OwayError, find_root
 
 
@@ -62,6 +62,11 @@ def _parser() -> argparse.ArgumentParser:
     s.add_argument("--no-uix", action="store_true")
     s.add_argument("--platform", type=Path)
     s.add_argument("--claude-hook", action="store_true", help="add the Stop hook to .claude/settings.json")
+    s = sub.add_parser("upgrade", help="move the project to this tool's version")
+    s.add_argument("--dry-run", action="store_true")
+    s = sub.add_parser("feedback", help="draft an issue for the Oway repo (never sends it)")
+    s.add_argument("title")
+    s.add_argument("--body", default="")
     sub.add_parser("install-hook", help="add the builder Stop hook to .claude/settings.json")
     sub.add_parser("version")
     return p
@@ -129,10 +134,20 @@ def _run(args) -> int:
         return code
     if args.cmd == "keeper":
         return _keeper(args, oway)
-    if args.cmd == "install-hook":
-        print(setup.install_claude_stop_hook(root))
-        return 0
+    if args.cmd in ("upgrade", "feedback", "install-hook"):
+        return _project_cmd(args, root)
     raise OwayError(f"unknown command {args.cmd}")
+
+
+def _project_cmd(args, root: Path) -> int:
+    if args.cmd == "upgrade":
+        print("\n".join(upgrade.run(root, setup.VERSION_FILE.read_text().strip(), args.dry_run)))
+    elif args.cmd == "feedback":
+        path, url, cmd = feedback.create(root / "_oway", args.title, args.body)
+        print(f"saved {path.relative_to(root).as_posix()}\nopen: {url}\nor: {cmd}")
+    else:
+        print(setup.install_claude_stop_hook(root))
+    return 0
 
 
 def _keeper(args, oway: Path) -> int:
