@@ -28,7 +28,7 @@ class CodeRuleTests(unittest.TestCase):
                         self.assertLessEqual(node.end_lineno - node.lineno + 1, 60)
 
     def test_stdlib_only(self):
-        local = {p.stem for p in ENGINE.glob("*.py")}
+        local = {p.stem for p in ENGINE.glob("*.py")} | {p.parent.name for p in ENGINE.glob("*/__init__.py")}
         for path in self.files():
             for node in ast.walk(ast.parse(path.read_text())):
                 names = []

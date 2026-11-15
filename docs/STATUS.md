@@ -1,5 +1,5 @@
 # CGSpec implementation status
-Created: 2026-10-20T17:46:07Z · Last edited: 2026-10-29T22:50:17Z
+Created: 2026-10-20T17:46:07Z · Last edited: 2026-11-15T12:30:00Z
 
 This is the current status reference. The method describes required behavior; this page identifies limits of its implementation. Historical audit results are tied to their source revision and do not automatically apply to later changes.
 
@@ -8,6 +8,10 @@ This is the current status reference. The method describes required behavior; th
 The merged source lives in the `BeOjefe/cgspec` repository. In the current workspace, develop in `/home/ojefe/Documents/Project/cgspec` on feature branches and use PRs for main. The `cgspec-next` duplicate checkout was removed on 2026-10-22 after confirming it held no uncommitted work and no commit absent from a remote; its three branches that were never on `main` are kept here as `refs/archive/cgspec-next-*`, and a full bundle sits in `../cgspec-workspace/archive/`. Investigation history and trial evidence are in `../cgspec-workspace/` (`START-HERE.md`). A single Git history does not automatically update installed plugins or consumer engines.
 
 The source tree is a plugin package, not an installed consumer layout. Run the package tests and plugin validation here. Run doctor, hooks and upgrade rehearsals in disposable consumer projects; do not force-install over the source tree. Consumer changes, including CortexGate upgrades, need their own authorized scope.
+
+## Oway v0.4: method written, first tool commands built
+
+The Oway method in [docs/oway/](oway/README.md) ([ADR-007](adr/ADR-007-cgspec-becomes-oway.md)) is mostly documentation. Engine 0.3.5 adds the first Oway tool commands in `engine/oway/` (index, doctor, freeze, submit, check, builder stop hook, keeper notes and scan, Platform and project setup), with unit and end-to-end behaviour tests in `tests/unit/test_oway_*.py`. They are source-tested only: not yet run on a real project, not wired into CI, the installed skills or pi, and the v0.3 installer does not ship them. Still planned: headers filled from Git, approvals read from GitHub, the reviewer model call, video capture by the verifier, write zones for workers, host agent files from `TEAM.md`, and the takeover command. Everything below describes the v0.3 engine, which is what consumer projects run today.
 
 ## Implemented and bounded
 

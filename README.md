@@ -1,5 +1,5 @@
 # CGSpec
-Created: unknown · Last edited: 2026-10-31T20:15:00Z
+Created: unknown · Last edited: 2026-11-15T12:30:00Z
 
 [![Version](https://img.shields.io/badge/version-0.3.4-2563eb?style=flat-square)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.10%2B-059669?style=flat-square)](engine/)
@@ -17,6 +17,9 @@ When building software with AI coding agents, projects frequently degrade as the
 
 > [!IMPORTANT]
 > The canonical [Method Specification](docs/METHOD.md) defines the full contract, repository layout, 6-layer UI/UX design path, review rules, adoption flow, and limits. [Implementation Status](docs/STATUS.md) separates implemented engine checks from outcomes that still require live proof.
+
+> [!NOTE]
+> **CGSpec is becoming Oway (v0.4).** The new method is in [docs/oway/](docs/oway/README.md): teams of agents with read-only keepers, and a proof loop an agent cannot fake. It is documentation for now; the engine still enforces v0.3 and moves to Oway in small tested slices ([ADR-007](docs/adr/ADR-007-cgspec-becomes-oway.md)).
 
 ---
 
