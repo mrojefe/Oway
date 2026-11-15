@@ -16,7 +16,7 @@ class AgentSkillsTests(unittest.TestCase):
             result = run_script("install.py", "install", "--root", str(root), "--profile", "web-workspace",
                                 "--topology", "single", "--tools", "antigravity,git")
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            skill = root / ".agents/skills/cgspec-ui-ux/SKILL.md"
+            skill = root / ".agents/skills/oway-ui-ux/SKILL.md"
             self.assertTrue(skill.is_file())
             self.assertTrue((root / ".agents/skills/_cgspec-docs/METHOD.md").is_file())
             for md in (root / ".agents/skills").rglob("*.md"):
@@ -53,7 +53,7 @@ class AgentSkillsTests(unittest.TestCase):
             data = json.loads(hook.read_text())
             data["cgspec"]["PreToolUse"][0]["hooks"][0]["command"] = "python3 docs/_cgspec/01-engine/cgspec_hook.py pre-tool --tool antigravity"
             hook.write_text(json.dumps(data))
-            skill = root / ".agents/skills/cgspec-ui-ux/SKILL.md"
+            skill = root / ".agents/skills/oway-ui-ux/SKILL.md"
             skill.write_text(skill.read_text() + "\nLOCAL EDIT\n")
             refreshed = run_script("install.py", "upgrade", "--root", str(root))
             self.assertEqual(refreshed.returncode, 0, refreshed.stdout + refreshed.stderr)
@@ -66,7 +66,7 @@ class AgentSkillsTests(unittest.TestCase):
             checked = doctor(root)
             self.assertEqual(checked.returncode, 0, checked.stdout)
             self.assertNotIn("docs/_cgspec/_archive/agent-skills", checked.stdout)
-            self.assertNotIn("W-SCRIPT-OUTSIDE .agents/skills/cgspec-ui-ux", checked.stdout)
+            self.assertNotIn("W-SCRIPT-OUTSIDE .agents/skills/oway-ui-ux", checked.stdout)
             self.assertIn("W-SCRIPT-OUTSIDE .agents/skills/foreign.js", checked.stdout)
 
 

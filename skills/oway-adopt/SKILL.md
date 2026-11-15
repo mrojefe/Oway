@@ -1,5 +1,5 @@
 ---
-name: cgspec-adopt
+name: oway-adopt
 description: Take over an existing project or upgrade an older Oway layout, including incomplete documentation, multiple repositories, and work already underway.
 ---
 

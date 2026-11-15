@@ -1,5 +1,5 @@
 ---
-name: cgspec-slice
+name: oway-slice
 description: Plan, build, test, and review a bounded feature or fix within an approved slice and its declared file scope.
 ---
 

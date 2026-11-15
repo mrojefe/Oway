@@ -101,7 +101,7 @@ class StewardshipContractTests(unittest.TestCase):
         """Final-challenge M2: the agent's own minimum definition must not authorize its own build,
         and the forge skill must say the same thing as the contract."""
         self.assertIn("a definition you wrote is not approval", self.push.lower())
-        forge = read("skills/cgspec-forge/SKILL.md").lower()
+        forge = read("skills/oway-forge/SKILL.md").lower()
         self.assertIn("a definition you wrote is not approval", forge)
 
     def test_impact_runs_on_the_same_condition_in_contract_and_method(self):
@@ -117,7 +117,7 @@ class StewardshipContractTests(unittest.TestCase):
 
 class DesignGuidanceTests(unittest.TestCase):
     def setUp(self):
-        self.skill = read("skills/cgspec-ui-ux/SKILL.md")
+        self.skill = read("skills/oway-ui-ux/SKILL.md")
         self.method_design = section(read("docs/METHOD.md"), "6. Design path")
 
     def test_no_fixed_variation_count_or_mechanical_pacing(self):
@@ -156,14 +156,14 @@ class DesignGuidanceTests(unittest.TestCase):
 
 class BehaviorCoverageTests(unittest.TestCase):
     def test_coverage_requires_named_states_and_concurrency_cases(self):
-        text = read("skills/cgspec-ui-ux/references/behavior-coverage.md").lower()
+        text = read("skills/oway-ui-ux/references/behavior-coverage.md").lower()
         for phrase in ("named state", "repeated", "stale", "exact version", "executed", "specified"):
             self.assertIn(phrase, text)
 
 
 class ForgePushBackTests(unittest.TestCase):
     def test_forge_stops_build_requests_without_a_minimum_definition(self):
-        text = read("skills/cgspec-forge/SKILL.md").lower()
+        text = read("skills/oway-forge/SKILL.md").lower()
         self.assertIn("just build", text)
         self.assertIn("minimum definition", text)
 

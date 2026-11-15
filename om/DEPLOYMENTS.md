@@ -8,9 +8,9 @@ Pick the tools you use with `--tools` (or `OM_TOOLS`, or the file `~/.config/om/
 
 | Tool | Skills | Agents | Rules (always on) |
 | --- | --- | --- | --- |
-| `pi` | `~/.pi/agent/skills/om-plan`, `om-assist`, `cgspec-ui-ux` (links) | `~/.pi/agent/prompts/om-*.md` (links; pi has no agent files, so agents load as prompts) | `~/.pi/agent/APPEND_SYSTEM.md` (link) |
-| `opencode` | `~/.config/opencode/skills/om-plan`, `om-assist`, `cgspec-ui-ux` (links) | `~/.config/opencode/agents/om-*.md` (copies, see below) | `~/.config/opencode/AGENTS.md` (link) |
-| `antigravity` | plugin: `~/.gemini/config/plugins/om` links to `om/`; the design skill: `~/.gemini/config/skills/cgspec-ui-ux` | same plugin | same plugin (`rules/AGENTS.md`) |
+| `pi` | `~/.pi/agent/skills/om-plan`, `om-assist`, `oway-ui-ux` (links) | `~/.pi/agent/prompts/om-*.md` (links; pi has no agent files, so agents load as prompts) | `~/.pi/agent/APPEND_SYSTEM.md` (link) |
+| `opencode` | `~/.config/opencode/skills/om-plan`, `om-assist`, `oway-ui-ux` (links) | `~/.config/opencode/agents/om-*.md` (copies, see below) | `~/.config/opencode/AGENTS.md` (link) |
+| `antigravity` | plugin: `~/.gemini/config/plugins/om` links to `om/`; the design skill: `~/.gemini/config/skills/oway-ui-ux` | same plugin | same plugin (`rules/AGENTS.md`) |
 | `oway` | none | none | `~/.local/bin/oway` links to `om/bin/oway`, so agents can run `oway style ...` from anywhere |
 
 Reload after a sync: pi `/reload`, OpenCode `opencode reload`, Antigravity restart.
@@ -26,7 +26,7 @@ Reload after a sync: pi `/reload`, OpenCode `opencode reload`, Antigravity resta
 `~` and `$HOME` work in targets. Lines starting with `#` are ignored.
 
 ## Notes
-- **The design skill is shared with Oway.** `cgspec-ui-ux` lives in `skills/` at the repo root and has a full mode (Oway projects) and a light mode (om). pi, OpenCode and Antigravity link it straight from there. Its style library is not in Git: run `oway style fetch` once per machine (cache in `~/.cache/oway/styles`).
+- **The design skill is shared with Oway.** `oway-ui-ux` lives in `skills/` at the repo root and has a full mode (Oway projects) and a light mode (om). pi, OpenCode and Antigravity link it straight from there. Its style library is not in Git: run `oway style fetch` once per machine (cache in `~/.cache/oway/styles`).
 - **OpenCode agents are copies.** OpenCode V2 drops agent files with a V1 `tools:` list, so the script writes a copy with only `description` + `mode: subagent` + the body.
 - **Files the script never touches:** your own global rules (for example `~/.gemini/config/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.pi/agent/AGENTS.md`). If they name old skills, edit them by hand.
 - **Antigravity** merges the plugin's `rules/AGENTS.md` by itself, so rules you also keep in a global file load twice.

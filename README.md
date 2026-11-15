@@ -124,7 +124,7 @@ flowchart LR
 
 ---
 
-## Deterministic Slice Lifecycle (`cgspec-slice`)
+## Deterministic Slice Lifecycle (`oway-slice`)
 
 Every feature or fix is executed as a bounded **Slice** (`SLICE-XXX`) with explicit outcomes (`OUT-1`, `OUT-2`, ...). No slice can be closed on a passing unit test alone:
 
@@ -165,19 +165,19 @@ flowchart LR
 
 ### The 9 Workflows (`skills/`)
 
-Skills under `skills/` load on demand for the task at hand (`cgspec-pivot` is included as a compatibility alias), supported by eight bounded team role definitions under `agents/`:
+Skills under `skills/` load on demand for the task at hand (`oway-pivot` is included as a compatibility alias), supported by eight bounded team role definitions under `agents/`:
 
 | Skill | When to Use It | What It Produces |
 | --- | --- | --- |
-| `cgspec-init` | Starting a brand-new project from an idea | Initializes `docs/spines/`, `docs/_cgspec/01-engine/`, hooks, and initial intent |
-| `cgspec-adopt` | Bringing an existing codebase under Oway governance | Read-only discovery, legacy baseline snapshot (`SLICE-000`), and staged adoption |
-| `cgspec-forge` | Shaping product intent, domain nouns (OOUX), and system architecture | Updates Spines `01` to `05` and records architectural decisions (`ADR-XXX`) |
-| `cgspec-ui-ux` | Designing or refining user interfaces before implementation | Sourced visual references, interactive HTML prototypes, and Playwright journeys |
-| `cgspec-council` | Resolving high-stakes architectural or product trade-offs | Structured multi-perspective analysis with explicit recommendation |
-| `cgspec-slice` | Building a bounded feature or fix end-to-end | Frozen slice spec, Red-Green commits, runtime/visual proof, and outcome closure |
-| `cgspec-migrate` | Schema, data, or cross-service migrations | Rollback-safe migration plan, verification scripts, and supersession records |
-| `cgspec-operate` | Day-2 operations, health diagnostics, quota, and recovery | Runs `doctor.py`, `quota.py`, checkpoint recovery, and incident verification |
-| `cgspec-team-review` | Auditing a slice or release candidate before closure | Independent reviewer verdict bound to the exact 40-hex Git revision |
+| `oway-init` | Starting a brand-new project from an idea | Initializes `docs/spines/`, `docs/_cgspec/01-engine/`, hooks, and initial intent |
+| `oway-adopt` | Bringing an existing codebase under Oway governance | Read-only discovery, legacy baseline snapshot (`SLICE-000`), and staged adoption |
+| `oway-forge` | Shaping product intent, domain nouns (OOUX), and system architecture | Updates Spines `01` to `05` and records architectural decisions (`ADR-XXX`) |
+| `oway-ui-ux` | Designing or refining user interfaces before implementation | Sourced visual references, interactive HTML prototypes, and Playwright journeys |
+| `oway-council` | Resolving high-stakes architectural or product trade-offs | Structured multi-perspective analysis with explicit recommendation |
+| `oway-slice` | Building a bounded feature or fix end-to-end | Frozen slice spec, Red-Green commits, runtime/visual proof, and outcome closure |
+| `oway-migrate` | Schema, data, or cross-service migrations | Rollback-safe migration plan, verification scripts, and supersession records |
+| `oway-operate` | Day-2 operations, health diagnostics, quota, and recovery | Runs `doctor.py`, `quota.py`, checkpoint recovery, and incident verification |
+| `oway-team-review` | Auditing a slice or release candidate before closure | Independent reviewer verdict bound to the exact 40-hex Git revision |
 
 ---
 

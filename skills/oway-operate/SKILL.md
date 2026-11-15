@@ -1,5 +1,5 @@
 ---
-name: cgspec-operate
+name: oway-operate
 description: Run release, observation, incident response, drift repair, runbooks, or retirement for an installed Oway project.
 ---
 

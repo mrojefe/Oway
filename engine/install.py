@@ -178,7 +178,7 @@ def new_owned() -> dict:
 
 def cmd_install(root: Path, args: argparse.Namespace) -> int:
     if (root / "docs/_cgspec/01-script").exists() and not (root / PROJECT_FILE).exists():
-        raise CgspecError("Earlier Oway v0.1 layout found (docs/_cgspec/01-script); use the cgspec-adopt upgrade mode")
+        raise CgspecError("Earlier Oway v0.1 layout found (docs/_cgspec/01-script); use the oway-adopt upgrade mode")
     if (root / PROJECT_FILE).exists():
         current = read_json(root / PROJECT_FILE).get("cgspec_version")
         if current == version():

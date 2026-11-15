@@ -1,5 +1,5 @@
 ---
-name: cgspec-migrate
+name: oway-migrate
 description: Plan and execute a large refactor, rename, repo split, data move, or other structural change while preserving behavior and a recovery route.
 ---
 
@@ -9,4 +9,4 @@ Read only what the current step needs, once per session: the [agent contract](..
 
 Write a migration contract in a scoped slice and ADR: old/new contracts, data transformation and validation, side-by-side period, checkpoints, performance/security acceptance, observation period, and a recovery route proven before irreversible steps. A repo rename must cover aliases in the registry, imports, remotes, CI and links. Use `impact.py` only when it exists; otherwise trace indexed dependencies explicitly and label coverage limits.
 
-Execute in bounded steps with checks after each transition. Keep both states observable until cutover. Do not infer infrastructure access as authorization to deploy or delete. Require the user's decision for consequential or irreversible steps, then report revision, evidence, unresolved dependencies and recovery state. The `cgspec-pivot` alias directs to this workflow.
+Execute in bounded steps with checks after each transition. Keep both states observable until cutover. Do not infer infrastructure access as authorization to deploy or delete. Require the user's decision for consequential or irreversible steps, then report revision, evidence, unresolved dependencies and recovery state. The `oway-pivot` alias directs to this workflow.

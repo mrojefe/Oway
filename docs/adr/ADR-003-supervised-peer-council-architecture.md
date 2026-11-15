@@ -13,7 +13,7 @@ In earlier `/open-debate` runs:
 3. Unmoderated multi-agent chat without an independent supervisor suffers from sycophancy ("groupthink") or context bloat (*Cemri et al., 2025, arXiv:2503.13657*).
 
 ## Decision
-Implement **`cgspec-council`** (`skills/cgspec-council/SKILL.md`):
+Implement **`cgspec-council`** (`skills/oway-council/SKILL.md`):
 1. The Main Agent spawns a dedicated **Council Host & Inspector Supervisor**.
 2. The Supervisor spawns 3 peer debaters locked to the **exact same subject** from 3 orthogonal lenses (Systems/Modularity, Adversarial Security/Failure Modes, Pragmatic DX/Cost).
 3. At the end of each round (`1..N`), the Supervisor sends a **3-line Live Inspector Report** to the Main Agent so the user sees live progress.

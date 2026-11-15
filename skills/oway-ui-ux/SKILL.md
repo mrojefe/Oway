@@ -1,5 +1,5 @@
 ---
-name: cgspec-ui-ux
+name: oway-ui-ux
 description: Design or revise a product experience from real references through task flows, grey behavior prototypes, and the real frontend, with a library of 117 MIT style packs and themes and anti-slop gates; full mode for Oway projects, light mode for om; handles responsive and mobile evidence explicitly.
 ---
 
@@ -91,19 +91,38 @@ Prototype files other than ordinary Markdown need the active change scope. Befor
 ## Style library
 <a id="style-library"></a>
 
-117 MIT styles and themes: 67 style packs from [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) and 50 themes with anti-slop gates from [Nutlope/hallmark](https://github.com/Nutlope/hallmark). The catalog is not in Git and not in any project: `oway style fetch` downloads it once per machine, at pinned upstream commits, into `~/.cache/oway/styles` (or `$OWAY_STYLES`), with both licence texts. `oway` is the Oway tool (`python3 engine/oway` in a checkout; `om/bin/oway` is a launcher that `om/sync-om.sh --tools oway` puts on your PATH).
+Everything from the old CGM `cgm-uix` lives here. It had two catalogs and one workflow, all MIT (commercial-friendly, no duty to publish your code):
+1. **Style packs:** [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills), 67 folders, each with a `SKILL.md` and a `DESIGN.md` (tokens, type scale, component anatomy, do and don't).
+2. **Hallmark:** [Nutlope/hallmark](https://github.com/Nutlope/hallmark), 50 OKLCH material themes plus the 65 anti-slop browser gates (`gates.md`, `craft.md`, the other references, `sloplint.mjs`).
 
+The catalog is not in Git and not in any project: `oway style fetch` downloads it once per machine, at pinned upstream commits, into `~/.cache/oway/styles` (or `$OWAY_STYLES`), with both licence texts. `oway` is the Oway tool (`python3 engine/oway` in a checkout; `om/bin/oway` is a launcher that `om/sync-om.sh --tools oway` puts on your PATH).
+
+### Commands
 ```bash
 oway style fetch                # once per machine
-oway style list                 # all packs and themes
-oway style search <word>        # e.g. neobrutalism, glass, bento, mobile
-oway style show <slug>          # tokens, type scale, components, do and don't
+oway style list                 # all 117 packs and themes
+oway style search <word>        # e.g. neobrutalism, glassmorphism, swiss, bento, mobile
+oway style show <slug>          # full SKILL.md, DESIGN.md, OKLCH tokens, CSS checklists
+oway style show neobrutalism    # also: brutal, glassmorphism, bento
 ```
-Families: neobrutalism (`neobrutalism`, `brutalism`, `brutal`), Swiss grid (`clean`, `minimal`, `grid`, `specimen`), glass (`glassmorphism`, `refract`, `lumen`), bento SaaS (`bento`, `shadcn`, `studio`), editorial (`editorial`, `paper`, `newsprint`), retro and print (`retro`, `riso`, `halftone`), tactile (`claymorphism`, `neumorphism`, `kiln`).
 
-- A pack or theme is a **starting register and token source**, not a finished design. It never replaces the problem, the references or the user's reaction. Record the pack in the register ("Deliberate choices") and in the token sheet's provenance.
-- **Anti-slop gates:** `hallmark-themes/references/gates.md` and `craft.md` in the catalog, plus `hallmark-themes/scripts/sloplint.mjs` when Node is available. The gates join the critique rubric: no default purple gradients, no cards inside cards, no fake side stripes on non-alerts, no low-contrast text. A flagged choice the user wants is recorded, never silenced.
-- **Live references:** use whatever scout tool is installed (a design-scout skill, Stitch MCP, or the browser). Optional with Stitch: upload the pack's `DESIGN.md`. Nothing here depends on them.
+### Core aesthetic archetypes
+| Aesthetic family | Style pack slug | Hallmark theme | Key visual DNA |
+| --- | --- | --- | --- |
+| **Neobrutalism / Brutalism** | `neobrutalism`, `brutalism`, `bold` | `brutal`, `manifesto`, `broadside`, `sticker` | Thick 2px-4px solid black rules, hard offset shadows (`4px 4px 0 #000`), zero or sharp radius, vivid acid/primary fills (`#FDC800`, `#FF5722`) on warm paper (`#FBFBF9`). |
+| **Swiss / International grid** | `clean`, `minimal`, `modern`, `mono` | `grid`, `specimen`, `werkstatt`, `almanac` | Exposed 12-column mathematical grid, grotesque sans + tabular mono, high-contrast black/white + single surgical accent. |
+| **Glassmorphism and liquid glass** | `glassmorphism`, `sleek`, `cosmic`, `pulse` | `refract`, `lumen`, `dusk`, `midnight` | Translucent layered surfaces (`backdrop-filter: blur(16px)`), 1px specular border highlights (`rgba(255,255,255,0.18)`), strict WCAG contrast guards. |
+| **Bento and modular SaaS** | `bento`, `shadcn`, `impeccable`, `stitch`, `levels` | `studio`, `formwork`, `console`, `cobalt` | Asymmetric multi-span CSS Grid cells, 1px hairline borders, tonal surface elevation without heavy drop shadows. |
+| **Editorial and magazine** | `editorial`, `paper`, `storytelling`, `terracotta` | `editorial`, `newsprint`, `vellum`, `atelier` | High-contrast display serif paired with crisp sans body, generous negative space, warm paper stock. |
+| **Retro / Y2K / print craft** | `retro`, `riso`, `dithered`, `pacman`, `sega`, `tetris` | `riso`, `halftone`, `pasteup`, `arcade`, `darkroom` | Duotone risograph grain, halftone dots, 8-bit/arcade geometry, or 80s/Y2K postmodern shapes. |
+| **Tactile / clay / neumorphic** | `claymorphism`, `neumorphism`, `skeumorphism`, `friendly` | `kiln`, `terrazzo`, `coral`, `bloom` | Soft inner+outer dual shadows, tactile 3D surface depth, physical press states. |
+
+### Workflow (from cgm-uix, all steps kept)
+1. **Select or propose style archetypes first.** Run `oway style show <slug>` to load the exact `SKILL.md` and `DESIGN.md`. If the user wants visual references from live websites alongside the style tokens, pair with `free-ui-ux-scout` or the `stitch` MCP (`upload_design_md` with the pack's `DESIGN.md`) when they are installed; otherwise use the browser. Nothing here depends on them.
+2. **Enforce the anti-slop craft gates.** Read `hallmark-themes/references/gates.md` and `craft.md` in the catalog, and run `hallmark-themes/scripts/sloplint.mjs` when Node is available. Never fall back to uncurated AI purple gradients, nested cards-in-cards ("Cardocalypse"), fake `border-l-4` side stripes on non-alerts, or low-contrast text. The gates join the critique rubric. A flagged choice the user wants is recorded under "Deliberate choices", never silenced.
+3. **Exhaustive interaction and visual proof.** Prove the implemented design in a real headless or live browser across every user interaction: a **video** for full-page scrolling and motion, high-resolution captures and live outputs for interactive flows.
+
+How it fits the layers: a pack or theme is a **starting register and token source**, not a finished design. It never replaces the problem, the references or the user's reaction. Layer 0 offers the closest packs beside the real references; layers 5a and 5b record the pack in "Deliberate choices" and in the token sheet's provenance.
 
 ## Light mode (om)
 
