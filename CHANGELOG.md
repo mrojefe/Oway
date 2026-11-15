@@ -7,6 +7,7 @@ All notable changes, architectural invariants, and skill evolutions to `cgspec` 
 ## [Unreleased]
 
 ### Added
+- Oway v0.4 method, first part ([ADR-007](docs/adr/ADR-007-cgspec-becomes-oway.md)): CGSpec becomes Oway. The method lands as separate files in `docs/oway/` (teams and roles, how work flows, the proof loop, design, versioning/docs/Git, rules, an example setup), with templates (project, milestone, slice, proof matrix, keeper finding, role card, ADR, owner profile) and draft role cards. New ADR-008 (proof loop) and ADR-009 (teams and read-only keepers). Documentation only: the engine, the installed skills and `docs/METHOD.md` still enforce v0.3 and change in later slices.
 - Declare-once agent-side capabilities (#53): an optional `docs/_cgspec/capabilities.json` registry (new `capabilities` schema) lists browser/account access, model delegation, human-contact channels and other tools the agent may use, each with an executable check. `cgspec_hook.py capability set|agree|check|show` drafts, approves (fresh message naming capabilities, or signed trailer) and probes it. Slice prerequisites can reference a capability with `capability: CAP-...` and `check: null`; `start ready` runs the registry check and hash-binds the registry, and a missing, unapproved, undeclared or failing capability is BLOCKED. Existing prerequisites are unchanged.
 
 ## [v0.3.0] — 2026-10-29
