@@ -52,7 +52,8 @@ flowchart TB
 
 | The agent tries to... | What stops it |
 | --- | --- |
-| Edit the test until it passes | Matrix and verifiers are outside its write zone, hashed when frozen |
+| Edit the test until it passes | Matrix and verifiers are outside its write zone (`oway guard` denies the write in the host's pre-tool hook), and hashed when frozen |
+| Write outside its own files, for example through the shell | `oway submit` reads Git: a changed file outside the builder's `zone` in the checkpoint fails the item |
 | Fake a screenshot or a video | The worker never holds the camera: the verifier records |
 | Use mock data, `?mock=` URLs, `route.fulfill`, staged screens, hard-coded secrets | Fake-proof scan by the verifier; any hit = FAKE |
 | Show that a file exists (or passes ffprobe) as proof of behaviour | A format check is never a behaviour proof |

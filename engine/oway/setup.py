@@ -98,9 +98,15 @@ def install_claude_stop_hook(root: Path) -> str:
     path = root / ".claude" / "settings.json"
     data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     cmd = f'python3 "{TOOL_ROOT / "engine" / "oway"}" stop-hook'
-    stop = data.setdefault("hooks", {}).setdefault("Stop", [])
+    hooks = data.setdefault("hooks", {})
+    stop = hooks.setdefault("Stop", [])
     if not any(h.get("command") == cmd for entry in stop for h in entry.get("hooks", [])):
         stop.append({"hooks": [{"type": "command", "command": cmd}]})
+    guard_cmd = cmd.replace(" stop-hook", " guard")
+    pre = hooks.setdefault("PreToolUse", [])
+    if not any(h.get("command") == guard_cmd for entry in pre for h in entry.get("hooks", [])):
+        pre.append({"matcher": "Write|Edit|MultiEdit|NotebookEdit",
+                    "hooks": [{"type": "command", "command": guard_cmd}]})
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     return ".claude/settings.json"

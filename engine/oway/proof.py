@@ -226,6 +226,8 @@ def submit(root: Path, slice_id: str, item_id: str, timeout: int = 600) -> dict:
     except subprocess.TimeoutExpired as exc:
         code, output = 124, f"timeout after {timeout}s\n{exc.stdout or ''}"
     reasons = []
+    from .guard import zone_breaks  # late import: guard reads proof
+    reasons += zone_breaks(root)
     if code != 0:
         reasons.append(f"verifier exited {code}")
     canary = item.canary

@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, feedback, index, keeper, ledger, proof, setup, review, stophook, takeover, upgrade
+from . import doctor, feedback, guard, index, keeper, ledger, proof, setup, review, stophook, takeover, upgrade
 from .project import OwayError, find_root
 
 
@@ -37,6 +37,7 @@ def _parser() -> argparse.ArgumentParser:
     s.add_argument("slice")
     s.add_argument("--head", action="store_true", help="every PASS must be at the current commit")
 
+    sub.add_parser("guard", help="pre-tool hook: deny builder writes outside its zone (reads stdin)")
     s = sub.add_parser("stop-hook", help="builder stop hook (reads the host payload on stdin)")
     s.add_argument("--format", choices=("claude", "plain"), default="claude")
 
@@ -141,6 +142,9 @@ def _run(args) -> int:
         return code
     if args.cmd == "keeper":
         return _keeper(args, oway)
+    if args.cmd == "guard":
+        sys.stdout.write(guard.pre_tool(root, sys.stdin.read() if not sys.stdin.isatty() else ""))
+        return 0
     if args.cmd in ("upgrade", "feedback", "install-hook"):
         return _project_cmd(args, root)
     raise OwayError(f"unknown command {args.cmd}")
