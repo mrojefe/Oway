@@ -11,14 +11,14 @@ How Oway joins a project that already has code or docs, including a project on C
 
 Each step is one commit on one branch, so any step can be reverted alone.
 
-1. **Check the tool.** The Oway tool is installed on the Platform and `oway doctor --version` answers. If not, stop at step 3 and list what is missing (see "When the owner or the Platform is not there").
+1. **Check the tool.** The Oway tool is installed on the Platform and `oway version` answers. If not, stop at step 3 and list what is missing (see "When the owner or the Platform is not there").
 2. **Map.** Scouts list every file with the table below: old path, new path, type, state. The list goes to `_oway/research/RES-NNN-takeover-map.md`. Nothing moves yet.
 3. **Move.** `git mv` each file to its new path, so history follows. Fix every link in the same commit; links stay relative.
 4. **Headers.** Add the header to every moved file (types and states in [Rules](rules.md)). Old approvals follow "Approvals made before Oway, or outside GitHub" in [Rules](rules.md).
 5. **Decisions.** Pull ADRs out of the spines (see "ADRs taken out of old docs" below).
 6. **Index and ledger.** Run `oway index` and write the first ledger line: "takeover from CGSpec 0.3.4, map in RES-NNN".
 7. **Doctor.** Run `oway doctor`. Files that still break a rule go in the legacy list, with your OK.
-8. **Switch the guard.** Only now: install the Oway hooks, then remove the old engine, skills and hooks in their own commit. `AGENTS.md` points to Oway.
+8. **Switch the guard.** Only now: install the Oway hooks (`oway install-hook` for Claude Code), then remove the old engine, skills and hooks in their own commit. `AGENTS.md` points to Oway.
 9. **Review.** One pull request. You approve it; nothing is merged without you.
 
 ## CGSpec 0.3 to Oway paths

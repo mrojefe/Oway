@@ -35,7 +35,7 @@ MANIFEST = ENGINE_DIR / "manifest.json"
 ARCHIVE = Path("docs/_cgspec/_archive/pre-cgspec")
 REPLACEABLE = {"AGENTS.md", "CLAUDE.md"}
 GITIGNORE_LINES = [".cgspec-scratch/", "docs/.memlog.lock", "__pycache__/", "*.pyc"]
-SKIP_NAMES = {"__pycache__", ".pytest_cache", "owned-files.json", "manifest.json"}
+SKIP_NAMES = {"__pycache__", ".pytest_cache", "owned-files.json", "manifest.json", "oway"}  # oway: Platform-only
 
 PATH_CLASSES = {
     "schema": ["**/migrations/**", "**/schema.prisma", "**/*.sql", "**/schema.graphql"],

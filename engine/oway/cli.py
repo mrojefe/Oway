@@ -1,0 +1,162 @@
+"""Command line: python3 engine/oway <command> ...
+
+Exit codes: 0 ok, 1 check failed, 2 usage or setup error, 3 tamper.
+"""
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+from . import doctor, index, keeper, ledger, proof, setup, stophook
+from .project import OwayError, find_root
+
+
+def _parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(prog="oway", description="Oway tool (method v0.4).")
+    p.add_argument("--root", type=Path, help="project folder (default: search up from here)")
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    s = sub.add_parser("index", help="rebuild every INDEX.md under _oway/")
+    s.add_argument("--check", action="store_true", help="only report stale indexes (for CI)")
+    sub.add_parser("doctor", help="check headers, links, config and indexes")
+    s = sub.add_parser("ledger", help="append one line to LEDGER.md")
+    s.add_argument("text")
+    s.add_argument("--who", default="oway")
+
+    s = sub.add_parser("freeze", help="freeze an approved proof matrix")
+    s.add_argument("slice")
+    s = sub.add_parser("submit", help="run the verifier of one proof item")
+    s.add_argument("slice")
+    s.add_argument("item")
+    s.add_argument("--timeout", type=int, default=600)
+    s = sub.add_parser("check", help="exit 0 only when every item is PASS")
+    s.add_argument("slice")
+    s.add_argument("--head", action="store_true", help="every PASS must be at the current commit")
+
+    s = sub.add_parser("stop-hook", help="builder stop hook (reads the host payload on stdin)")
+    s.add_argument("--format", choices=("claude", "plain"), default="claude")
+
+    k = sub.add_parser("keeper", help="keeper watcher files").add_subparsers(dest="kcmd", required=True)
+    for name in ("wake", "sleep"):
+        k.add_parser(name).add_argument("team")
+    n = k.add_parser("note")
+    n.add_argument("team")
+    n.add_argument("type")
+    n.add_argument("fact")
+    n.add_argument("--proof", required=True)
+    r = k.add_parser("resolve")
+    r.add_argument("id")
+    r.add_argument("how")
+    k.add_parser("scan")
+    k.add_parser("status")
+    k.add_parser("report")
+    m = k.add_parser("owner-message")
+    m.add_argument("id")
+
+    pl = sub.add_parser("platform", help="the owner's shared setup").add_subparsers(dest="pcmd", required=True)
+    pl.add_parser("init").add_argument("--dir", type=Path)
+    s = sub.add_parser("setup", help="create _oway/ for a new project")
+    s.add_argument("--language", default="en")
+    s.add_argument("--builder", action="append", default=[], help="DevBackend, DevData...")
+    s.add_argument("--no-uix", action="store_true")
+    s.add_argument("--platform", type=Path)
+    s.add_argument("--claude-hook", action="store_true", help="add the Stop hook to .claude/settings.json")
+    sub.add_parser("install-hook", help="add the builder Stop hook to .claude/settings.json")
+    sub.add_parser("version")
+    return p
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
+    try:
+        return _run(args)
+    except proof.TamperError as exc:
+        print(exc, file=sys.stderr)
+        return 3
+    except OwayError as exc:
+        print(f"oway: {exc}", file=sys.stderr)
+        return 2
+
+
+def _run(args) -> int:
+    if args.cmd == "version":
+        print(setup.VERSION_FILE.read_text().strip())
+        return 0
+    if args.cmd == "platform":
+        path = args.dir or setup.default_platform()
+        made = setup.platform_init(path)
+        print(f"platform {path}: " + (", ".join(made) + " created" if made else "already set"))
+        return 0
+    if args.cmd == "setup":
+        root = (args.root or Path(".")).resolve()
+        for line in setup.project_setup(root, args.language, args.builder, not args.no_uix,
+                                        args.platform, args.claude_hook):
+            print(line)
+        return 0
+
+    root = find_root(args.root)
+    oway = root / "_oway"
+    if args.cmd == "index":
+        stale = index.build(oway, check=args.check)
+        for p in stale:
+            print(("stale " if args.check else "wrote ") + p.relative_to(root).as_posix())
+        return 1 if args.check and stale else 0
+    if args.cmd == "doctor":
+        problems = doctor.run(root)
+        for line in problems:
+            print("FAIL " + line)
+        print("doctor: ok" if not problems else f"doctor: {len(problems)} problems")
+        return 1 if problems else 0
+    if args.cmd == "ledger":
+        print(ledger.append(oway, args.text, args.who))
+        return 0
+    if args.cmd == "freeze":
+        print(proof.freeze(oway, args.slice))
+        return 0
+    if args.cmd == "submit":
+        rec = proof.submit(root, args.slice, args.item, args.timeout)
+        print(f"{args.item} {rec['verdict']}: {rec['reason']}")
+        return 0 if rec["verdict"] == "PASS" else 1
+    if args.cmd == "check":
+        ok, lines = proof.check(root, args.slice, args.head)
+        print("\n".join(lines))
+        return 0 if ok else 1
+    if args.cmd == "stop-hook":
+        code, out, err = stophook.main(root, sys.stdin.read() if not sys.stdin.isatty() else "", args.format)
+        sys.stdout.write(out)
+        sys.stderr.write(err)
+        return code
+    if args.cmd == "keeper":
+        return _keeper(args, oway)
+    if args.cmd == "install-hook":
+        print(setup.install_claude_stop_hook(root))
+        return 0
+    raise OwayError(f"unknown command {args.cmd}")
+
+
+def _keeper(args, oway: Path) -> int:
+    c = args.kcmd
+    if c == "wake":
+        keeper.wake(oway, args.team)
+    elif c == "sleep":
+        keeper.sleep(oway, args.team)
+    elif c == "note":
+        fid, new = keeper.note(oway, args.team, args.type, args.fact, args.proof)
+        print(f"{fid} {'new' if new else 'known, not sent again'}")
+    elif c == "resolve":
+        keeper.resolve(oway, args.id, args.how)
+    elif c == "scan":
+        for fid, new in keeper.scan(oway):
+            print(f"{fid} {'new' if new else 'known'}")
+    elif c == "status":
+        open_f = [f for f in keeper.findings(oway) if f["state"] == "open"]
+        print(f"awake: {', '.join(sorted(keeper.awake(oway))) or 'none'}; open findings: {len(open_f)}")
+    elif c == "report":
+        print(keeper.report(oway).relative_to(oway.parent).as_posix())
+    elif c == "owner-message":
+        f = next((x for x in keeper.findings(oway) if x["id"] == args.id), None)
+        if f is None:
+            raise OwayError(f"no finding {args.id}")
+        print(keeper.owner_message(f))
+    return 0

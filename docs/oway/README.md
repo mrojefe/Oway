@@ -5,7 +5,7 @@ Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
 
 ## Status
 
-This folder is the method part of v0.4. The engine (`engine/`), the installed skills and [METHOD.md](../METHOD.md) still describe and enforce v0.3; they change in later, small, tested pull requests, one slice at a time ([ADR-007](../adr/ADR-007-cgspec-becomes-oway.md)). Until a rule here is enforced by a hook, a script or CI, it is guidance, not a gate. Open points are tracked in the Oway working doc, not here.
+This folder is the method part of v0.4. The engine (`engine/`), the installed skills and [METHOD.md](../METHOD.md) still describe and enforce v0.3; they change in later, small, tested pull requests, one slice at a time ([ADR-007](../adr/ADR-007-cgspec-becomes-oway.md)). Until a rule here is enforced by a hook, a script or CI, it is guidance, not a gate. The first tool commands now exist in `engine/oway/` (index, doctor, freeze, submit, check, stop hook, keeper, setup); [STATUS.md](../STATUS.md) says what they cover and what is still planned. Open points are tracked in the Oway working doc, not here.
 
 ## The files
 
