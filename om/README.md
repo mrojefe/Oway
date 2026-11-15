@@ -28,6 +28,7 @@ Payments, deletes, messages to anyone, publishing and production changes always 
 ```bash
 git clone https://github.com/mrojefe/Oway ~/Desktop/_CG-Gov/Oway   # once
 cd ~/Desktop/_CG-Gov/Oway && git pull
+./om/skills/om-uix/scripts/fetch_catalog.sh   # UI style catalog (not in Git)
 ./om/sync-om.sh --dry-run    # see what changes
 ./om/sync-om.sh              # apply; old paths are backed up in ~/.om-deploy-backups/
 ./om/sync-om.sh --check      # must print RESULT: OK

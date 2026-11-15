@@ -13,6 +13,7 @@ Licences: MIT only. `licenses/` holds both licence texts; keep them with the cat
 ## Commands
 Run from this skill's own folder (the folder holding this file), whatever tool loaded it:
 ```bash
+scripts/fetch_catalog.sh                       # once per host: builds catalog/ at pinned upstream commits
 python3 scripts/style_hub.py list              # all styles and themes
 python3 scripts/style_hub.py search <word>     # e.g. neobrutalism, glass, bento, mobile
 python3 scripts/style_hub.py show <slug>       # tokens, type scale, components, do and don't

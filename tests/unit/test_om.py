@@ -62,6 +62,26 @@ class ShapeTests(unittest.TestCase):
                 self.assertNotIn("cgm", f.read_text(encoding="utf-8", errors="ignore").lower(), f)
 
 
+class UixTests(unittest.TestCase):
+    def test_catalog_is_pinned_to_full_commits(self):
+        text = (OM / "skills/om-uix/scripts/fetch_catalog.sh").read_text(encoding="utf-8")
+        self.assertEqual(len(re.findall(r"_SHA=[0-9a-f]{40}\n", text)), 2)
+
+    def test_both_mit_licences_are_kept(self):
+        for name in ("awesome-design-skills", "hallmark"):
+            text = (OM / f"skills/om-uix/licenses/LICENSE-{name}-MIT.txt").read_text(encoding="utf-8")
+            self.assertTrue(text.startswith("MIT License"))
+
+    def test_style_hub_says_how_to_get_the_catalog(self):
+        import shutil
+        tmp = Path(tempfile.mkdtemp())
+        shutil.copytree(OM / "skills/om-uix/scripts", tmp / "scripts")
+        r = subprocess.run(["python3", str(tmp / "scripts/style_hub.py"), "list"],
+                           capture_output=True, text=True)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("fetch_catalog.sh", r.stderr)
+
+
 class SyncTests(unittest.TestCase):
     def setUp(self):
         self.home = Path(tempfile.mkdtemp())
