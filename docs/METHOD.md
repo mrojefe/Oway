@@ -211,7 +211,7 @@ Upgrade mode (older Oway version): a path map from old to new locations, a link 
 
 ## 6. Design path
 
-**Visual choices start during brainstorming.** Whenever images would clarify an option, the agent displays real reference images beside short labelled descriptions before asking the user to choose. Use the [visual-choice guide](../skills/oway-ui-ux/references/visual-choices.md); links, image paths or screenshots saved only on disk do not count as a displayed comparison. If display is unavailable, state the limitation and leave that visual decision open. Purely technical or verbal choices do not need decorative images.
+**Visual choices start during brainstorming.** Whenever images would clarify an option, the agent displays real reference images beside short labelled descriptions before asking the user to choose. Use the [visual-choice guide](../skills/oway-uix/references/visual-choices.md); links, image paths or screenshots saved only on disk do not count as a displayed comparison. If display is unavailable, state the limitation and leave that visual decision open. Purely technical or verbal choices do not need decorative images.
 
 **Design walks eight layers, UX before UI, each with a fixed deliverable and a list of what is deliberately left out; the AI leads with references and never polishes a lucky AI screen into the product.** Design can take days; code is no longer the hard part.
 
@@ -543,7 +543,7 @@ Smoke test, required to pass in the plugin's CI before step 5 of the plan:
 | `oway-init` | Install, update, uninstall; adapters |
 | `oway-adopt` | Discovery, takeover, upgrade mode, midway import |
 | `oway-forge` | Goal type, research, intent, OOUX nouns, attributes, hierarchy, permissions |
-| `oway-ui-ux` | Design layers 0–7, references, vision board, handoff contract |
+| `oway-uix` | Design layers 0–7, references, vision board, handoff contract |
 | `oway-council` | Consequential choices and architecture assembly; logs per round |
 | `oway-slice` | Bounded change: contract, failing test, code, evidence |
 | `oway-migrate` | Refactors, renames, splits, data moves (`oway-pivot` kept as alias) |

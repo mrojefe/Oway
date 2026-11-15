@@ -172,7 +172,7 @@ Skills under `skills/` load on demand for the task at hand (`oway-pivot` is incl
 | `oway-init` | Starting a brand-new project from an idea | Initializes `docs/spines/`, `docs/_cgspec/01-engine/`, hooks, and initial intent |
 | `oway-adopt` | Bringing an existing codebase under Oway governance | Read-only discovery, legacy baseline snapshot (`SLICE-000`), and staged adoption |
 | `oway-forge` | Shaping product intent, domain nouns (OOUX), and system architecture | Updates Spines `01` to `05` and records architectural decisions (`ADR-XXX`) |
-| `oway-ui-ux` | Designing or refining user interfaces before implementation | Sourced visual references, interactive HTML prototypes, and Playwright journeys |
+| `oway-uix` | Designing or refining user interfaces before implementation | Sourced visual references, interactive HTML prototypes, and Playwright journeys |
 | `oway-council` | Resolving high-stakes architectural or product trade-offs | Structured multi-perspective analysis with explicit recommendation |
 | `oway-slice` | Building a bounded feature or fix end-to-end | Frozen slice spec, Red-Green commits, runtime/visual proof, and outcome closure |
 | `oway-migrate` | Schema, data, or cross-service migrations | Rollback-safe migration plan, verification scripts, and supersession records |

@@ -1,5 +1,5 @@
 ---
-name: oway-ui-ux
+name: oway-uix
 description: Design or revise a product experience from real references through task flows, grey behavior prototypes, and the real frontend, with a library of 117 MIT style packs and themes and anti-slop gates; full mode for Oway projects, light mode for om; handles responsive and mobile evidence explicitly.
 ---
 
@@ -124,6 +124,57 @@ oway style show neobrutalism    # also: brutal, glassmorphism, bento
 
 How it fits the layers: a pack or theme is a **starting register and token source**, not a finished design. It never replaces the problem, the references or the user's reaction. Layer 0 offers the closest packs beside the real references; layers 5a and 5b record the pack in "Deliberate choices" and in the token sheet's provenance.
 
+## Reference scouting (free)
+
+From the free-ui-ux-scout skill, kept whole. It removes generic "AI aesthetic slop" (purple gradients, uncurated Inter fonts, low-contrast cards) by grounding every design in real, striking references. It is a 100% free workflow: no paid subscription, no API key, no paywall. Use it for layer 0 (References) and for the light mode's references step.
+
+### Non-negotiables
+1. **Research before implementation.** Never design from raw memory or default LLM habits. Scout references first.
+2. **Visual proof in a carousel.** Present 3-5 real visual references to the user, before or alongside implementation, in a carousel artifact where the host has one (Antigravity), else side by side in the browser or an artifact. Each is a real screenshot with its source URL.
+3. **Multi-source free scouting:**
+   - **Godly.website:** cutting-edge web aesthetics, micro-interactions, dark and light themes, typography craft.
+   - **Land-book.com:** production SaaS, dashboards, landing pages, conversion patterns.
+   - **Mobbin and Refero via Chrome DevTools MCP:** live mobile (iOS/Android) and web-app flows browsed on the local machine, with zero subscription fees.
+4. **Anti-AI-slop directives:**
+   - Grounded palettes (no generic purple or blue gradient buttons).
+   - Crisp hairline borders (`border-neutral-200 dark:border-neutral-800`).
+   - Distinct `:hover`, `:focus-visible` and `:active` states.
+   - Responsive, touch-friendly layouts (minimum 44x44px mobile touch targets).
+
+### Workflow
+**Step 1: scout references.**
+- *Method A, instant multi-source scout CLI* (the owner's `design_scout.py`, where installed, for example `~/.gemini/config/scripts/design_scout.py`):
+  ```bash
+  design_scout.py "<query>" --dest-dir "<appDataDir>/brain/<conversation-id>/references" \
+    --output-md "<appDataDir>/brain/<conversation-id>/design_references.md"
+  ```
+  Examples: `"fintech dashboard"`, `"mobile onboarding"`, `"dark mode analytics"`.
+- *Method B, direct live browsing via Chrome DevTools MCP,* when a specific production site or public Mobbin/Refero page is asked for: `new_page` with the URL, then `take_screenshot` (the MCP saves it to the conversation's `brain/` folder, free), then `close_page`. With no such MCP, use the browser tool you have.
+
+**Step 2: present the interactive carousel artifact.** In the conversation's artifact folder (`design_references.md`), write:
+````markdown
+# Curated Visual Design References
+
+```carousel
+![Reference 1: High Craft Layout]( /path/to/references/ref_1.webp)
+<!-- slide -->
+![Reference 2: Clean Data Table]( /path/to/references/ref_2.png)
+<!-- slide -->
+![Reference 3: Mobile Flow]( /path/to/references/ref_3.png)
+```
+
+## Design synthesis and token plan
+- Dominant style: minimalist high-contrast surface with hairline borders.
+- Palette: dark surface `#0A0A0C`, card `#141417`, border `#222227`, accent `#2563EB`.
+- Typography hierarchy: tracking-tight headings, distinct mono badges, muted auxiliary labels.
+````
+In real use write each image path with no space after the opening bracket (the space above only keeps this skill's own link check quiet). Point the user to the artifact so they can inspect the inspiration. Where the host has no carousel, show the same images side by side in the browser and link the file.
+
+**Step 3: align and implement.**
+1. Ask or confirm which aesthetic direction the user prefers, or synthesize the sharpest elements.
+2. Implement with modern web primitives (Tailwind CSS, clean semantic HTML, or the target framework).
+3. Validate against modern web guidance: WCAG AA contrast, smooth 150-200ms transitions, fluid responsiveness across viewport sizes.
+
 ## Light mode (om)
 
 Use light mode when working under om (`om/rules/AGENTS.md` is loaded) or when the project has no `docs/spines/`. It behaves the same as full mode in every way that the user sees, and drops what needs the Oway engine and project files.
@@ -131,7 +182,7 @@ Use light mode when working under om (`om/rules/AGENTS.md` is loaded) or when th
 **Kept, in this order:**
 1. **Problem first.** One line: who it is for, the job, how we will know it works. Offer your reading and let the user correct it; never ask for a blank brief.
 2. **Classify the request** by its effect, with the kind table above (behavior, layout, appearance, content, motion).
-3. **References first.** Show up to 6 real, captioned references (2-4 is usual): real pages opened in the browser and screenshotted, each saved with its source URL. Add the 2-3 closest style packs. The user reacts ("mine", "not this", "mix 2 and 4"). Never a generated picture instead of a page.
+3. **References first.** Scout (see Reference scouting) and show 3-5 real, captioned references, up to 6: real pages opened in the browser and screenshotted, each saved with its source URL. Add the 2-3 closest style packs. The user reacts ("mine", "not this", "mix 2 and 4"). Never a generated picture instead of a page.
 4. **Variations only when the direction is open:** 2-3 real pages that differ in mechanism (structure, density, navigation), not in colour. Iterate on the winner, delete the rest.
 5. **The artifact that answers the question** (the table above): journey, state diagram with permission table, grey wireframe, side-by-side, clickable prototype.
 6. **Register in one paragraph,** then build in the real frontend with the chosen tokens.

@@ -84,22 +84,22 @@ target_row() { # $1 tool, $2 method, $3 target, $4 source (relative to om/, may 
   esac
 }
 
-skill_src() { [[ "$1" == oway-ui-ux ]] && echo "../skills/$1" || echo "skills/$1"; }
+skill_src() { [[ "$1" == oway-uix ]] && echo "../skills/$1" || echo "skills/$1"; }
 
 tool_rows() { # built-in targets of one tool
   local t="$1" s a
   case "$t" in
     pi)
-      for s in om-plan oway-ui-ux om-assist; do target_row pi symlink "~/.pi/agent/skills/$s" "$(skill_src $s)"; done
+      for s in om-plan oway-uix om-assist; do target_row pi symlink "~/.pi/agent/skills/$s" "$(skill_src $s)"; done
       for a in om-caps om-review om-assist; do target_row pi symlink "~/.pi/agent/prompts/$a.md" "agents/$a.md"; done
       target_row pi symlink "~/.pi/agent/APPEND_SYSTEM.md" rules/AGENTS.md ;;
     opencode)
-      for s in om-plan oway-ui-ux om-assist; do target_row opencode symlink "~/.config/opencode/skills/$s" "$(skill_src $s)"; done
+      for s in om-plan oway-uix om-assist; do target_row opencode symlink "~/.config/opencode/skills/$s" "$(skill_src $s)"; done
       for a in om-caps om-review om-assist; do target_row opencode opencode-agent "~/.config/opencode/agents/$a.md" "agents/$a.md"; done
       target_row opencode symlink "~/.config/opencode/AGENTS.md" rules/AGENTS.md ;;
     antigravity)
       target_row antigravity symlink "~/.gemini/config/plugins/om" .
-      target_row antigravity symlink "~/.gemini/config/skills/oway-ui-ux" "../skills/oway-ui-ux" ;;
+      target_row antigravity symlink "~/.gemini/config/skills/oway-uix" "../skills/oway-uix" ;;
     oway)
       target_row oway symlink "~/.local/bin/oway" bin/oway ;;
     *) echo "FAIL unknown tool '$t' (built in: pi, opencode, antigravity, oway)"; FAIL=1 ;;

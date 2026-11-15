@@ -117,7 +117,7 @@ class StewardshipContractTests(unittest.TestCase):
 
 class DesignGuidanceTests(unittest.TestCase):
     def setUp(self):
-        self.skill = read("skills/oway-ui-ux/SKILL.md")
+        self.skill = read("skills/oway-uix/SKILL.md")
         self.method_design = section(read("docs/METHOD.md"), "6. Design path")
 
     def test_no_fixed_variation_count_or_mechanical_pacing(self):
@@ -156,7 +156,7 @@ class DesignGuidanceTests(unittest.TestCase):
 
 class BehaviorCoverageTests(unittest.TestCase):
     def test_coverage_requires_named_states_and_concurrency_cases(self):
-        text = read("skills/oway-ui-ux/references/behavior-coverage.md").lower()
+        text = read("skills/oway-uix/references/behavior-coverage.md").lower()
         for phrase in ("named state", "repeated", "stale", "exact version", "executed", "specified"):
             self.assertIn(phrase, text)
 

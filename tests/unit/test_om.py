@@ -64,7 +64,7 @@ class ShapeTests(unittest.TestCase):
 
 class DesignSkillTests(unittest.TestCase):
     def setUp(self):
-        self.text = (OM.parent / "skills/oway-ui-ux/SKILL.md").read_text(encoding="utf-8")
+        self.text = (OM.parent / "skills/oway-uix/SKILL.md").read_text(encoding="utf-8")
 
     def test_skill_has_full_and_light_mode_and_the_style_library(self):
         for heading in ("## Light mode (om)", "## Style library"):
@@ -77,7 +77,7 @@ class DesignSkillTests(unittest.TestCase):
             self.assertIn(word, light)
 
     def test_skill_carries_no_catalog_or_scripts(self):
-        names = {f.name for f in (OM.parent / "skills/oway-ui-ux").rglob("*") if f.is_file()}
+        names = {f.name for f in (OM.parent / "skills/oway-uix").rglob("*") if f.is_file()}
         self.assertFalse({"style_hub.py", "fetch_catalog.sh"} & names)
 
 
@@ -113,9 +113,9 @@ class SyncTests(unittest.TestCase):
 
     def test_design_skill_is_linked_from_the_shared_folder(self):
         sync(self.home, "--tools", "pi,antigravity,oway")
-        want = (OM.parent / "skills/oway-ui-ux").resolve()
-        self.assertEqual((self.home / ".pi/agent/skills/oway-ui-ux").resolve(), want)
-        self.assertEqual((self.home / ".gemini/config/skills/oway-ui-ux").resolve(), want)
+        want = (OM.parent / "skills/oway-uix").resolve()
+        self.assertEqual((self.home / ".pi/agent/skills/oway-uix").resolve(), want)
+        self.assertEqual((self.home / ".gemini/config/skills/oway-uix").resolve(), want)
         self.assertEqual((self.home / ".local/bin/oway").resolve(), (OM / "bin/oway").resolve())
 
     def test_only_the_chosen_tools_are_touched(self):
