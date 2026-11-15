@@ -1,9 +1,9 @@
 {
   "name": "om",
-  "description": "om (Oway medium): the light, everyday version of Oway. Always-on rules with three sizes (Quick, Task, Mission), mission planning (om-plan), UI styles (om-uix), side assistant (om-assist), capability check (om-caps) and independent review (om-review).",
+  "description": "om (Oway medium): the light, everyday version of Oway. Always-on rules with three sizes (Quick, Task, Mission), mission planning (om-plan), design (oway-uix, light mode), side assistant (om-assist), capability check (om-caps) and independent review (om-review).",
   "suggestedPrompts": [
     "Use om-plan to plan this mission",
-    "Use om-uix to pick and apply a design style",
+    "Use oway-uix to design with real references and a style",
     "Start om-assist so I can ask side questions in a separate thread"
   ]
 }

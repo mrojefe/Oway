@@ -59,7 +59,7 @@ sequenceDiagram
 ## 4. Scope & Invariants
 
 ### In Scope for `v0.1`
-- Complete, vendor-neutral **Oway Blueprint Repository** (`/home/ojefe/Documents/Project/cgspec/`).
+- Complete, vendor-neutral **Oway Blueprint Repository**.
 - Universal **`AGENTS.md`** + 1-line DRY **`CLAUDE.md`** pointer.
 - Portable **`skills/cgspec-*/SKILL.md`** suite + **`.cgspec/scripts/memlog.py`**, **`.cgspec/scripts/doctor.py`**, **`.cgspec/scripts/ingest.py`**.
 

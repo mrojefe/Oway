@@ -53,7 +53,7 @@ flowchart TD
 
     GATE -->|"Refines Intent / UX / Arch in current scope"| NONLINEAR["Non-Linear Spine Update<br/>1. Log lock to docs/.memlog.md<br/>2. Re-derive affected Spine (01..05)<br/>3. Update 00-INDEX.md"]
 
-    GATE -->|"Changes existing built code or architecture"| TIER{"6-Step Course-Correction Audit<br/>(cgspec-pivot)"}
+    GATE -->|"Changes existing built code or architecture"| TIER{"6-Step Course-Correction Audit<br/>(oway-pivot)"}
 
     TIER -->|"Tier 1: Module Swap<br/>(e.g., SQLite -> Postgres)"| T1["Tier 1: Adapter Swap<br/>1. Write ADR-NNN<br/>2. Update 04-ARCHITECTURE.md<br/>3. Swap src/adapters/<module> only"]
     TIER -->|"Tier 2: Scope Expansion<br/>(e.g., Solo -> Team RBAC)"| T2["Tier 2: Additive Slice<br/>1. Write ADR-NNN<br/>2. Update 02-OOUX & 04-ARCH<br/>3. Create additive DB migration & Slice"]

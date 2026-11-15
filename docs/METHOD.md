@@ -211,7 +211,7 @@ Upgrade mode (older Oway version): a path map from old to new locations, a link 
 
 ## 6. Design path
 
-**Visual choices start during brainstorming.** Whenever images would clarify an option, the agent displays real reference images beside short labelled descriptions before asking the user to choose. Use the [visual-choice guide](../skills/cgspec-ui-ux/references/visual-choices.md); links, image paths or screenshots saved only on disk do not count as a displayed comparison. If display is unavailable, state the limitation and leave that visual decision open. Purely technical or verbal choices do not need decorative images.
+**Visual choices start during brainstorming.** Whenever images would clarify an option, the agent displays real reference images beside short labelled descriptions before asking the user to choose. Use the [visual-choice guide](../skills/oway-uix/references/visual-choices.md); links, image paths or screenshots saved only on disk do not count as a displayed comparison. If display is unavailable, state the limitation and leave that visual decision open. Purely technical or verbal choices do not need decorative images.
 
 **Design walks eight layers, UX before UI, each with a fixed deliverable and a list of what is deliberately left out; the AI leads with references and never polishes a lucky AI screen into the product.** Design can take days; code is no longer the hard part.
 
@@ -306,7 +306,7 @@ For GUI profiles, pull request CI runs the proof in a fresh `git worktree` check
 
 **When only one AI is available** (a team member with a single tool, no second model): the reviewer is a fresh helper of the same tool with a clean context and only the frozen criteria, and the report labels it "same-model review" so nobody mistakes it for independent. Layers 1–2 carry the weight: they need no second model. Teams can add a human reviewer through the normal pull request, which counts as the independent layer 3. Optional: one cheap API key for a second model unlocks cross-model review without installing another tool.
 
-**Team review, on demand.** The `cgspec-team-review` skill runs the full team on any work, at any tier, whenever you call it: an inspector supervises specialists (UI, UX, accessibility, typography, motion, performance... chosen for the work), then adversarial reviewers, then one integrated verdict. It runs automatically only at T3; at whole-app design locks (layers 2, 3-shell, 5) the agent suggests it and you decide. Specialists also propose new deterministic checks, registered as described in section 8. On tools where helpers cannot start helpers, the inspector writes the job queue and the main agent only dispatches it, never judging; the report says so.
+**Team review, on demand.** The `oway-team-review` skill runs the full team on any work, at any tier, whenever you call it: an inspector supervises specialists (UI, UX, accessibility, typography, motion, performance... chosen for the work), then adversarial reviewers, then one integrated verdict. It runs automatically only at T3; at whole-app design locks (layers 2, 3-shell, 5) the agent suggests it and you decide. Specialists also propose new deterministic checks, registered as described in section 8. On tools where helpers cannot start helpers, the inspector writes the job queue and the main agent only dispatches it, never judging; the report says so.
 
 **Criteria come first and are frozen.** Acceptance criteria and checks are written before work starts by someone other than the author, approved by you, and their hashes stored in `run.json`. The CI and commit hooks fail if they change during the run (section 8). Reviewers get the criteria and the artifact, never the author's explanation.
 
@@ -360,7 +360,7 @@ Minimum checks (the single source; the agent cannot choose less). Cells give the
 | Mutation on changed code, score ≥ 70% | T2 | T2 | T2 | T2 | T2 | Stryker, mutmut |
 | Visual regression baseline | T2 | T2 | T3 | — | — | Playwright screenshots |
 | Device run | — | — | T3 | — | — | real device |
-| Team review | T3 | T3 | T3 | T3 | T3 | `cgspec-team-review` |
+| Team review | T3 | T3 | T3 | T3 | T3 | `oway-team-review` |
 
 Code rules the commit hook enforces: files ≤ 400 total lines for new or changed code under the project's declared `code` path class, unless the exact path is listed in `legacy-baseline.json` with an approval; no test may be skipped, emptied or weakened to make a build pass. Other code rules (strict typing, formatter, function size, complexity limit, duplicated-code detection, stack best practices via each linter's recommended configuration) are not enforced by Oway itself — adopt them through the project's own lint and formatter configuration.
 
@@ -540,15 +540,15 @@ Smoke test, required to pass in the plugin's CI before step 5 of the plan:
 
 | Skill | Owns |
 | --- | --- |
-| `cgspec-init` | Install, update, uninstall; adapters |
-| `cgspec-adopt` | Discovery, takeover, upgrade mode, midway import |
-| `cgspec-forge` | Goal type, research, intent, OOUX nouns, attributes, hierarchy, permissions |
-| `cgspec-ui-ux` | Design layers 0–7, references, vision board, handoff contract |
-| `cgspec-council` | Consequential choices and architecture assembly; logs per round |
-| `cgspec-slice` | Bounded change: contract, failing test, code, evidence |
-| `cgspec-migrate` | Refactors, renames, splits, data moves (`cgspec-pivot` kept as alias) |
-| `cgspec-operate` | Release, observation, incidents, drift, runbooks, retirement |
-| `cgspec-team-review` | Full team review on demand, on any work, any tier |
+| `oway-init` | Install, update, uninstall; adapters |
+| `oway-adopt` | Discovery, takeover, upgrade mode, midway import |
+| `oway-forge` | Goal type, research, intent, OOUX nouns, attributes, hierarchy, permissions |
+| `oway-uix` | Design layers 0–7, references, vision board, handoff contract |
+| `oway-council` | Consequential choices and architecture assembly; logs per round |
+| `oway-slice` | Bounded change: contract, failing test, code, evidence |
+| `oway-migrate` | Refactors, renames, splits, data moves (`oway-pivot` kept as alias) |
+| `oway-operate` | Release, observation, incidents, drift, runbooks, retirement |
+| `oway-team-review` | Full team review on demand, on any work, any tier |
 
 | Role | Job | Never |
 | --- | --- | --- |

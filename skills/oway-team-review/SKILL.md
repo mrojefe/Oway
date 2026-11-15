@@ -1,5 +1,5 @@
 ---
-name: cgspec-team-review
+name: oway-team-review
 description: Run a full independent specialist and adversarial review on any work when requested, or for a T3 change; return one evidence-based verdict.
 ---
 

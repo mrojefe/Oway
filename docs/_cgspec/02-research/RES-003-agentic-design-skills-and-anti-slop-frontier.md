@@ -4,7 +4,7 @@
 > **Status:** `CONCLUDED (SYNTHESIZED INTO STAGE 2 ENGINE & VISUAL_AUDIT.PY)`  
 > **Author:** Antigravity Architect & BeOjefe Engineering  
 > **Date:** October 2026  
-> **Target Spines:** `docs/spines/03-EXPERIENCE.md`, [`skills/cgspec-ui-ux/SKILL.md`](../../../skills/cgspec-ui-ux/SKILL.md), [`engine/visual_audit.py`](../../../engine/visual_audit.py)  
+> **Target Spines:** `docs/spines/03-EXPERIENCE.md`, [`skills/oway-uix/SKILL.md`](../../../skills/oway-uix/SKILL.md), [`engine/visual_audit.py`](../../../engine/visual_audit.py)  
 > **Related Decisions:** `ADR-001` (`docs/adr/ADR-001-first-principles-spec-driven-sdlc-architecture.md`), [`RES-001`](RES-001-ui-design-systems-and-surface-profiles-benchmark.md), [`RES-002`](RES-002-anti-slop-constrained-ui-and-deterministic-gates.md)
 
 ---
@@ -98,4 +98,4 @@ From Impeccable's 59 detector rules and Hallmark's 65 gates, the following patte
 
 1. **Parity with `DESIGN.md`:** CGSpec's `docs/spines/03-EXPERIENCE.md` serves as the canonical design token registry, incorporating Impeccable's token taxonomy (Colors, Radii, Typography Scales, Spatial Elevation).
 2. **Deterministic-First Pipeline:** All Layer 1 anti-patterns must be verified by `visual_audit.py` in Phase A before any human review or Layer 3 LLM critique is scheduled.
-3. **Agent Refinement Vocabulary:** The Stage 2 Skill ([`skills/cgspec-ui-ux/SKILL.md`](../../../skills/cgspec-ui-ux/SKILL.md)) incorporates Impeccable's refinement verbs (`/distill`, `/clarify`, `/polish`, `/typeset`) to guide agent self-correction during iterations.
+3. **Agent Refinement Vocabulary:** The Stage 2 Skill ([`skills/oway-uix/SKILL.md`](../../../skills/oway-uix/SKILL.md)) incorporates Impeccable's refinement verbs (`/distill`, `/clarify`, `/polish`, `/typeset`) to guide agent self-correction during iterations.

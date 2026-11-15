@@ -4,7 +4,7 @@
 > **Status:** `CONCLUDED (OPERATIONALIZED IN VISUAL_AUDIT.PY & STAGE 2 SKILLS)`  
 > **Author:** Antigravity Architect & BeOjefe Engineering  
 > **Date:** October 2026  
-> **Target Spines:** `docs/spines/03-EXPERIENCE.md`, [`skills/cgspec-ui-ux/SKILL.md`](../../../skills/cgspec-ui-ux/SKILL.md), [`engine/visual_audit.py`](../../../engine/visual_audit.py)  
+> **Target Spines:** `docs/spines/03-EXPERIENCE.md`, [`skills/oway-uix/SKILL.md`](../../../skills/oway-uix/SKILL.md), [`engine/visual_audit.py`](../../../engine/visual_audit.py)  
 > **Related Decisions:** `ADR-001` (`docs/adr/ADR-001-first-principles-spec-driven-sdlc-architecture.md`), `ADR-002` (`docs/adr/ADR-002-monorepo-vs-polyrepo-and-db-migrations.md`), [`RES-001`](RES-001-ui-design-systems-and-surface-profiles-benchmark.md)
 
 ---

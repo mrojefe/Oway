@@ -3,10 +3,7 @@ Created: unknown · Last edited: 2026-10-22T21:26:35Z
 
 This repository develops Oway. Read [current implementation status](docs/STATUS.md), then the relevant parts of [the method specification](docs/METHOD.md), [engine formats](engine/FORMATS.md) and [the short contract](engine/CONTRACT.md).
 
-On this workstation (paths below are workstation-only; on another machine use the checkout the user opened) there are exactly two Oway locations:
-
-- `/home/ojefe/Documents/Project/cgspec` — this repository, the only development checkout.
-- `/home/ojefe/Documents/Project/cgspec-workspace` — investigation history, trial evidence and archived history, not version controlled. Start at its `START-HERE.md`.
+There is one development checkout: the repository you opened. Investigation history and trial evidence are kept outside it, not version controlled, so nothing in this repository depends on them.
 
 The former `cgspec-next` duplicate was deleted on 2026-10-22; its three branches that were never on `main` are preserved here as `refs/archive/cgspec-next-*`. There is no second development stream.
 

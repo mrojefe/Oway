@@ -6,7 +6,7 @@ Tasks, screens, flows, design layer status per screen (or API/CLI behavior when 
 
 ## Register
 
-<!-- Layer 5a, locked right after the user reacts to references (layer 0-1). Template and rules: skills/cgspec-ui-ux/references/register.md -->
+<!-- Layer 5a, locked right after the user reacts to references (layer 0-1). Template and rules: skills/oway-uix/references/register.md -->
 
 ## Actors and tasks
 
@@ -26,7 +26,7 @@ Tasks, screens, flows, design layer status per screen (or API/CLI behavior when 
 
 ## Components
 
-<!-- Recipes used by the screens. Format and starter set: skills/cgspec-ui-ux/references/components.md -->
+<!-- Recipes used by the screens. Format and starter set: skills/oway-uix/references/components.md -->
 
 ## Deliberate choices and open questions
 

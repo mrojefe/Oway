@@ -1,5 +1,5 @@
 ---
-name: cgspec-council
+name: oway-council
 description: Research and resolve a consequential architecture, security, data, hosting, or product trade-off with a logged council and a proposed decision.
 ---
 
