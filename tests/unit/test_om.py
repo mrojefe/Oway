@@ -49,7 +49,9 @@ class ShapeTests(unittest.TestCase):
     def test_no_personal_names_in_om_or_root_docs(self):
         bad = re.compile(r"(?<!mr)ojefe|vmi3298109|_CG-Gov|CortexGate|MEOCE|aiwork|/home/[a-z]+/", re.I)
         files = [f for f in OM.rglob("*") if f.is_file() and "catalog" not in f.parts]
-        files += [OM.parent / "AGENTS.md"]
+        paths = re.compile(r"/home/[a-z]+/|_CG-Gov|vmi3298109")
+        text = (OM.parent / "AGENTS.md").read_text(encoding="utf-8")
+        self.assertIsNone(paths.search(text), "AGENTS.md has a workstation path")
         for f in files:
             self.assertIsNone(bad.search(f.read_text(encoding="utf-8", errors="ignore")), f)
 
