@@ -12,7 +12,7 @@ LINK = re.compile(r"\]\(([^)\s]+)\)")
 ABSOLUTE_HOME = re.compile(r"(?<![\w/])(/home/|/Users/|[A-Z]:\\\\Users)")
 BUILDERS = {"DevBackend", "DevFrontend", "DevData", "DevAI", "DevMobile"}
 CONFIG_KEYS = {"schema", "oway_version", "language", "product_type", "teams", "keeper",
-               "message_max_chars", "profile", "setup_pending", "path_classes", "legacy"}
+               "message_max_chars", "profile", "setup_pending", "path_classes", "legacy", "reviewer_command"}
 
 
 def check_config(path: Path) -> list[str]:

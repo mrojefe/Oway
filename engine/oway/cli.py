@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, feedback, index, keeper, ledger, proof, setup, stophook, takeover, upgrade
+from . import doctor, feedback, index, keeper, ledger, proof, setup, review, stophook, takeover, upgrade
 from .project import OwayError, find_root
 
 
@@ -30,6 +30,9 @@ def _parser() -> argparse.ArgumentParser:
     s.add_argument("slice")
     s.add_argument("item")
     s.add_argument("--timeout", type=int, default=600)
+    s = sub.add_parser("review", help="run the reviewer on an item waiting for review")
+    s.add_argument("slice")
+    s.add_argument("item")
     s = sub.add_parser("check", help="exit 0 only when every item is PASS")
     s.add_argument("slice")
     s.add_argument("--head", action="store_true", help="every PASS must be at the current commit")
@@ -55,7 +58,8 @@ def _parser() -> argparse.ArgumentParser:
     s = sub.add_parser("feedback", help="draft an issue for the Oway repo (never sends it)")
     s.add_argument("title")
     s.add_argument("--body", default="")
-    sub.add_parser("install-hook", help="add the builder Stop hook to .claude/settings.json")
+    s = sub.add_parser("install-hook", help="install the builder stop hook for a host")
+    s.add_argument("--host", choices=("claude", "pi"), default="claude")
     sub.add_parser("version")
     return p
 
@@ -128,17 +132,8 @@ def _run(args) -> int:
     if args.cmd == "ledger":
         print(ledger.append(oway, args.text, args.who))
         return 0
-    if args.cmd == "freeze":
-        print(proof.freeze(oway, args.slice))
-        return 0
-    if args.cmd == "submit":
-        rec = proof.submit(root, args.slice, args.item, args.timeout)
-        print(f"{args.item} {rec['verdict']}: {rec['reason']}")
-        return 0 if rec["verdict"] == "PASS" else 1
-    if args.cmd == "check":
-        ok, lines = proof.check(root, args.slice, args.head)
-        print("\n".join(lines))
-        return 0 if ok else 1
+    if args.cmd in ("freeze", "submit", "review", "check"):
+        return _proof_cmd(args, root)
     if args.cmd == "stop-hook":
         code, out, err = stophook.main(root, sys.stdin.read() if not sys.stdin.isatty() else "", args.format)
         sys.stdout.write(out)
@@ -151,12 +146,33 @@ def _run(args) -> int:
     raise OwayError(f"unknown command {args.cmd}")
 
 
+def _proof_cmd(args, root: Path) -> int:
+    if args.cmd == "freeze":
+        print(proof.freeze(root / "_oway", args.slice))
+        return 0
+    if args.cmd == "submit":
+        rec = proof.submit(root, args.slice, args.item, args.timeout)
+        print(f"{args.item} {rec['verdict']}: {rec['reason']}")
+        return 0 if rec["verdict"] == "PASS" else 1
+    if args.cmd == "review":
+        rec = review.run(root, args.slice, args.item)
+        print(f"{args.item} review {rec['verdict']}: {rec['reason']}")
+        return 0 if rec["verdict"] == "PASS" else 1
+    if args.cmd == "check":
+        ok, lines = proof.check(root, args.slice, args.head)
+        print("\n".join(lines))
+        return 0 if ok else 1
+    raise OwayError(f"unknown command {args.cmd}")
+
+
 def _project_cmd(args, root: Path) -> int:
     if args.cmd == "upgrade":
         print("\n".join(upgrade.run(root, setup.VERSION_FILE.read_text().strip(), args.dry_run)))
     elif args.cmd == "feedback":
         path, url, cmd = feedback.create(root / "_oway", args.title, args.body)
         print(f"saved {path.relative_to(root).as_posix()}\nopen: {url}\nor: {cmd}")
+    elif args.host == "pi":
+        print(setup.install_pi_extension(root))
     else:
         print(setup.install_claude_stop_hook(root))
     return 0

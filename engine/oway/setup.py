@@ -104,3 +104,13 @@ def install_claude_stop_hook(root: Path) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     return ".claude/settings.json"
+
+
+def install_pi_extension(root: Path) -> str:
+    """Write the pi stop-hook extension to .pi/extensions/oway-stop.ts (project trust still applies)."""
+    src = (Path(__file__).resolve().parent / "pi_extension.ts").read_text(encoding="utf-8")
+    entry = str(TOOL_ROOT / "engine" / "oway")
+    path = root / ".pi" / "extensions" / "oway-stop.ts"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(src.replace("__OWAY_ENTRY__", entry.replace("\\", "/")), encoding="utf-8")
+    return ".pi/extensions/oway-stop.ts"
