@@ -1,6 +1,6 @@
 ---
 name: cgspec-ui-ux
-description: Design or revise a product experience from real references through task flows, grey behavior prototypes, and the real frontend; handles responsive and mobile evidence explicitly.
+description: Design or revise a product experience from real references through task flows, grey behavior prototypes, and the real frontend, with a library of 117 MIT style packs and themes and anti-slop gates; full mode for Oway projects, light mode for om; handles responsive and mobile evidence explicitly.
 ---
 
 # Design the experience
@@ -77,16 +77,53 @@ Prototype files other than ordinary Markdown need the active change scope. Befor
 
 | Layer | Do | Load |
 | --- | --- | --- |
-| 0 References | Start from the user's [personal inspiration library](references/inspiration-library.md) when it exists, then find two to four contrasting **real** references, with links and screenshots in `docs/prototypes/_vision/`, actually displayed per the [visual-choice guide](references/visual-choices.md); measure those the user likes. Search with available web tools and project links. If original images or video matter, align the user-visible IMAGE-WORD card before generation. If access fails, record the gap, invite optional links, and continue independent grey work without inventing references or locking reference-derived choices. | [inspiration library](references/inspiration-library.md), [reference-extraction](references/reference-extraction.md); load [IMAGE-WORD and motion](references/image-word-and-motion.md) only when media matters; [RES-001](../../docs/_cgspec/02-research/RES-001-ui-design-systems-and-surface-profiles-benchmark.md), [RES-004](../../docs/_cgspec/02-research/RES-004-vibecoded-design-tells-and-high-craft-ergonomics.md) |
+| 0 References | Start from the user's [personal inspiration library](references/inspiration-library.md) when it exists, then find two to four contrasting **real** references, with links and screenshots in `docs/prototypes/_vision/`, actually displayed per the [visual-choice guide](references/visual-choices.md); measure those the user likes. Search with available web tools and project links. Also run `oway style search <word>` for the look the user names and offer the 2-3 closest [style packs](#style-library) beside the real references, built as real pages like the references, so the user reacts to looks they can see. If original images or video matter, align the user-visible IMAGE-WORD card before generation. If access fails, record the gap, invite optional links, and continue independent grey work without inventing references or locking reference-derived choices. | [inspiration library](references/inspiration-library.md), [reference-extraction](references/reference-extraction.md); load [IMAGE-WORD and motion](references/image-word-and-motion.md) only when media matters; [RES-001](../../docs/_cgspec/02-research/RES-001-ui-design-systems-and-surface-profiles-benchmark.md), [RES-004](../../docs/_cgspec/02-research/RES-004-vibecoded-design-tells-and-high-craft-ergonomics.md) |
 | 0-3 Compare directions | Only when a real direction choice is open: build 2-3 quick variations of the key screen that differ in mechanism (structure, density, navigation, type, mood), not just colour or button position. Make them real HTML pages in `docs/prototypes/_vision/variations/`, open them in the browser and screenshot them side by side. Give each one line on what it bets on, and mark your recommendation. The user reacts ("this one", "mix 2 and 3"); iterate on the winner and delete the rest. Use more only for a stated reason. For a vague request, first offer your reading of the problem or a cheap labelled sketch. | [craft](references/craft.md) |
 | 0-1 Register (5a) | Write the one-paragraph register (density, type, stance, mood, accent, signature element, avoid, deliberate choices), show it, lock it with the user's approval. | [register](references/register.md) |
 | 1 Tasks | Actors and tasks in the spine, each with frequency and device. | — |
 | 2 Screens and flows | One row per screen with its main need (the focal point). | [craft](references/craft.md) section 1 |
 | 3 Wireframes | Grey shell, zone IDs, real-looking data in realistic amounts, density from the register; the screen's data inventory. | [craft](references/craft.md) sections 1-5, 8 |
 | 4 Behavior | Clickable grey prototype with the [tweaks panel](references/tweaks-panel.js) included, so the user can try type, density, accent, radius and light/dark live and paste the values back, all states, `data-testid` on every control; journeys in `docs/prototypes/<screen>/journeys/`; `visual_audit.py` and `journey.py` provide quick iteration, while `verify.py` supersedes them as the single pre-show/pre-claim gate before showing a screen or claiming it works. Cut a snapshot with `bundle_prototype.py` when the user locks the layer. | [behavior coverage](references/behavior-coverage.md), [RES-002](../../docs/_cgspec/02-research/RES-002-anti-slop-constrained-ui-and-deterministic-gates.md) |
-| 5b Token sheet | Derive every token from the register and measured references; each value says where it comes from. Set `design_tokens` in `docs/_cgspec/project.json` to the token sheet's project-relative path, so visual audit checks the intended sheet. | [tokens template](references/tokens.dtcg.json), [reference-extraction](references/reference-extraction.md), [craft](references/craft.md) sections 3-7 |
-| 6 High fidelity | Real frontend, one key screen first, the tweaks panel kept until the user locks the look (then removed), components from recipes; review screenshots against the rubric with a different reviewer before rolling out and before locking. | [craft](references/craft.md), [components](references/components.md), [critique rubric](references/critique-rubric.md), [RES-005](../../docs/_cgspec/02-research/RES-005-anthropic-design-plugin-structure-and-skills.md) for copy and handoff gaps |
+| 5b Token sheet | Derive every token from the register and measured references; each value says where it comes from (a style pack or theme counts as a source: name it with its licence). Set `design_tokens` in `docs/_cgspec/project.json` to the token sheet's project-relative path, so visual audit checks the intended sheet. | [tokens template](references/tokens.dtcg.json), [reference-extraction](references/reference-extraction.md), [craft](references/craft.md) sections 3-7 |
+| 6 High fidelity | Real frontend, one key screen first, the tweaks panel kept until the user locks the look (then removed), components from recipes; review screenshots against the rubric with a different reviewer before rolling out and before locking, and apply the [anti-slop gates](#style-library). | [craft](references/craft.md), [components](references/components.md), [critique rubric](references/critique-rubric.md), [RES-005](../../docs/_cgspec/02-research/RES-005-anthropic-design-plugin-structure-and-skills.md) for copy and handoff gaps |
 | 7 Motion | Behaviors from layer 4 animated with motion tokens only. If media and text carry a shared story, lay out a timed storyboard against the clip before implementing it. | [IMAGE-WORD and motion](references/image-word-and-motion.md) when media matters; [RES-006](../../docs/_cgspec/02-research/RES-006-scroll-craft-skill-standard-and-verification.md) for scroll-driven pages |
+
+## Style library
+<a id="style-library"></a>
+
+117 MIT styles and themes: 67 style packs from [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) and 50 themes with anti-slop gates from [Nutlope/hallmark](https://github.com/Nutlope/hallmark). The catalog is not in Git and not in any project: `oway style fetch` downloads it once per machine, at pinned upstream commits, into `~/.cache/oway/styles` (or `$OWAY_STYLES`), with both licence texts. `oway` is the Oway tool (`python3 engine/oway` in a checkout; `om/bin/oway` is a launcher that `om/sync-om.sh --tools oway` puts on your PATH).
+
+```bash
+oway style fetch                # once per machine
+oway style list                 # all packs and themes
+oway style search <word>        # e.g. neobrutalism, glass, bento, mobile
+oway style show <slug>          # tokens, type scale, components, do and don't
+```
+Families: neobrutalism (`neobrutalism`, `brutalism`, `brutal`), Swiss grid (`clean`, `minimal`, `grid`, `specimen`), glass (`glassmorphism`, `refract`, `lumen`), bento SaaS (`bento`, `shadcn`, `studio`), editorial (`editorial`, `paper`, `newsprint`), retro and print (`retro`, `riso`, `halftone`), tactile (`claymorphism`, `neumorphism`, `kiln`).
+
+- A pack or theme is a **starting register and token source**, not a finished design. It never replaces the problem, the references or the user's reaction. Record the pack in the register ("Deliberate choices") and in the token sheet's provenance.
+- **Anti-slop gates:** `hallmark-themes/references/gates.md` and `craft.md` in the catalog, plus `hallmark-themes/scripts/sloplint.mjs` when Node is available. The gates join the critique rubric: no default purple gradients, no cards inside cards, no fake side stripes on non-alerts, no low-contrast text. A flagged choice the user wants is recorded, never silenced.
+- **Live references:** use whatever scout tool is installed (a design-scout skill, Stitch MCP, or the browser). Optional with Stitch: upload the pack's `DESIGN.md`. Nothing here depends on them.
+
+## Light mode (om)
+
+Use light mode when working under om (`om/rules/AGENTS.md` is loaded) or when the project has no `docs/spines/`. It behaves the same as full mode in every way that the user sees, and drops what needs the Oway engine and project files.
+
+**Kept, in this order:**
+1. **Problem first.** One line: who it is for, the job, how we will know it works. Offer your reading and let the user correct it; never ask for a blank brief.
+2. **Classify the request** by its effect, with the kind table above (behavior, layout, appearance, content, motion).
+3. **References first.** Show up to 6 real, captioned references (2-4 is usual): real pages opened in the browser and screenshotted, each saved with its source URL. Add the 2-3 closest style packs. The user reacts ("mine", "not this", "mix 2 and 4"). Never a generated picture instead of a page.
+4. **Variations only when the direction is open:** 2-3 real pages that differ in mechanism (structure, density, navigation), not in colour. Iterate on the winner, delete the rest.
+5. **The artifact that answers the question** (the table above): journey, state diagram with permission table, grey wireframe, side-by-side, clickable prototype.
+6. **Register in one paragraph,** then build in the real frontend with the chosen tokens.
+7. **Review:** a different reviewer (`om-review`, or another model) scores the screenshots against the [critique rubric](references/critique-rubric.md): no score below 3, mean at least 3.5. Video for scroll and motion, screenshots for every state and viewport.
+
+**Dropped:** the locked layers and approvals, `docs/spines/` and data inventories, `impact.py`, `verify.py`, `visual_audit.py`, `journey.py`, `memlog.py`, checkpoints, snapshots, CI baselines and the tweaks panel (unless asked). Notes, references and decisions go in a `design-notes.md` next to the work, or in the Mission plan.
+
+**By size:**
+- **Quick** (restyle, one screen): problem line, references, a style, the screen, proof (screenshots per viewport, video if it scrolls or moves). No layers.
+- **Task:** add a grey wireframe before high fidelity when the layout is open.
+- **Mission:** use the layers table. Each layer's output is a proof-matrix line in `om-plan`; the user's OK on the plan covers the locks. For a new product with many screens, use full mode in an Oway project instead.
 
 ## Rules
 

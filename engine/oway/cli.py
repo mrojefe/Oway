@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, feedback, githeaders, guard, index, keeper, ledger, proof, setup, review, stophook, takeover, upgrade
+from . import doctor, feedback, githeaders, guard, index, keeper, ledger, proof, setup, review, stophook, style, takeover, upgrade
 from .project import OwayError, find_root
 
 
@@ -63,6 +63,11 @@ def _parser() -> argparse.ArgumentParser:
     s.add_argument("--body", default="")
     s = sub.add_parser("install-hook", help="install the builder stop hook for a host")
     s.add_argument("--host", choices=("claude", "pi"), default="claude")
+    st = sub.add_parser("style", help="MIT style library of the design skill").add_subparsers(dest="scmd", required=True)
+    st.add_parser("fetch", help="download the catalog once per machine")
+    st.add_parser("list")
+    st.add_parser("search").add_argument("query")
+    st.add_parser("show").add_argument("slug")
     sub.add_parser("version")
     return p
 
@@ -103,6 +108,8 @@ def _run(args) -> int:
     if args.cmd == "version":
         print(setup.VERSION_FILE.read_text().strip())
         return 0
+    if args.cmd == "style":
+        return _style_cmd(args)
     if args.cmd == "platform":
         path = args.dir or setup.default_platform()
         made = setup.platform_init(path)
@@ -155,6 +162,13 @@ def _run(args) -> int:
     if args.cmd in ("upgrade", "feedback", "install-hook"):
         return _project_cmd(args, root)
     raise OwayError(f"unknown command {args.cmd}")
+
+
+def _style_cmd(args) -> int:
+    lines = {"fetch": lambda: [style.fetch()], "list": style.listing,
+             "search": lambda: style.search(args.query), "show": lambda: style.show(args.slug)}
+    print("\n".join(lines[args.scmd]()))
+    return 0
 
 
 def _proof_cmd(args, root: Path) -> int:

@@ -35,7 +35,7 @@ Each layer has a fixed deliverable and a list of what is deliberately left out.
 ## Being good looking
 
 - **Anti-slop.** The audit flags AI-default looks as warnings: untouched component-library look, unprompted purple, gradient text, neon glows, centred hero + three cards, cards inside cards, fake side stripes, low-contrast text. Usability breakers are errors.
-- **Style packs.** cgm-uix brings 117 tested styles and 50 colour themes with 65 browser checks; LeadUIX picks from them instead of inventing.
+- **Style packs.** The `cgspec-ui-ux` skill carries 117 tested MIT styles and themes with the anti-slop gates (`style_hub.py`, fetched once per machine); LeadUIX picks from them instead of inventing. The same skill has a light mode for om: references still come first, without the locked layers.
 - **A screen is locked only after a different reviewer scores its screenshots** against the critique rubric: no score below 3, mean at least 3.5.
 - **Visual proof comes from CI**, tied to the commit; video for scrolling and motion. A hand-attached image is never proof.
 

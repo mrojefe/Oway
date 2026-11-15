@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# oway: run the Oway tool from this checkout (engine/oway), from any folder.
+exec python3 "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../../engine/oway" "$@"

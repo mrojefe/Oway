@@ -16,7 +16,7 @@ Payments, deletes, messages to anyone, publishing and production changes always 
 | --- | --- | --- |
 | `rules/AGENTS.md` | The always-on rules | pi `APPEND_SYSTEM.md`, OpenCode `AGENTS.md`, Antigravity plugin rules |
 | `skills/om-plan/` | Mission workflow + plan, walkthrough and decision templates | skill |
-| `skills/om-uix/` | UI style hub (117 MIT styles and themes) | skill |
+| `skills/cgspec-ui-ux` | Design skill shared with Oway: references first, light mode for om, 117 MIT styles and anti-slop gates (lives in `../skills/`; the sync links it from there) | skill |
 | `skills/om-assist/` | Starts the side assistant | skill |
 | `agents/om-caps.md` | Capability check for a Mission | subagent (pi: prompt template) |
 | `agents/om-review.md` | Independent review at the end of a Mission | subagent (pi: prompt template) |
@@ -28,9 +28,9 @@ Payments, deletes, messages to anyone, publishing and production changes always 
 Clone the repo anywhere, then:
 ```bash
 git clone https://github.com/mrojefe/Oway && cd Oway     # once; later: git pull
-om/skills/om-uix/scripts/fetch_catalog.sh                 # UI style catalog (not in Git)
-om/sync-om.sh --dry-run --tools pi,opencode,antigravity   # see what changes
-om/sync-om.sh --tools pi,opencode,antigravity             # apply; replaced paths are backed up
-om/sync-om.sh --check --tools pi,opencode,antigravity     # must print RESULT: OK
+om/bin/oway style fetch                                   # UI style library, once per machine
+om/sync-om.sh --dry-run --tools pi,opencode,antigravity,oway   # see what changes
+om/sync-om.sh --tools pi,opencode,antigravity,oway             # apply; replaced paths are backed up
+om/sync-om.sh --check --tools pi,opencode,antigravity,oway     # must print RESULT: OK
 ```
 Keep your tool list in `~/.config/om/tools` to skip `--tools`. Other tools and old paths to retire go in `~/.config/om/extra` and `~/.config/om/retire` (see `DEPLOYMENTS.md`). Then reload the tool: pi `/reload`, OpenCode `opencode reload`, Antigravity restart.

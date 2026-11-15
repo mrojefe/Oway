@@ -38,7 +38,7 @@ class ShapeTests(unittest.TestCase):
 
     def test_skills_and_agents_have_name_and_description(self):
         files = list(OM.glob("skills/*/SKILL.md")) + list(OM.glob("agents/*.md"))
-        self.assertGreaterEqual(len(files), 6)
+        self.assertGreaterEqual(len(files), 5)
         for f in files:
             fm = frontmatter(f)
             name = re.search(r"^name: (\S+)", fm, re.M)
@@ -62,24 +62,23 @@ class ShapeTests(unittest.TestCase):
                 self.assertNotIn("cgm", f.read_text(encoding="utf-8", errors="ignore").lower(), f)
 
 
-class UixTests(unittest.TestCase):
-    def test_catalog_is_pinned_to_full_commits(self):
-        text = (OM / "skills/om-uix/scripts/fetch_catalog.sh").read_text(encoding="utf-8")
-        self.assertEqual(len(re.findall(r"_SHA=[0-9a-f]{40}\n", text)), 2)
+class DesignSkillTests(unittest.TestCase):
+    def setUp(self):
+        self.text = (OM.parent / "skills/cgspec-ui-ux/SKILL.md").read_text(encoding="utf-8")
 
-    def test_both_mit_licences_are_kept(self):
-        for name in ("awesome-design-skills", "hallmark"):
-            text = (OM / f"skills/om-uix/licenses/LICENSE-{name}-MIT.txt").read_text(encoding="utf-8")
-            self.assertTrue(text.startswith("MIT License"))
+    def test_skill_has_full_and_light_mode_and_the_style_library(self):
+        for heading in ("## Light mode (om)", "## Style library"):
+            self.assertIn(heading, self.text)
 
-    def test_style_hub_says_how_to_get_the_catalog(self):
-        import shutil
-        tmp = Path(tempfile.mkdtemp())
-        shutil.copytree(OM / "skills/om-uix/scripts", tmp / "scripts")
-        r = subprocess.run(["python3", str(tmp / "scripts/style_hub.py"), "list"],
-                           capture_output=True, text=True)
-        self.assertNotEqual(r.returncode, 0)
-        self.assertIn("fetch_catalog.sh", r.stderr)
+    def test_light_mode_keeps_the_reference_first_behaviour(self):
+        light = self.text.split("## Light mode (om)")[1].split("## Rules")[0].lower()
+        for word in ("problem first", "references first", "real pages", "different reviewer",
+                     "mechanism", "classify the request"):
+            self.assertIn(word, light)
+
+    def test_skill_carries_no_catalog_or_scripts(self):
+        names = {f.name for f in (OM.parent / "skills/cgspec-ui-ux").rglob("*") if f.is_file()}
+        self.assertFalse({"style_hub.py", "fetch_catalog.sh"} & names)
 
 
 class SyncTests(unittest.TestCase):
@@ -111,6 +110,13 @@ class SyncTests(unittest.TestCase):
         plugin = self.home / ".gemini/config/plugins/om"
         self.assertEqual(plugin.resolve(), OM.resolve())
         self.assertEqual(sync(self.home, "--check", "--tools", TOOLS).returncode, 0)
+
+    def test_design_skill_is_linked_from_the_shared_folder(self):
+        sync(self.home, "--tools", "pi,antigravity,oway")
+        want = (OM.parent / "skills/cgspec-ui-ux").resolve()
+        self.assertEqual((self.home / ".pi/agent/skills/cgspec-ui-ux").resolve(), want)
+        self.assertEqual((self.home / ".gemini/config/skills/cgspec-ui-ux").resolve(), want)
+        self.assertEqual((self.home / ".local/bin/oway").resolve(), (OM / "bin/oway").resolve())
 
     def test_only_the_chosen_tools_are_touched(self):
         sync(self.home, "--tools", "pi")
