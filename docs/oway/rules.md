@@ -234,7 +234,10 @@ Agents keep chat short so their context stays small and the owner reads only wha
 4. **Nothing to say means saying nothing.** No "still working", no "all good" messages. Keepers are silent unless a finding is verified.
 5. **Files over chat.** A result, a decision or a finding is written in its file first (slice, ADR, ledger line, keeper note), and the index is rebuilt; the message carries the link.
 
-Tools to evaluate for this (not adopted yet): the caveman skill (terse agent output) and beads (a Git-backed issue tracker and memory for coding agents).
+Tools tested on 2026-11-15, not adopted:
+
+- **caveman** (terse-output skill, Apache 2.0): on 3 Oway messages it cut length by 50%, 9% and 0% (one small run, one cheap model), and it adds about 4,400 characters to every agent's prompt. Oway keeps its own 200-character limit and takes three of its rules into the role card: answer first, no greeting or recap, never drop "not", "never" or "only".
+- **beads** (`bd`, issue tracker for agents): works (create, dependencies, `bd ready`, claim, close), but stores tasks in a binary Dolt database (2.2 MB for 2 tasks), not in readable files with headers that Git can diff. That breaks "the file is the truth" and the index. Oway keeps milestone and slice files; the idea worth taking is a `ready` list of slices with no open blocker.
 
 ## File format
 

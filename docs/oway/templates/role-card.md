@@ -13,15 +13,15 @@ One file per agent: LeadOway, a Dev builder (DevData), KeeperQA, or an agent cre
 | What it never does | Hard limits |
 | Model | Decided later, per agent |
 | Hooks and limits | Max retries, token budget, time limit |
-| Message length | 200 characters for messages the agent starts; a little more only when the owner talks to it |
+| Message length | 200 characters for messages the agent starts; a little more only when the owner talks to it. Answer first, no greeting or recap, never drop "not", "never" or "only" |
 | How many | One per project, or more |
 
 ```
 ---
-name: <agent-name>   # e.g. LeadQA, ScoutDev, DevData; file: _oway/agents/<team>/<agent-name>.md
+name: <agent-name>   # e.g. LeadQA, ScoutDev, DevData; card in the Oway tool; a project override uses the same name in _oway/agents/<team>/
 description: <one line: what this agent is for>   # shown in the index
-type: agent        # agent / team / decision / milestone / slice
-state: draft       # draft / approved / in-progress / done
+type: agent        # see the types list in Rules
+state: draft       # draft / approved
 created: <date>    # filled by a script from Git
 approved: no       # becomes "<date> by @your-github-username" after your GitHub review
 owner: <agent>     # who keeps THIS FILE up to date, e.g. LeadOway or LeadQA; never the agent described here
