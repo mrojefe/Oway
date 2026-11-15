@@ -29,6 +29,14 @@ class ScoutTests(unittest.TestCase):
         self.assertEqual(sum(r["source"].startswith("Land-book") for r in refs), 2)
         self.assertEqual(len({r["image_url"] for r in refs}), len(refs))
 
+    def test_same_site_with_two_images_is_kept_once(self):
+        scout.fetch = lambda url, timeout=12: (GODLY if "godly" in url else (
+            '<a href="/websites/12-titan"><img src="https://img.example/t1.png"></a>'
+            '<a href="/websites/12-titan"><img src="https://img.example/t2.png"></a>'
+            '<a href="/websites/14-acme"><img src="https://img.example/acme.png"></a>')).encode()
+        links = [r["ref_url"] for r in scout.landbook("x", 3)]
+        self.assertEqual(links, ["https://land-book.com/websites/12-titan", "https://land-book.com/websites/14-acme"])
+
     def test_run_writes_images_and_the_references_page(self):
         out = scout.run("fintech", self.tmp / "refs", self.tmp / "page.md", limit=2)
         self.assertIn("scouted 4 references", out[0])

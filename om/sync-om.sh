@@ -89,9 +89,12 @@ target_row() { # $1 tool, $2 method, $3 target, $4 source (relative to om/, may 
 
 skill_src() { [[ "$1" == om-* ]] && echo "skills/$1" || echo "../skills/$1"; }
 
-skill_rows() { # $1 tool, $2 skills folder of that tool: the om skills, plus every oway-* skill with --oway-skills
+skill_rows() { # $1 tool, $2 skills folder, $3 "shared" = skip om-* (the tool gets them from the om plugin)
   local tool="$1" dir="$2" s d
-  for s in om-plan om-assist oway-uix; do target_row "$tool" symlink "$dir/$s" "$(skill_src $s)"; done
+  for s in om-plan om-assist oway-uix; do
+    [[ "${3:-}" == shared && "$s" == om-* ]] && continue
+    target_row "$tool" symlink "$dir/$s" "$(skill_src $s)"
+  done
   [[ "$ALL_SKILLS" == 1 ]] || return 0
   for d in "$ROOT"/../skills/oway-*/; do
     s="$(basename "$d")"; [[ "$s" == oway-uix ]] || target_row "$tool" symlink "$dir/$s" "../skills/$s"
@@ -113,7 +116,7 @@ tool_rows() { # built-in targets of one tool
       skill_rows claude "~/.claude/skills" ;;
     antigravity)
       target_row antigravity symlink "~/.gemini/config/plugins/om" .
-      skill_rows antigravity "~/.gemini/config/skills" ;;
+      skill_rows antigravity "~/.gemini/config/skills" shared ;;
     oway)
       target_row oway symlink "~/.local/bin/oway" bin/oway ;;
     *) echo "FAIL unknown tool '$t' (built in: pi, opencode, claude, antigravity, oway)"; FAIL=1 ;;

@@ -36,3 +36,6 @@ Payments and purchases, deleting data, sending a message or email to anyone, pub
 - Very short: one line for a result, with a link or path. Grammar can go; facts stay.
 - No quota or usage figures, no status lines for background events. Speak for a result, a needed decision or a block.
 - Side questions go to `/om-assist`, so the main chat stays clean.
+
+## 6. Design
+Any UI or design work, at any size: use the `oway-uix` skill in light mode (problem first, real references first, a style pack, proof in a real browser).

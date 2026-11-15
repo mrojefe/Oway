@@ -6,6 +6,9 @@ All notable changes, architectural invariants, and skill evolutions to `cgspec` 
 
 ## [Unreleased]
 
+### Fixed
+- om coherence (engine 0.3.9): Antigravity gets `om-plan` and `om-assist` only from the om plugin, no second copy in `~/.gemini/config/skills/`; the om rules point UI work to `oway-uix`; `oway style scout` keeps one Land-book reference per site; `docs/oway/design.md` names `oway style fetch` (not the removed `style_hub.py`) and the right history; `docs/oway/example-setup.md` uses `<platform>/` instead of a personal folder.
+
 ### Changed
 - The ten skills are renamed from `cgspec-*` to `oway-*` (`oway-adopt`, `-council`, `-forge`, `-init`, `-migrate`, `-operate`, `-pivot`, `-slice`, `-team-review`, `-uix`). The plugin id, the agents (`cgspec-main` and the others), `cgspec_hook.py` and `docs/_cgspec/` keep their names for now. Earlier entries below keep the old names as written.
 

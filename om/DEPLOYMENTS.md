@@ -11,7 +11,7 @@ Pick the tools you use with `--tools` (or `OM_TOOLS`, or the file `~/.config/om/
 | `pi` | `~/.pi/agent/skills/om-plan`, `om-assist`, `oway-uix` (links) | `~/.pi/agent/prompts/om-*.md` (links; pi has no agent files, so agents load as prompts) | `~/.pi/agent/APPEND_SYSTEM.md` (link) |
 | `opencode` | `~/.config/opencode/skills/om-plan`, `om-assist`, `oway-uix` (links) | `~/.config/opencode/agents/om-*.md` (copies, see below) | `~/.config/opencode/AGENTS.md` (link) |
 | `claude` | `~/.claude/skills/<name>` (links) | none | none: your own `~/.claude/CLAUDE.md` is never touched |
-| `antigravity` | plugin: `~/.gemini/config/plugins/om` links to `om/`; the design skill: `~/.gemini/config/skills/oway-uix` | same plugin | same plugin (`rules/AGENTS.md`) |
+| `antigravity` | plugin: `~/.gemini/config/plugins/om` links to `om/` (it carries `om-plan` and `om-assist`); only the shared skills go to `~/.gemini/config/skills/`: `oway-uix` (and every `oway-*` with `--oway-skills`) | same plugin | same plugin (`rules/AGENTS.md`) |
 | `oway` | none | none | `~/.local/bin/oway` links to `om/bin/oway`, so agents can run `oway style ...` from anywhere |
 
 Reload after a sync: pi `/reload`, OpenCode `opencode reload`, Antigravity restart.

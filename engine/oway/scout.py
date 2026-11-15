@@ -70,9 +70,9 @@ def landbook(query: str, limit: int) -> list[dict]:
         return []
     out, seen = [], set()
     for link, slug, img in re.findall(LANDBOOK_LINK, raw.decode("utf-8", errors="ignore"), re.DOTALL):
-        if img in seen or "avatar" in img or "ad-small" in img:
+        if img in seen or link in seen or "avatar" in img or "ad-small" in img:
             continue
-        seen.add(img)
+        seen.update((img, link))
         out.append({"source": "Land-book (SaaS showcase)",
                     "title": re.sub(r"^\d+-", "", slug).replace("-", " ").title()[:45],
                     "image_url": img, "ref_url": f"https://land-book.com{link}", "platform": "web",
