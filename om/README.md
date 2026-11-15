@@ -16,7 +16,7 @@ Payments, deletes, messages to anyone, publishing and production changes always 
 | --- | --- | --- |
 | `rules/AGENTS.md` | The always-on rules | pi `APPEND_SYSTEM.md`, OpenCode `AGENTS.md`, Antigravity plugin rules |
 | `skills/om-plan/` | Mission workflow + plan, walkthrough and decision templates | skill |
-| `skills/oway-uix` | Design skill shared with Oway: references first, light mode for om, 117 MIT styles and anti-slop gates (lives in `../skills/`; the sync links it from there) | skill |
+| `../skills/oway-uix/` | Design skill shared with Oway (repo root, not in `om/`): references first, light mode for om, 117 MIT styles and anti-slop gates; the sync links it from there | skill |
 | `skills/om-assist/` | Starts the side assistant | skill |
 | `agents/om-caps.md` | Capability check for a Mission | subagent (pi: prompt template) |
 | `agents/om-review.md` | Independent review at the end of a Mission | subagent (pi: prompt template) |

@@ -4,7 +4,7 @@ description: Design or revise a product experience from real references through 
 ---
 
 # Design the experience
-Created: unknown · Last edited: 2026-10-23T14:35:00Z
+Created: 2026-10-17T12:49:33Z · Last edited: 2026-11-15T20:30:00Z
 
 Pull request visual proof comes from CI artifacts tied to the PR commit; never use hand-attached images as proof. CI uses its own pinned Playwright, not the project's, and a journey or audit counts as PASS only with screenshots for every viewport; BLOCKED or PARTIAL means nothing was proven. That CI job is evidence, not a gate: read its summary and artifacts before calling a screen done. Keep journey names on one line with no control characters.
 

@@ -118,6 +118,17 @@ class SyncTests(unittest.TestCase):
         self.assertEqual((self.home / ".gemini/config/skills/oway-uix").resolve(), want)
         self.assertEqual((self.home / ".local/bin/oway").resolve(), (OM / "bin/oway").resolve())
 
+    def test_antigravity_gets_om_skills_only_from_the_plugin(self):
+        sync(self.home, "--tools", "antigravity", "--oway-skills")
+        names = {p.name for p in (self.home / ".gemini/config/skills").iterdir()}
+        self.assertNotIn("om-plan", names)
+        self.assertNotIn("om-assist", names)
+        self.assertIn("oway-uix", names)
+        self.assertTrue((self.home / ".gemini/config/plugins/om/skills/om-plan/SKILL.md").exists())
+
+    def test_rules_point_design_work_to_oway_uix(self):
+        self.assertIn("oway-uix", (OM / "rules/AGENTS.md").read_text(encoding="utf-8"))
+
     def test_oway_skills_flag_links_the_whole_method_into_every_chosen_tool(self):
         sync(self.home, "--tools", "claude,pi", "--oway-skills")
         for tool_dir in (".claude/skills", ".pi/agent/skills"):

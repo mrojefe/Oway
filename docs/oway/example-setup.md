@@ -133,15 +133,15 @@ When a project is too big to see the route, LeadOway first uses Matt Pocock's **
 
 ## 6. What the Platform contains
 
-Oway is meant for anyone. It ships a Platform **template** (folder layout + setup script); setup asks a new user for their accounts, machines and channels and creates their own Platform. The last column shows one real Platform, called `_CG-Gov`, as an example.
+Oway is meant for anyone. It ships a Platform **template** (folder layout + setup script); setup asks a new user for their accounts, machines and channels and creates their own Platform. The last column shows an example Platform folder, written `<platform>/`.
 
 | Piece | What every Platform has | Example: your setup today |
 | --- | --- | --- |
-| Your profile | How you code, your rules, tools and accounts, written once by the OwayHelpers; every new project reads it instead of asking again | `_CG-Gov/oway/profile.md` |
-| Method files | The Oway rules and skills every agent loads | `_CG-Gov/cgm/` |
+| Your profile | How you code, your rules, tools and accounts, written once by the OwayHelpers; every new project reads it instead of asking again | `<platform>/oway/profile.md` |
+| Method files | The Oway rules and skills every agent loads | the Oway repo (`om/` and `skills/`), linked by `om/sync-om.sh` |
 | Model policy | Which AI model does which job (to decide later, per agent) | `model-policy.md` |
 | AI accounts | The user's accounts, quotas and token tracking | infra lead + `scripts/` |
-| Safety guards | Hooks, time and CPU limits, proofs that can't be edited | `_CG-Gov/guards/` |
+| Safety guards | Hooks, time and CPU limits, proofs that can't be edited | `<platform>/guards/` |
 | Machines | Where agents run, backups, monitoring, alerts | VPS, `hosts/`, WhatsApp, e-mail |
-| Secrets map | Which agent may use which secret (names only) | `_CG-Gov/maps/` |
+| Secrets map | Which agent may use which secret (names only) | `<platform>/maps/` |
 | Capabilities | What each lead is allowed to do | WhatsApp for the infra lead and the data project lead |
