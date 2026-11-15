@@ -1,4 +1,4 @@
-"""A small JSON Schema subset validator (draft-07 keywords CGSpec uses), stdlib only.
+"""A small JSON Schema subset validator (draft-07 keywords Oway uses), stdlib only.
 
 Supported: type, enum, const, required, properties, additionalProperties (bool or schema),
 items, minItems, minLength, pattern, minimum, maximum, anyOf, $ref to "#/definitions/...".

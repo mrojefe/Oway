@@ -48,7 +48,7 @@ OPENCODE_EVENTS = {
     "Stop": (None, "stop"),
 }
 GIT_HOOK = """#!/bin/sh
-# Installed by CGSpec. Remove with: python3 docs/_cgspec/01-engine/install.py uninstall
+# Installed by Oway. Remove with: python3 docs/_cgspec/01-engine/install.py uninstall
 exec python3 "$(git rev-parse --show-toplevel)/{hook}" {event} --tool git "$@"
 """
 
@@ -130,8 +130,8 @@ def _opencode(data: dict) -> None:
 
 def _write_new(root: Path, rel: str, text: str, mode: int | None = None) -> tuple[bool, str]:
     path = root / rel
-    if path.exists() and MARK not in path.read_text(encoding="utf-8", errors="replace") and "CGSpec" not in path.read_text(encoding="utf-8", errors="replace"):
-        return False, f"left existing {rel} alone; add the CGSpec call to it yourself"
+    if path.exists() and MARK not in path.read_text(encoding="utf-8", errors="replace") and "Oway" not in path.read_text(encoding="utf-8", errors="replace"):
+        return False, f"left existing {rel} alone; add the Oway call to it yourself"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     if mode:
@@ -145,7 +145,7 @@ def _freeze_workflow(root: Path, rel: str) -> None:
     if rel not in [e.get("path") for e in data["entries"]]:
         digest = hashlib.sha256((root / rel).read_bytes()).hexdigest()
         data["entries"].append({"path": rel, "sha256": digest, "kind": "ci", "added": utc_now(),
-                                "reason": "CGSpec governance workflow (spec 8 trust root)"})
+                                "reason": "Oway governance workflow (spec 8 trust root)"})
         write_json(frozen_path, data)
 
 
@@ -157,11 +157,11 @@ def _wire_one(fd: int, event: str, owns_already: bool) -> tuple[str, bool]:
     if kind == "symlink":
         return f"left symlinked git {event} hook alone", False
     if kind == "other":
-        return f"left existing git {event} hook alone; add the CGSpec call to it yourself", False
+        return f"left existing git {event} hook alone; add the Oway call to it yourself", False
     expected = git_hooks.expected_hook_bytes(GIT_HOOK, HOOK, event)
     if kind == "file":
         if git_hooks.read_hook(fd, event) != expected:
-            return f"left existing git {event} hook alone; add the CGSpec call to it yourself", False
+            return f"left existing git {event} hook alone; add the Oway call to it yourself", False
         if not owns_already:
             return (f"left existing git {event} hook alone; shared hooks directory not yet "
                     "confirmed as this checkout's own"), False
@@ -173,14 +173,14 @@ def _wire_one(fd: int, event: str, owns_already: bool) -> tuple[str, bool]:
 def _wire_git(root: Path, record: dict) -> list[str]:
     hooks, reason, needs_owner_record = git_hooks.directory(root)
     if hooks is None:
-        msg = f"{reason}; add the CGSpec call yourself" if "add the CGSpec call" not in reason else reason
+        msg = f"{reason}; add the Oway call yourself" if "add the Oway call" not in reason else reason
         return [msg]
     owns_already = not needs_owner_record or git_hooks.check_ownership(root, hooks, record) is None
     try:
         hooks.mkdir(parents=True, exist_ok=True)
         fd = git_hooks.open_hooks_dir(hooks)
     except (OSError, CgspecError) as exc:
-        return [f"cannot prepare git hooks directory ({exc}): add the CGSpec call yourself"]
+        return [f"cannot prepare git hooks directory ({exc}): add the Oway call yourself"]
     notes, claimed_any = [], False
     try:
         for event in git_hooks.EVENTS:
@@ -211,7 +211,7 @@ def wire(root: Path, tools: list[str], owned: dict, profile: str = "") -> list[s
         skills = install_skills(root, Path(__file__).resolve().parents[2])
         if skills:
             record["antigravity"]["skills"] = skills
-            notes.append(f"copied {sum(1 for f in skills if f.endswith('SKILL.md'))} CGSpec skills into .agents/skills/")
+            notes.append(f"copied {sum(1 for f in skills if f.endswith('SKILL.md'))} Oway skills into .agents/skills/")
     if "codex" in tools:
         record["codex"] = {"path": ".codex/hooks.json", "created": _merge_json(root / ".codex/hooks.json", _codex)}
         notes.append("wired .codex/hooks.json")
@@ -268,7 +268,7 @@ def refresh(root: Path, owned: dict) -> list[str]:
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(data, dict) or "cgspec" not in data:
-                raise ValueError("CGSpec hook block is missing")
+                raise ValueError("Oway hook block is missing")
         except (OSError, ValueError) as exc:
             raise CgspecError(f"cannot refresh Antigravity hooks: {exc}") from exc
         from .agent_skills import refresh as refresh_skills
@@ -354,7 +354,7 @@ def unwire(root: Path, owned: dict) -> list[str]:
         _strip_tool(root / ".opencode/hooks.json", record["opencode"].get("created", False))
     paths = [root / record[k] for k in ("ci", "ci_select", "cursor") if k in record]
     for path in paths:
-        if path.is_file() and not path.is_symlink() and (MARK in path.read_text(errors="replace") or "CGSpec" in path.read_text(errors="replace")):
+        if path.is_file() and not path.is_symlink() and (MARK in path.read_text(errors="replace") or "Oway" in path.read_text(errors="replace")):
             os.chmod(path, 0o644)
             path.unlink()
     for rel in (".claude", ".agents", ".codex", ".opencode", ".cursor/rules", ".cursor", ".github/workflows", ".github"):

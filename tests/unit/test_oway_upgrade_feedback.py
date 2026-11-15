@@ -82,7 +82,7 @@ class FeedbackTests(unittest.TestCase):
                                                  "Seen in /home/ojefe/campusnest")
             self.assertTrue(path.exists())
             self.assertNotIn("/home/", path.read_text())
-            self.assertTrue(url.startswith("https://github.com/mrojefe/cgspec/issues/new?"))
+            self.assertTrue(url.startswith("https://github.com/mrojefe/Oway/issues/new?"))
             self.assertIn("gh issue create", cmd)
             self.assertEqual(doctor.run(root), ["_oway/INDEX.md: out of date, run `oway index`",
                                                 "_oway/feedback/INDEX.md: out of date, run `oway index`"])

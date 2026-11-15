@@ -326,7 +326,7 @@ def staged_trailer_refs(view: View) -> bool:
 
 
 def is_bootstrap(view: View) -> bool:
-    """True for the first commit that introduces CGSpec project state in this history."""
+    """True for the first commit that introduces Oway project state in this history."""
     if view.read_old(PROJECT_FILE.as_posix()) is not None or view.read_new(PROJECT_FILE.as_posix()) is None:
         return False
     from .gitview import git

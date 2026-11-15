@@ -1,5 +1,5 @@
 {
-  "$description": "CGSpec token sheet template (DTCG). Copy into the real frontend at layer 5b, replace every value, and give each a $description saying which reference or register field it comes from. Delete roles the product does not use; do not add colours outside these roles.",
+  "$description": "Oway token sheet template (DTCG). Copy into the real frontend at layer 5b, replace every value, and give each a $description saying which reference or register field it comes from. Delete roles the product does not use; do not add colours outside these roles.",
   "font": {
     "family": {
       "base": {"$type": "fontFamily", "$value": ["<family>", "system-ui", "sans-serif"], "$description": "register: Type"},

@@ -43,7 +43,7 @@ erDiagram
 
 ## 2. Event-Sourced Spine Derivation & 3-Tier Pivot Engine
 
-CGSpec uses an append-only event ledger (`.memlog.md`) as the single source of truth. Spines are continuously derived from locked ledger entries, ensuring that any idea, challenge, or pivot can be triaged without context drift:
+Oway uses an append-only event ledger (`.memlog.md`) as the single source of truth. Spines are continuously derived from locked ledger entries, ensuring that any idea, challenge, or pivot can be triaged without context drift:
 
 ```mermaid
 flowchart TD
@@ -64,7 +64,7 @@ flowchart TD
 
 ## 3. Topology Neutrality
 
-CGSpec operates neutrally across all repository layouts without dogmatically imposing monorepo or polyrepo structures:
+Oway operates neutrally across all repository layouts without dogmatically imposing monorepo or polyrepo structures:
 
 - **Mode A (Monorepo):** `docs/` lives at the repo root alongside code packages, services, and workers.
 - **Mode B (Multi-Service Blueprint Hub):** A dedicated blueprint repository holds shared intent, OOUX nouns, architecture contracts, and mounts satellite microservice repos.

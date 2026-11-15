@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CGSpec tool adapter entry point; see FORMATS.md for payloads and exit codes."""
+"""Oway tool adapter entry point; see FORMATS.md for payloads and exit codes."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ def shell_reasons(ctx: Context, command: str, cwd: str | None) -> list[str]:
     guarded = protected_list(ctx)
     reasons = credential_read_reasons(command) + destructive_git_reasons(command) + protected_command_reasons(command)
     if re.search(r"\binstall\.py\b[^;&|]*\b(uninstall|upgrade|install)\b", command):
-        reasons.append("installing, upgrading or uninstalling CGSpec is done by the user, not the agent; "
+        reasons.append("installing, upgrading or uninstalling Oway is done by the user, not the agent; "
                        "tell the user the exact install.py command to run")
     for raw in targets:
         rel = ctx.relative(raw)
@@ -81,7 +81,7 @@ def pre_tool(root: Path, tool: str, raw: str) -> int:
         coverage_paths = ("hook-heartbeats", "cgspec-hook-witness-")
         if any(marker in p for p in call.get("paths", []) for marker in coverage_paths) or \
                 any(marker in call.get("command", "") for marker in coverage_paths):
-            return block(tool, "CGSpec hook coverage evidence is engine-owned; do not read or write its witness or receipts")
+            return block(tool, "Oway hook coverage evidence is engine-owned; do not read or write its witness or receipts")
         if call["kind"] == "other":
             if tool == "antigravity": print('{"decision":"allow"}')
             return EXIT_OK
@@ -100,12 +100,12 @@ def pre_tool(root: Path, tool: str, raw: str) -> int:
                         reasons.append(f"{raw_path} is outside project root or escapes via symlink")
     except Exception as exc:  # fail closed only where it matters
         if ctx and any(ctx.protected(rel) for rel in touched):
-            return block(tool, f"CGSpec blocked (internal error on a protected path): {exc!r}")
-        print(f"CGSpec hook internal error (not blocking; commit hook and CI still check): {exc!r}", file=sys.stderr)
+            return block(tool, f"Oway blocked (internal error on a protected path): {exc!r}")
+        print(f"Oway hook internal error (not blocking; commit hook and CI still check): {exc!r}", file=sys.stderr)
         if tool == "antigravity": print('{"decision":"allow"}')
         return EXIT_OK if tool == "antigravity" else EXIT_INTERNAL
     if reasons:
-        return block(tool, "Blocked by CGSpec:\n- " + "\n- ".join(dict.fromkeys(reasons)))
+        return block(tool, "Blocked by Oway:\n- " + "\n- ".join(dict.fromkeys(reasons)))
     if tool == "antigravity": print('{"decision":"allow"}')
     return EXIT_OK
 
@@ -151,9 +151,9 @@ def pre_commit(root: Path) -> int:
     reasons += [f"doctor {f.code} {f.path}: {f.message}" for f in findings if f.is_error]
     reasons += [f"check {failure}" for failure in check_failures]
     if reasons:
-        print("CGSpec commit check failed:\n- " + "\n- ".join(reasons))
+        print("Oway commit check failed:\n- " + "\n- ".join(reasons))
         return EXIT_FAIL
-    print("CGSpec commit check passed")
+    print("Oway commit check passed")
     return EXIT_OK
 
 
@@ -172,9 +172,9 @@ def ci(root: Path, base: str | None, rerun: bool, args: argparse.Namespace) -> i
     for note in notes:
         print(note)
     if problems:
-        print("CGSpec governance failed:\n- " + "\n- ".join(problems))
+        print("Oway governance failed:\n- " + "\n- ".join(problems))
         return EXIT_FAIL
-    print("CGSpec governance passed")
+    print("Oway governance passed")
     return EXIT_OK
 
 
@@ -232,7 +232,7 @@ def lifecycle(root: Path, event: str, args: argparse.Namespace, raw: str = "") -
             raise CgspecError("commit-msg needs the message file path")
         text = Path(args.rest[0]).read_text(encoding="utf-8", errors="replace")
         if EMOJI.search(text):
-            print("CGSpec: decorative emoji in the commit message (spec 1)")
+            print("Oway: decorative emoji in the commit message (spec 1)")
             return EXIT_FAIL
         from _lib import commit_trust
         problem = commit_trust.commit_msg_problem(root, text)

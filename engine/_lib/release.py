@@ -1,6 +1,6 @@
 """Semantic Versioning release governance (issue #42).
 
-Every versioned CGSpec project declares its release policy in
+Every versioned Oway project declares its release policy in
 docs/_cgspec/project.json; each T1+ slice records its compatibility impact
 in a `Release:` field; `release check --target VERSION` computes the maximum
 required bump across the declared impacts and rejects an undersized target.

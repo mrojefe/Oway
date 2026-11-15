@@ -125,7 +125,7 @@ def cut(root: Path, screen: str, layer: int, approval: str, entry: str = "index.
     if bundler.problems:
         raise CgspecError("snapshot not cut:\n- " + "\n- ".join(dict.fromkeys(bundler.problems)))
     version = next_version(root, screen)
-    stamp = (f"<!-- CGSpec snapshot {screen} v{version}: layer {layer} locked, source {_revision(root)}, "
+    stamp = (f"<!-- Oway snapshot {screen} v{version}: layer {layer} locked, source {_revision(root)}, "
              f"cut {utc_now()}. Frozen; never edit, cut a new version instead. -->\n")
     doctype = re.match(r"\s*<!doctype[^>]*>\s*", html, re.I)
     html = html[:doctype.end()] + stamp + html[doctype.end():] if doctype else stamp + html

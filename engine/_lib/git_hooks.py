@@ -303,7 +303,7 @@ def write_hook(fd: int, name: str, data: bytes, mode: int) -> None:
 
 
 def _hook_risk(fd: int, name: str, expected: bytes) -> str | None:
-    """Why this owned hook cannot be safely deleted: it may still invoke CGSpec once the
+    """Why this owned hook cannot be safely deleted: it may still invoke Oway once the
     engine is removed."""
     kind = entry_kind(fd, name)
     if kind == "missing":
@@ -347,8 +347,8 @@ def _remove_via_fd(fd: int, names: list[str], template: str, hook: str) -> list[
     risky = [f"{name} ({risk})" for name in names if (risk := _hook_risk(fd, name, expected[name]))]
     if risky:
         raise CgspecError(
-            f"owned Git hooks were changed and may still call CGSpec after removal ({', '.join(risky)}); "
-            "uninstall aborted; remove the CGSpec call from them yourself, then retry"
+            f"owned Git hooks were changed and may still call Oway after removal ({', '.join(risky)}); "
+            "uninstall aborted; remove the Oway call from them yourself, then retry"
         )
     removed = [name for name in names if entry_kind(fd, name) == "file"]
     for name in removed:

@@ -65,7 +65,7 @@ Layout zoning is dynamically tailored to the product's primary form factor:
 
 ## 4. Protagonists & Functional Roles (Law 5)
 
-CGSpec eliminates abstract fictional personas in favor of explicit functional roles:
+Oway eliminates abstract fictional personas in favor of explicit functional roles:
 
 1. **Organization Owner / Enterprise Admin:** Manages tenant policies, budgets, audit trails, and member invitations.
 2. **Project Lead / Founding Engineer:** Configures repository mounts, runs councils, and validates vertical slices.

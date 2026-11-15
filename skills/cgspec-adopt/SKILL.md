@@ -1,6 +1,6 @@
 ---
 name: cgspec-adopt
-description: Take over an existing project or upgrade an older CGSpec layout, including incomplete documentation, multiple repositories, and work already underway.
+description: Take over an existing project or upgrade an older Oway layout, including incomplete documentation, multiple repositories, and work already underway.
 ---
 
 # Adopt an existing project

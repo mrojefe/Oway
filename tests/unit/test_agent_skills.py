@@ -1,4 +1,4 @@
-"""Antigravity reads workspace skills from .agents/skills/; install copies CGSpec's skills there with working links."""
+"""Antigravity reads workspace skills from .agents/skills/; install copies Oway's skills there with working links."""
 
 from __future__ import annotations
 

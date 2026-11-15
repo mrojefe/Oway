@@ -3,10 +3,10 @@
 Two failure modes these guard against:
 
 1. A third-party tree gets committed. The imports carry other authors and licences, so
-   vendoring one into CGSpec is a distribution decision, not a side effect of `git add`.
+   vendoring one into Oway is a distribution decision, not a side effect of `git add`.
 2. A tree appears and nobody writes down what it is. An undocumented directory full of
    another project's `SKILL.md` and `AGENTS.md` is worse than no directory: the next agent
-   cannot tell reference material from CGSpec's own source, and may read it as instructions.
+   cannot tell reference material from Oway's own source, and may read it as instructions.
 
 The directories are untracked by design, so the presence checks skip when they are absent
 (a fresh clone, or CI). The "never tracked" check does not skip: it is the one that matters

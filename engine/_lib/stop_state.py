@@ -64,4 +64,4 @@ def stop_decision(root: Path, problems: list[str]) -> tuple[bool, str]:
     error = _write(root, state)
     if error:
         return True, error + "; BLOCKED: cannot persist retry state\n- " + "\n- ".join(problems)
-    return False, "Not done yet (CGSpec stop check):\n- " + "\n- ".join(problems)
+    return False, "Not done yet (Oway stop check):\n- " + "\n- ".join(problems)

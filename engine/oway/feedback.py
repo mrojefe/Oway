@@ -16,7 +16,7 @@ from urllib.parse import urlencode
 from . import ledger, setup
 from .project import OwayError
 
-DEFAULT_REPO = "mrojefe/cgspec"
+DEFAULT_REPO = "mrojefe/Oway"
 SCRUB = [
     (re.compile(r"(?:ghp|gho|github_pat|sk|xox[bp])[-_][A-Za-z0-9_-]{8,}"), "[secret]"),
     (re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"), "[email]"),

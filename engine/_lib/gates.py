@@ -160,7 +160,7 @@ class Context:
         if rel.startswith("docs/slices/") and rel.endswith(".start.json"):
             return "success agreements are created and managed only through cgspec_hook.py start commands"
         if rel in GUARD_FILES or any(rel.startswith(d) or rel + "/" == d for d in GUARD_DIRS):
-            return ("CGSpec's hooks and skills are installed here; an agent never changes its own guards or method. "
+            return ("Oway's hooks and skills are installed here; an agent never changes its own guards or method. "
                     "The user changes them with install.py upgrade or uninstall")
         if rel in self.frozen:
             return "this file is frozen (07-state/frozen.json); cut a new version instead"

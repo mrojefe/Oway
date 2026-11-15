@@ -1,4 +1,4 @@
-"""Visible provenance for human-readable CGSpec Markdown documents."""
+"""Visible provenance for human-readable Oway Markdown documents."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ def _time(value: str) -> datetime:
 def _lines(text: str) -> list[str]:
     lines = text.splitlines(keepends=True)
     if not lines or not lines[0].startswith("# "):
-        raise ValueError("CGSpec Markdown document needs a top-level title")
+        raise ValueError("Oway Markdown document needs a top-level title")
     return lines
 
 
@@ -57,7 +57,7 @@ def stamp_import(text: str, now: str, first_seen: str | None = None) -> str:
 def touch(text: str, now: str) -> str:
     lines = _lines(text)
     if len(lines) < 2 or not (match := STAMP.fullmatch(lines[1].rstrip("\n"))):
-        raise ValueError("CGSpec document has no valid provenance line")
+        raise ValueError("Oway document has no valid provenance line")
     previous = _time(match.group(2))
     current = _time(now)
     if current <= previous:
@@ -123,7 +123,7 @@ def validate_change(old: str | None, new: str, now: datetime | None = None, floo
     """Check a new or changed document without trusting filesystem timestamps.
 
     now: the checker's wall clock (dates later than now + 10 min are refused).
-    floor: when CGSpec was installed; a new document cannot claim to be older.
+    floor: when Oway was installed; a new document cannot claim to be older.
     allow_unknown: an install/upgrade change may write Created: unknown on new documents.
     renamed_from_created: Created of the deleted document this one replaces (detected rename).
     """
@@ -144,7 +144,7 @@ def validate_change(old: str | None, new: str, now: datetime | None = None, floo
         if created == "unknown" and not allow_unknown:
             return ["a new document cannot claim Created: unknown; use the current UTC time"]
         if created != "unknown" and floor and _time(created) < _time(floor):
-            return ["Created is before CGSpec was installed in this project; a new document cannot be older"]
+            return ["Created is before Oway was installed in this project; a new document cannot be older"]
         return []
     old_lines, previous = _parse(old)
     if previous is None:

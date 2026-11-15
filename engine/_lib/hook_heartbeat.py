@@ -248,7 +248,7 @@ def problems(root: Path, tool: str = "generic") -> list[str]:
 
 
 def report(problems: list[str]) -> str:
-    return ("CGSpec HOOK COVERAGE FAILURE: lifecycle gates may be inactive.\n- " + "\n- ".join(problems) +
+    return ("Oway HOOK COVERAGE FAILURE: lifecycle gates may be inactive.\n- " + "\n- ".join(problems) +
             "\nStop editing. Relaunch the host from the installed project root, confirm its hook settings load, "
             "then run session-check again. Do not manufacture a heartbeat or use session-check to seed one.")
 
@@ -282,7 +282,7 @@ def dispatch(root: Path, args, adapter) -> int:
     except Exception as exc:  # never block a user message or a finished tool
         print(report([f"cannot record hook invocation: {exc}"]), file=sys.stderr)
         if args.event == "pre-tool":
-            return adapter.block(args.tool, "CGSpec cannot authenticate hook activity; repair hook coverage before continuing")
+            return adapter.block(args.tool, "Oway cannot authenticate hook activity; repair hook coverage before continuing")
     if args.event == "pre-tool":
         return adapter.pre_tool(root, args.tool, raw)
     if args.event == "post-tool":

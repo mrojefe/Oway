@@ -1,4 +1,4 @@
-"""Copy CGSpec's skills into a project for hosts that read workspace skills instead of plugins
+"""Copy Oway's skills into a project for hosts that read workspace skills instead of plugins
 (Antigravity: <project>/.agents/skills/). Links are rewritten to the installed engine and to a copy of the
 method docs, so the skills work without the plugin. Lab finding 2026-10-19: Antigravity agents had
 the contract but none of the method's skills."""
@@ -74,7 +74,7 @@ def refresh(root: Path, plugin: Path, owned: list[str], rel_base: str = ".agents
     dest_base = root / rel_base
     sources = _sources(plugin, dest_base)
     if not sources:
-        raise CgspecError("CGSpec plugin has no skills to refresh")
+        raise CgspecError("Oway plugin has no skills to refresh")
     expected = {dest.relative_to(root).as_posix() for _, dest in sources}
     for rel in owned:
         path = root / rel

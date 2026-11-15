@@ -78,9 +78,9 @@ def _claude_launcher() -> Path:
         owned = json.loads(HOST_RECORD.read_text(encoding="utf-8"))
         command = owned["adapters"]["claude"]["launcher"]
     except (OSError, ValueError, KeyError, TypeError) as exc:
-        raise OSError("Claude launcher is not pinned; upgrade the installed CGSpec hooks") from exc
+        raise OSError("Claude launcher is not pinned; upgrade the installed Oway hooks") from exc
     if not isinstance(command, str) or not Path(command).is_absolute():
-        raise OSError("Claude launcher is not pinned; install CGSpec with Claude available")
+        raise OSError("Claude launcher is not pinned; install Oway with Claude available")
     launcher = Path(command).resolve(strict=True)
     if launcher.suffix.lower() == ".cmd":  # npm's Windows shim
         script = launcher.parent / "node_modules/@anthropic-ai/claude-code/cli.js"

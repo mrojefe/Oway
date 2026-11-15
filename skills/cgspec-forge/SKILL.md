@@ -15,4 +15,4 @@ When an idea or option is easier to choose visually, use the [visual-choice guid
 
 If the user says "just build it" before there is a minimum definition, push back once as the contract says. A minimum definition means three things: who it is for, the one job it must do, and how we will know it works. Write your own draft of those three lines and show it, so the fix takes minutes. A definition you wrote is not approval: build small work on it unless it is a costly guess, but anything that needs a slice waits for the user to approve the definition.
 
-Show the user a concise, concrete interpretation and only the decisions that change product direction. Apply clear corrections directly. Log significant delegated choices and their reversibility through `memlog.py`. The user should not need to know CGSpec stages to express an idea.
+Show the user a concise, concrete interpretation and only the decisions that change product direction. Apply clear corrections directly. Log significant delegated choices and their reversibility through `memlog.py`. The user should not need to know Oway stages to express an idea.
