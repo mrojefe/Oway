@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, feedback, guard, index, keeper, ledger, proof, setup, review, stophook, takeover, upgrade
+from . import doctor, feedback, githeaders, guard, index, keeper, ledger, proof, setup, review, stophook, takeover, upgrade
 from .project import OwayError, find_root
 
 
@@ -19,6 +19,8 @@ def _parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("index", help="rebuild every INDEX.md under _oway/")
     s.add_argument("--check", action="store_true", help="only report stale indexes (for CI)")
+    s = sub.add_parser("headers", help="fill created and updated in headers from Git")
+    s.add_argument("--check", action="store_true")
     sub.add_parser("doctor", help="check headers, links, config and indexes")
     s = sub.add_parser("ledger", help="append one line to LEDGER.md")
     s.add_argument("text")
@@ -123,6 +125,11 @@ def _run(args) -> int:
         stale = index.build(oway, check=args.check)
         for p in stale:
             print(("stale " if args.check else "wrote ") + p.relative_to(root).as_posix())
+        return 1 if args.check and stale else 0
+    if args.cmd == "headers":
+        stale = githeaders.run(root, args.check)
+        for name in stale:
+            print(("stale " if args.check else "wrote ") + name)
         return 1 if args.check and stale else 0
     if args.cmd == "doctor":
         problems = doctor.run(root)

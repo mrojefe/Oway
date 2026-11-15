@@ -51,6 +51,29 @@ def check_config(path: Path) -> list[str]:
     return out
 
 
+BARE_DOMAIN = re.compile(r"(?<![\w/.@(])(?:[a-z0-9-]+\.)+(?:com|ma|org|net|io|fr|gov|edu)\b(?![\w/])", re.I)
+
+
+def content_rules(name: str, text: str, h: dict | None, oway: Path) -> list[str]:
+    """Rules on what a file holds: research cites real sources (#97), a done slice has its walkthrough (#86)."""
+    out = []
+    kind = (h or {}).get("type")
+    if kind == "research" and not name.endswith("RES-takeover-map.md"):
+        body = text.split("\n---\n", 1)[-1]
+        if not re.search(r"^#+ .*(source|référence|reference)", body, re.I | re.M):
+            out.append(f"{name}: research has no Sources section")
+        elif not re.search(r"\]\(https?://", body):
+            out.append(f"{name}: research Sources have no full https link")
+        plain = re.sub(r"\[[^\]]*\]\([^)]*\)|`[^`]*`|https?://\S+", "", body)
+        for dom in sorted(set(m.group(0) for m in BARE_DOMAIN.finditer(plain)))[:3]:
+            out.append(f"{name}: bare source '{dom}'; give the full link")
+    if kind == "slice" and (h or {}).get("state") in {"in-review", "done"}:
+        slice_id = Path(name).stem
+        if not (oway / "slices" / f"{slice_id}.walkthrough.md").exists() and "## Walkthrough" not in text:
+            out.append(f"{name}: a slice in {h['state']} needs its walkthrough ({slice_id}.walkthrough.md)")
+    return out
+
+
 def run(root: Path) -> list[str]:
     oway = root / "_oway"
     out: list[str] = []
@@ -66,6 +89,7 @@ def run(root: Path) -> list[str]:
         if f.name not in headers.NO_HEADER and not name.startswith(("_oway/keeper/", "_oway/evidence/")):
             h = headers.parse(text)
             out += [f"{name}: {p}" for p in headers.problems(h)]
+            out += content_rules(name, text, h, oway)
             if h and h.get("type") == "milestone" and h.get("current") == "true":
                 current.append(name)
         for target in LINK.findall(text):
