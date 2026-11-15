@@ -29,8 +29,8 @@ Clone the repo anywhere, then:
 ```bash
 git clone https://github.com/mrojefe/Oway && cd Oway     # once; later: git pull
 om/bin/oway style fetch                                   # UI style library, once per machine
-om/sync-om.sh --dry-run --tools pi,opencode,antigravity,oway   # see what changes
-om/sync-om.sh --tools pi,opencode,antigravity,oway             # apply; replaced paths are backed up
-om/sync-om.sh --check --tools pi,opencode,antigravity,oway     # must print RESULT: OK
+om/sync-om.sh --dry-run --tools pi,opencode,claude,antigravity,oway --oway-skills   # see what changes
+om/sync-om.sh --tools pi,opencode,claude,antigravity,oway --oway-skills             # apply; replaced paths are backed up
+om/sync-om.sh --check --tools pi,opencode,claude,antigravity,oway --oway-skills     # must print RESULT: OK
 ```
 Keep your tool list in `~/.config/om/tools` to skip `--tools`. Other tools and old paths to retire go in `~/.config/om/extra` and `~/.config/om/retire` (see `DEPLOYMENTS.md`). Then reload the tool: pi `/reload`, OpenCode `opencode reload`, Antigravity restart.

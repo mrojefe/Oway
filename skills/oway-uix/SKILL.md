@@ -143,12 +143,11 @@ From the free-ui-ux-scout skill, kept whole. It removes generic "AI aesthetic sl
 
 ### Workflow
 **Step 1: scout references.**
-- *Method A, instant multi-source scout CLI* (the owner's `design_scout.py`, where installed, for example `~/.gemini/config/scripts/design_scout.py`):
+- *Method A, instant multi-source scout CLI* (free, no key; the owner's `design_scout.py`, now part of the Oway tool):
   ```bash
-  design_scout.py "<query>" --dest-dir "<appDataDir>/brain/<conversation-id>/references" \
-    --output-md "<appDataDir>/brain/<conversation-id>/design_references.md"
+  oway style scout "<query>" --dest-dir references --output-md design_references.md
   ```
-  Examples: `"fintech dashboard"`, `"mobile onboarding"`, `"dark mode analytics"`.
+  Examples: `oway style scout "fintech dashboard"`, `"mobile onboarding"`, `"dark mode analytics"`. It downloads 3 screenshots per source (godly.website, land-book.com; `--limit` changes it) and writes the references page: carousel block, breakdown table, plain list, anti-slop directives, and a token plan to fill in. In Antigravity put the page and images in the conversation's `<appDataDir>/brain/<conversation-id>/` folder. Scraped screenshots are references only; the rights belong to the sites. If the sites change their markup and the scout returns nothing, use Method B.
 - *Method B, direct live browsing via Chrome DevTools MCP,* when a specific production site or public Mobbin/Refero page is asked for: `new_page` with the URL, then `take_screenshot` (the MCP saves it to the conversation's `brain/` folder, free), then `close_page`. With no such MCP, use the browser tool you have.
 
 **Step 2: present the interactive carousel artifact.** In the conversation's artifact folder (`design_references.md`), write:
@@ -171,7 +170,7 @@ From the free-ui-ux-scout skill, kept whole. It removes generic "AI aesthetic sl
 In real use write each image path with no space after the opening bracket (the space above only keeps this skill's own link check quiet). Point the user to the artifact so they can inspect the inspiration. Where the host has no carousel, show the same images side by side in the browser and link the file.
 
 **Step 3: align and implement.**
-1. Ask or confirm which aesthetic direction the user prefers, or synthesize the sharpest elements.
+1. Ask or confirm which aesthetic direction the user prefers, or synthesize the sharpest elements. Write the design synthesis and token plan from the references you scouted (the page's default palette is only a starting point).
 2. Implement with modern web primitives (Tailwind CSS, clean semantic HTML, or the target framework).
 3. Validate against modern web guidance: WCAG AA contrast, smooth 150-200ms transitions, fluid responsiveness across viewport sizes.
 

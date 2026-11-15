@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, feedback, githeaders, guard, index, keeper, ledger, proof, setup, review, stophook, style, takeover, upgrade
+from . import doctor, feedback, githeaders, guard, index, keeper, ledger, proof, setup, review, scout, stophook, style, takeover, upgrade
 from .project import OwayError, find_root
 
 
@@ -63,13 +63,24 @@ def _parser() -> argparse.ArgumentParser:
     s.add_argument("--body", default="")
     s = sub.add_parser("install-hook", help="install the builder stop hook for a host")
     s.add_argument("--host", choices=("claude", "pi"), default="claude")
-    st = sub.add_parser("style", help="MIT style library of the design skill").add_subparsers(dest="scmd", required=True)
-    st.add_parser("fetch", help="download the catalog once per machine")
+    _style_parser(sub)
+    sub.add_parser("version")
+    return p
+
+
+def _style_parser(sub) -> None:
+    st = sub.add_parser("style", help="MIT style library and free reference scout").add_subparsers(dest="scmd", required=True)
+    st.add_parser("fetch", help="download the style catalog once per machine")
     st.add_parser("list")
     st.add_parser("search").add_argument("query")
     st.add_parser("show").add_argument("slug")
-    sub.add_parser("version")
-    return p
+    s = st.add_parser("scout", help="scout real design references (godly.website, land-book.com), free")
+    s.add_argument("query", nargs="?", default="")
+    s.add_argument("--limit", type=int, default=3, help="results per source")
+    s.add_argument("--dest-dir", type=Path, default=Path("references"))
+    s.add_argument("--output-md", type=Path)
+    s.add_argument("--platform", default="both", help="accepted, not used yet (as in the original script)")
+    s.add_argument("--json", action="store_true")
 
 
 def _keeper_parser(sub) -> None:
@@ -166,7 +177,8 @@ def _run(args) -> int:
 
 def _style_cmd(args) -> int:
     lines = {"fetch": lambda: [style.fetch()], "list": style.listing,
-             "search": lambda: style.search(args.query), "show": lambda: style.show(args.slug)}
+             "search": lambda: style.search(args.query), "show": lambda: style.show(args.slug),
+             "scout": lambda: scout.run(args.query, args.dest_dir, args.output_md, args.limit, args.json)}
     print("\n".join(lines[args.scmd]()))
     return 0
 

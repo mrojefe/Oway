@@ -5,6 +5,7 @@
 #   ./sync-om.sh --tools pi,opencode,antigravity     apply
 #   ./sync-om.sh --check [--tools ...]               check only, exit 1 on drift
 #   ./sync-om.sh --dry-run [--tools ...]             print what apply would do
+#   --oway-skills (or OM_OWAY_SKILLS=1): also link every oway-* skill of the Oway method, not only the om ones
 #
 # Tools: --tools, else $OM_TOOLS, else the file ~/.config/om/tools.
 # Optional files in ~/.config/om/: `extra` (method target source) and `retire` (paths).
@@ -16,12 +17,14 @@ HOME_DIR="${OM_HOME:-$HOME}"
 CONF="$HOME_DIR/.config/om"
 MODE=apply
 TOOLS="${OM_TOOLS:-}"
+ALL_SKILLS="${OM_OWAY_SKILLS:-0}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --check) MODE=check ;;
     --dry-run) MODE=dry ;;
     --tools) TOOLS="${2:?--tools needs a list}"; shift ;;
-    -h|--help) sed -n 2,11p "$0"; exit 0 ;;
+    --oway-skills) ALL_SKILLS=1 ;;
+    -h|--help) sed -n 2,12p "$0"; exit 0 ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
   esac
   shift
@@ -84,25 +87,36 @@ target_row() { # $1 tool, $2 method, $3 target, $4 source (relative to om/, may 
   esac
 }
 
-skill_src() { [[ "$1" == oway-uix ]] && echo "../skills/$1" || echo "skills/$1"; }
+skill_src() { [[ "$1" == om-* ]] && echo "skills/$1" || echo "../skills/$1"; }
+
+skill_rows() { # $1 tool, $2 skills folder of that tool: the om skills, plus every oway-* skill with --oway-skills
+  local tool="$1" dir="$2" s d
+  for s in om-plan om-assist oway-uix; do target_row "$tool" symlink "$dir/$s" "$(skill_src $s)"; done
+  [[ "$ALL_SKILLS" == 1 ]] || return 0
+  for d in "$ROOT"/../skills/oway-*/; do
+    s="$(basename "$d")"; [[ "$s" == oway-uix ]] || target_row "$tool" symlink "$dir/$s" "../skills/$s"
+  done
+}
 
 tool_rows() { # built-in targets of one tool
-  local t="$1" s a
+  local t="$1" a
   case "$t" in
     pi)
-      for s in om-plan oway-uix om-assist; do target_row pi symlink "~/.pi/agent/skills/$s" "$(skill_src $s)"; done
+      skill_rows pi "~/.pi/agent/skills"
       for a in om-caps om-review om-assist; do target_row pi symlink "~/.pi/agent/prompts/$a.md" "agents/$a.md"; done
       target_row pi symlink "~/.pi/agent/APPEND_SYSTEM.md" rules/AGENTS.md ;;
     opencode)
-      for s in om-plan oway-uix om-assist; do target_row opencode symlink "~/.config/opencode/skills/$s" "$(skill_src $s)"; done
+      skill_rows opencode "~/.config/opencode/skills"
       for a in om-caps om-review om-assist; do target_row opencode opencode-agent "~/.config/opencode/agents/$a.md" "agents/$a.md"; done
       target_row opencode symlink "~/.config/opencode/AGENTS.md" rules/AGENTS.md ;;
+    claude)
+      skill_rows claude "~/.claude/skills" ;;
     antigravity)
       target_row antigravity symlink "~/.gemini/config/plugins/om" .
-      target_row antigravity symlink "~/.gemini/config/skills/oway-uix" "../skills/oway-uix" ;;
+      skill_rows antigravity "~/.gemini/config/skills" ;;
     oway)
       target_row oway symlink "~/.local/bin/oway" bin/oway ;;
-    *) echo "FAIL unknown tool '$t' (built in: pi, opencode, antigravity, oway)"; FAIL=1 ;;
+    *) echo "FAIL unknown tool '$t' (built in: pi, opencode, claude, antigravity, oway)"; FAIL=1 ;;
   esac
 }
 

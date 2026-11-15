@@ -4,12 +4,13 @@ om lives in this repo, in `om/`. Each tool reads it through links, so a `git pul
 
 ## Built-in tools
 
-Pick the tools you use with `--tools` (or `OM_TOOLS`, or the file `~/.config/om/tools`).
+Pick the tools you use with `--tools` (or `OM_TOOLS`, or the file `~/.config/om/tools`). Add `--oway-skills` (or `OM_OWAY_SKILLS=1`) to also link every `oway-*` skill of the Oway method, not only the om ones.
 
 | Tool | Skills | Agents | Rules (always on) |
 | --- | --- | --- | --- |
 | `pi` | `~/.pi/agent/skills/om-plan`, `om-assist`, `oway-uix` (links) | `~/.pi/agent/prompts/om-*.md` (links; pi has no agent files, so agents load as prompts) | `~/.pi/agent/APPEND_SYSTEM.md` (link) |
 | `opencode` | `~/.config/opencode/skills/om-plan`, `om-assist`, `oway-uix` (links) | `~/.config/opencode/agents/om-*.md` (copies, see below) | `~/.config/opencode/AGENTS.md` (link) |
+| `claude` | `~/.claude/skills/<name>` (links) | none | none: your own `~/.claude/CLAUDE.md` is never touched |
 | `antigravity` | plugin: `~/.gemini/config/plugins/om` links to `om/`; the design skill: `~/.gemini/config/skills/oway-uix` | same plugin | same plugin (`rules/AGENTS.md`) |
 | `oway` | none | none | `~/.local/bin/oway` links to `om/bin/oway`, so agents can run `oway style ...` from anywhere |
 

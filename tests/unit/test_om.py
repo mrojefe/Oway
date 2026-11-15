@@ -118,6 +118,18 @@ class SyncTests(unittest.TestCase):
         self.assertEqual((self.home / ".gemini/config/skills/oway-uix").resolve(), want)
         self.assertEqual((self.home / ".local/bin/oway").resolve(), (OM / "bin/oway").resolve())
 
+    def test_oway_skills_flag_links_the_whole_method_into_every_chosen_tool(self):
+        sync(self.home, "--tools", "claude,pi", "--oway-skills")
+        for tool_dir in (".claude/skills", ".pi/agent/skills"):
+            names = {p.name for p in (self.home / tool_dir).iterdir()}
+            self.assertTrue({"om-plan", "om-assist", "oway-uix", "oway-slice", "oway-adopt"} <= names, names)
+        self.assertEqual(sync(self.home, "--check", "--tools", "claude,pi", "--oway-skills").returncode, 0)
+
+    def test_without_the_flag_only_om_skills_are_linked(self):
+        sync(self.home, "--tools", "claude")
+        names = {p.name for p in (self.home / ".claude/skills").iterdir()}
+        self.assertEqual(names, {"om-plan", "om-assist", "oway-uix"})
+
     def test_only_the_chosen_tools_are_touched(self):
         sync(self.home, "--tools", "pi")
         self.assertTrue((self.home / ".pi").exists())
