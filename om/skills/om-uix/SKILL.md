@@ -30,7 +30,12 @@ python3 scripts/style_hub.py show <slug>       # tokens, type scale, components,
 | Retro and print | `retro`, `riso`, `dithered`, `pacman`, `sega`, `tetris` | `riso`, `halftone`, `pasteup`, `arcade`, `darkroom` | Risograph grain, halftone, 8-bit shapes |
 | Tactile | `claymorphism`, `neumorphism`, `skeumorphism`, `friendly` | `kiln`, `terrazzo`, `coral`, `bloom` | Soft double shadows, depth, press states |
 
+## Which skill
+- **Restyle, one screen, or a small build:** this skill (om-uix), the light path.
+- **A new product, or a Mission that is mostly UX:** use Oway's `cgspec-ui-ux` skill (`skills/cgspec-ui-ux` in this repo: problem first, layers 0-7, journeys, tokens, critique rubric). Use om-uix inside it to pick the look.
+
 ## Steps
 1. Load the style first: `show <slug>`. Use its tokens; do not invent new ones.
-2. Apply the craft gates in `catalog/hallmark-themes/references/gates.md` and `craft.md`: no default purple gradients, no cards inside cards, no fake side stripes on non-alerts, no low-contrast text.
-3. Prove it in a real browser: video for scrolling and motion, screenshots for each state (om rule 1.1). On a Mission each interaction is a matrix line.
+2. For live references, use whatever scout tool is installed (a design-scout skill, Stitch MCP, or the browser). Optional: if you use Stitch, upload the style's `DESIGN.md`. om-uix does not depend on any of them.
+3. Apply the craft gates in `catalog/hallmark-themes/references/gates.md` and `craft.md`: no default purple gradients, no cards inside cards, no fake side stripes on non-alerts, no low-contrast text.
+4. Prove it in a real browser: video for scrolling and motion, screenshots for each state (om rule 1.1). On a Mission each interaction is a matrix line.
