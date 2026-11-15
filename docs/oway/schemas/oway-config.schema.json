@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mrojefe/cgspec/docs/oway/schemas/oway-config.schema.json",
+  "title": "Oway project config (_oway/config.json)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "oway_version", "language", "teams", "path_classes"],
+  "properties": {
+    "schema": { "const": 1 },
+    "oway_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "The Oway tool version this project was last checked with."
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$",
+      "description": "Language of the project's own content (ISO 639-1). Headers, types and states stay English. Quotes may stay in their own language."
+    },
+    "product_type": {
+      "enum": ["web", "mobile", "api", "cli", "library", "data", "ai", "other"],
+      "description": "Picks the minimum checks in rules.md."
+    },
+    "teams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product", "dev", "qa"],
+      "properties": {
+        "product": { "const": true },
+        "uix": { "type": "boolean", "description": "On only when the product has a UI." },
+        "dev": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["builders"],
+          "properties": {
+            "builders": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "enum": ["DevBackend", "DevFrontend", "DevData", "DevAI", "DevMobile"] },
+              "description": "DevOps is always there and is not listed."
+            }
+          }
+        },
+        "qa": { "const": true }
+      }
+    },
+    "keeper": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "report_interval_minutes": { "type": "integer", "minimum": 15 },
+        "max_review_rounds": { "type": "integer", "minimum": 1, "maximum": 3, "default": 3 }
+      }
+    },
+    "message_max_chars": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 200,
+      "default": 200,
+      "description": "Agent chat limit when the owner is not talking to them. 0 means files only."
+    },
+    "profile": {
+      "type": "string",
+      "description": "Path to the owner profile on the Platform, or \"not set\"."
+    },
+    "setup_pending": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Step 0 items that need the owner or the Platform (see takeover.md)."
+    },
+    "path_classes": {
+      "type": "object",
+      "description": "Glob lists used by tier sizing. Changing a file in schema, api, auth or deps moves the change up a tier.",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } },
+      "required": ["code"],
+      "properties": {
+        "schema": { "type": "array", "items": { "type": "string" } },
+        "api": { "type": "array", "items": { "type": "string" } },
+        "auth": { "type": "array", "items": { "type": "string" } },
+        "deps": { "type": "array", "items": { "type": "string" } },
+        "code": { "type": "array", "items": { "type": "string" } },
+        "design_locked": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "legacy": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Files exempt from a rule today, with the owner's OK. Fixed slice by slice."
+    }
+  }
+}

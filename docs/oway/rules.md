@@ -1,5 +1,5 @@
 # Rules
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
 
 The hard rules every agent follows: code is the truth, the file format, approvals, code rules checked by tools, and the keeper rules. Comment on any line.
 
@@ -33,9 +33,9 @@ flowchart LR
 ---
 name: slice-012-load-suppliers
 description: Load supplier data into the warehouse
-type: slice            # project / milestone / slice / role / rule / decision
+type: slice            # see the table of types below
 parent: M2-supplier-data
-state: in-progress     # draft / approved / in-progress / in-review / done
+state: in-progress     # the states allowed for this type, see below
 created: 2026-11-13
 approved: 2026-11-14 by @your-github-username   # "no" while not approved
 owner: LeadDev
@@ -53,6 +53,25 @@ updated: 2026-11-15 by LeadQA   # written by a script, never by hand
 | created | Date it was created | Yes |
 | approved | Date and the Git username of the person who approved it; "no" while not approved | Yes |
 | owner | Which role keeps it up to date. Next to it, updated: the date of the last edit and which agent made it (e.g. LeadQA, Dev2) | Yes |
+
+**Types and their states.** One list, checked by `oway doctor`. A type not in this list is refused.
+
+| type | Used for | States |
+| --- | --- | --- |
+| project | `_oway/project.md` | draft, approved, done |
+| milestone | `_oway/milestones/` | draft, approved, in-progress, done |
+| slice | `_oway/slices/` | draft, approved, in-progress, in-review, done, blocked |
+| matrix | a slice's proof matrix | draft, frozen |
+| spine | `_oway/spines/` | draft, approved, superseded |
+| research | `_oway/research/` | draft, done |
+| design | `_oway/design/` README and version notes | draft, locked, superseded |
+| decision | `_oway/decisions/` (ADRs) | proposed, accepted, superseded |
+| agent | a role card or a project override | draft, approved |
+| team | `_oway/agents/<team>/TEAM.md` | draft, approved |
+| rule | `AGENTS.md`, `CONSTRAINTS.md` | draft, approved |
+| profile | the owner profile on the Platform | draft, approved |
+
+**Files without a header.** `INDEX.md` files are written by the index script and carry only its generated line. `LEDGER.md` and `INBOX.md` are append-only logs written by their scripts: a title, the date line, then entries. JSON files (`config.json`, `capabilities.json`, `state/*.json`) never get a Markdown header; their schema says what they hold. A spine that an older method marked "Proposed" becomes `state: draft`.
 
 **As automatic as possible.** The header is filled by a script or a hook, not typed by the agent: `created` and `updated` come from Git, `approved` comes from GitHub, and `state` changes only through set steps. An agent cannot write a wrong date or a fake approval in the header.
 
@@ -80,6 +99,7 @@ The CGSpec keys are dropped. They are hard to use and do not really stop a fake.
 - **`main` is protected by default** (also `dev` and `staging` if they exist): no direct push, a pull request is required, your review is required, and the checkers must pass. GitHub blocks a push to main; we do not rely on the agent's good behaviour.
 - **KeeperQA watches anyway** and tells you if anyone tried to push to a protected branch.
 - **Every pull request is linked to an issue**, so the full history of each piece of work is in GitHub.
+- **Approvals made before Oway, or outside GitHub.** When the owner approved something in chat or in an older method, and that approval is recorded (a ledger line, an inbox message, a CGSpec approval), the header says where: `approved: 2026-11-12 by owner (ledger L-20261112-x7q2)`. KeeperQA checks that the record exists. With no record, it stays `approved: no` until the owner approves it again on GitHub.
 
 Oway names map to GitHub:
 
@@ -108,7 +128,7 @@ The checkers run inside the QA team's tests and before every commit, so a broken
 
 **If you skip the talk**, the Dev team does not wait: it uses the default good practices from the skills (Addy Osmani's), enforced by the same checkers.
 
-**Who owns what:**
+**Who owns what (draft, waiting for the owner's OK):**
 
 |  | Dev team | QA team |
 | --- | --- | --- |
@@ -185,7 +205,7 @@ The checkpoint file (goal, stage per part, open issues, next action, an "in flig
 ## Rules learned from CampusNest
 
 - **No copy of the tool.** A project never holds a copy of the Oway tool or skills. It holds only its own files and `_oway/config.json` with the Oway version it uses. The doctor flags a copied engine.
-- **One language per project**, chosen at the start and written in `config.json`. Docs and agent messages use it.
+- **One language per project**, chosen at the start and written in `config.json`. Docs, headings and agent messages use it. Quotes from users, research sources and UI copy may stay in their own language; they are marked as quotes.
 - **Relative links only.** A link to `file:///` or to someone's laptop is refused by the doctor.
 - **A folder exists only when it has a file.** No empty folders, no `.gitkeep`.
 - **Spines shrink once code exists.** Before code, `02-objects.md` lists fields; once Dev starts, the schema and its tests are the truth and the spine keeps only objects, rules and permissions. The keeper flags a field list that disagrees with the schema.

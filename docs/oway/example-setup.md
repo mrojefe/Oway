@@ -1,5 +1,5 @@
 # Example setup
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
 
 What you would actually see, once Oway is set up on one project.
 
@@ -39,54 +39,20 @@ my-project/
       brand/             # logos
       versions/
         v1/              # everything about one version together
-          prototype.html
+          prototype.html   # or variant-a.html, variant-b.html... when a version has variants
           screenshots/
           note.md        # what was tried, what you said, what was kept
         v5/
-    agents/              # role cards of THIS project (from the Oway role cards)
-      oway/
-        leadoway.md
-        owayhelper.md      # setup only
-        leadowayboard.md
-        leadowayscout.md
-      keeper/            # all the watchers, under LeadKeeper, not under the team leads
-        leadkeeper.md
-        keeperoway.md      # watches LeadOway itself
-        keeperproduct.md
-        keeperuix.md
-        keeperdev.md
-        keeperqa.md
+    agents/              # only what is specific to THIS project; the role cards stay in the tool
       product/
-        TEAM.md          # the team: its lead, members, how they split the work, who talks to whom
-        leadproduct.md
-        leadproductboard.md
-        leadproductscout.md
-        scoutproduct.md
+        TEAM.md          # the team: its lead, members, how they split the work, links to the tool's cards
       uix/
         TEAM.md
-        leaduix.md
-        leaduixboard.md
-        leaduixscout.md
-        scoutuix.md
-        uix.md           # UIX1, UIX2... all run from this one card
       dev/
-        TEAM.md
-        leaddev.md
-        leaddevboard.md
-        leaddevscout.md
-        scoutdev.md
-        devops.md        # always there
-        devbackend.md    # builders picked at setup, for example
-        devdata.md
+        TEAM.md          # also says which builders were picked (here DevBackend, DevData)
+        devdata.md       # an override: adds this project's data sources to the tool's DevData card
       qa/
         TEAM.md
-        leadqa.md
-        leadqaboard.md
-        leadqascout.md
-        leadqatester.md
-        leadqadelivery.md
-        leadqaarchitect.md
-        scoutqa.md
     keeper/              # the keepers' working files; only keepers write here
       INDEX.md           # one line per finding: id, type, team, state, since; read before sending
       notes/             # one file per finding: fact, proof, since, who was told, resolved line
@@ -107,7 +73,13 @@ my-project/
   src/ ...               # the code
 ```
 
-The Oway tool (scripts, hooks, the doctor), the templates and the shared skills (Oway's own, agent-skills, Matt Pocock's skills) are installed once in your Platform, never copied into a project: a copy drifts (CampusNest carries 1.5 MB of copied engine and skills). A folder appears only when it gets its first file. Every link is relative, so it works on GitHub. Tools like Claude Code want a flat list of agents, so the setup script generates names like leadqa from this tree. Milestones and slices have one source of truth: the file holds the content and a script pushes a copy to GitHub; GitHub holds only the state (open, closed, approved), which the index reads back.
+The Oway tool (scripts, hooks, the doctor), the templates and the shared skills (Oway's own, agent-skills, Matt Pocock's skills) are installed once in your Platform, never copied into a project: a copy drifts (CampusNest carries 1.5 MB of copied engine and skills). A folder appears only when it gets its first file. Every link is relative, so it works on GitHub.
+
+**What goes in `agents/`.** The role cards live with the installed Oway tool, not in the project. A project holds only `TEAM.md` for each team it switches on (who is in it, which builders were picked, links to the tool's cards) and, when needed, an override file with the same name as a card that adds project rules (for example `dev/devdata.md` with the project's data sources). No override means the tool's card is used as is. Tools like Claude Code want a flat list of agents; `oway setup` writes those host files (for example `.claude/agents/leadqa.md`) from the tool's cards plus the overrides, and they are generated, never edited by hand.
+
+**Design variants and brand.** When one version tries several directions, each is its own file in the version folder (`variant-a.html`, `variant-b.html`), with one note that says which won. Logos and brand files go in `design/brand/`. An analysis of an idea is research: it goes in `research/RES-NNN`.
+
+**The repository README.** It stays short: what the project is, how to run it, and a link to `_oway/INDEX.md`. It never copies a file tree or explains how the code works; those drift (CampusNest's README listed a file that no longer existed). Milestones and slices have one source of truth: the file holds the content and a script pushes a copy to GitHub; GitHub holds only the state (open, closed, approved), which the index reads back.
 
 ## 2. On GitHub
 

@@ -1,5 +1,5 @@
 # Oway method
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
 
 **Oway** is the next version of CGSpec (v0.4): a method for running projects with teams of AI agents. It says who does what, how work is cut and proven, and which rules every agent follows. It is meant for any user; one real setup is shown only as an example.
 
@@ -17,8 +17,10 @@ This folder is the method part of v0.4. The engine (`engine/`), the installed sk
 | [Design](design.md) | How the UIX team designs with the owner: principles, the 8 layers, being good looking, design systems, versions |
 | [Versioning, docs and Git](versioning-docs-git.md) | Code is the truth, the Oway-to-GitHub map, approvals, Git per slice, SemVer, the pipeline |
 | [Rules](rules.md) | Hard rules: file format and headers, indexes, code rules checked by tools, keeper rules, minimum checks per product type, ledger, quota |
+| [Taking over a project](takeover.md) | Joining a project that already started: the order of steps, the CGSpec-to-Oway path table, ADRs from old docs, what waits for the owner |
 | [Example setup](example-setup.md) | What a project looks like once Oway is set up: the repo tree, GitHub, one slice from start to end, the Platform |
-| [Templates](templates/) | Blank files to start from: project, milestone, slice, proof item, keeper finding, role card, ADR, profile |
+| [Templates](templates/) | Blank files to start from: project, the five spines, milestone, slice, proof item, keeper finding, team, role card, ADR, profile |
+| [Config schema](schemas/oway-config.schema.json) | What `_oway/config.json` may hold |
 | [Role cards](roles/) | One card per role |
 
 ## Glossary

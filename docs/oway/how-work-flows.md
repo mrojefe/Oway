@@ -1,5 +1,5 @@
 # How work flows
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
 
 How work is cut (Project > Milestone > Slice > Check), sized, started, tested and planned. Names as in Teams and roles.
 
@@ -62,7 +62,9 @@ flowchart LR
 4. **LeadOway does the planning**: it turns the scope and the architecture into milestones and slices, and hands them to the Dev team. The Dev team does not plan the project; it plans how to build each slice.
 5. **The QA team** proves each check and tells LeadOway, or you, when something is wrong. The keepers watch all of this (see [Teams and roles](teams-and-roles.md)).
 
-**Milestone or just a slice?** One deliverable, done in a few days: one slice. Several deliverables toward one goal, or more than about a week of work: a milestone with its slices. LeadDev checks that the cut can be built, then you approve the plan.
+**Milestone or just a slice? (draft, waiting for the owner's OK)** One deliverable, done in a few days: one slice. Several deliverables toward one goal, or more than about a week of work: a milestone with its slices. LeadDev checks that the cut can be built, then you approve the plan.
+
+**Two kinds of milestone.** A **build** milestone holds slices with checks. A **business** milestone holds work that is not code (interviews, seeding listings, measuring KPIs): its file lists tasks, each with an owner and a result you can see (a count, a document, a decision), and no proof matrix. The delivery spine lists all milestones in order and shows the current one; that milestone's own header says `current: true`, and only one may. Work already done before Oway (for example design versions v1 to v5) is not turned into slices: one ledger line records it as done, with a link.
 
 ## Change tiers
 
@@ -177,6 +179,8 @@ Open-source tools to try:
 A board (see [Teams and roles](teams-and-roles.md)) is used mostly during planning: scope, technical architecture, the matrix of checks. Each member gives an opinion on its own model; the board lead (LeadDevBoard...) supervises, summarises and gives the summary to its team lead, who decides.
 
 ## Joining a project that already started
+
+The step-by-step recipe, with the CGSpec-to-Oway path table and the rollback, is in [Taking over a project](takeover.md).
 
 When code or docs already exist, Oway does a takeover first: scouts map what exists (code, docs, Git history, state) into the Oway files and the index; LeadQAArchitect runs the checkers and lists where the rules are broken; files that break the rules today go in a legacy list, exempt with your approval. New code follows the rules at once; old code is fixed slice by slice. When Oway itself gets a new version, the same flow runs in upgrade mode.
 

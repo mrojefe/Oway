@@ -1,5 +1,5 @@
 # Template: role card
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
 
 One file per agent: LeadOway, a Dev builder (DevData), KeeperQA, or an agent created on the fly.
 
@@ -13,6 +13,7 @@ One file per agent: LeadOway, a Dev builder (DevData), KeeperQA, or an agent cre
 | What it never does | Hard limits |
 | Model | Decided later, per agent |
 | Hooks and limits | Max retries, token budget, time limit |
+| Message length | 200 characters for messages the agent starts; a little more only when the owner talks to it |
 | How many | One per project, or more |
 
 ```
@@ -49,6 +50,9 @@ updated: <date> by <agent>   # last edit and who made it; filled by a script
 
 ## Hooks and limits
 <hooks the harness enforces; max retries, token budget, time limit>
+
+## Message length
+<200 characters for messages it starts; files over chat>
 
 ## How many
 <one per project, or more>
