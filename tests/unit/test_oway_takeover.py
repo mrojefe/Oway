@@ -22,7 +22,7 @@ def cgspec_project(root: Path) -> None:
         "docs/00-INDEX.md": "# Index\n",
         "docs/spines/01-INTENT.md": "# Intent\nSee [research](../_cgspec/02-research/RES-001-market.md).\n",
         "docs/spines/02-OOUX.md": "# Objects\n",
-        "docs/_cgspec/02-research/RES-001-market.md": "# Market\nFor [intent](../../spines/01-INTENT.md#why).\n",
+        "docs/_cgspec/02-research/RES-001-market.md": "# Market\nFor [intent](../../spines/01-INTENT.md#why).\n\n## Sources\n- [City data](https://example.org/data)\n",
         "docs/adrs/ADR-001-hosting.md": "# ADR-001: hosting\n",
         "docs/adrs/.gitkeep": "",
         "docs/prototypes/_vision/README.md": "# Vision\n[v2](html-prototypes/v2-home.html)\n",

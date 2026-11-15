@@ -88,6 +88,11 @@ def matrix_hash(items: list[Item]) -> str:
     return hashlib.sha256(json.dumps(data, ensure_ascii=False).encode()).hexdigest()
 
 
+def needs_review(item: Item) -> bool:
+    """Visual proof (video, screenshot) needs the reviewer on top of the verifier."""
+    return bool(re.search(r"video|screenshot", item.medium, re.I))
+
+
 def frozen_digest(root: Path, h: dict[str, str], items: list[Item]) -> str:
     """Matrix hash plus the content of every verifier file named in `verifiers:`.
 
@@ -181,15 +186,21 @@ def _append(oway: Path, slice_id: str, rec: dict) -> dict:
 # ---- submit and check -----------------------------------------------------
 
 def states(oway: Path, slice_id: str, digest: str, items: list[Item]) -> dict[str, dict]:
-    """Per item: state (OPEN/PASS/FAIL/FAKE/BLOCKED), rounds, last record."""
+    """Per item: state (OPEN/PASS/NEEDS_REVIEW/FAIL/FAKE/INSUFFICIENT/BLOCKED), rounds, last record."""
     out = {i.id: {"state": "OPEN", "rounds": 0, "last": None} for i in items}
+    needs = {i.id for i in items if needs_review(i)}
     for rec in read_chain(oway, slice_id):
         if rec.get("matrix_hash") != digest or rec.get("item") not in out:
             continue  # evidence for an older matrix never counts
         s = out[rec["item"]]
         s["last"] = rec
+        review = rec.get("kind") == "review"
+        if review and s["state"] != "NEEDS_REVIEW":
+            continue  # a review counts only right after a verifier PASS
         if rec["verdict"] == "PASS":
-            s["state"] = "PASS"
+            s["state"] = "NEEDS_REVIEW" if rec["item"] in needs and not review else "PASS"
+        elif rec["verdict"] == "UNREVIEWED":
+            s["state"] = "NEEDS_REVIEW"
         else:
             s["rounds"] += 1
             s["state"] = "BLOCKED" if s["rounds"] >= MAX_ROUNDS else rec["verdict"]
@@ -215,6 +226,8 @@ def submit(root: Path, slice_id: str, item_id: str, timeout: int = 600) -> dict:
     except subprocess.TimeoutExpired as exc:
         code, output = 124, f"timeout after {timeout}s\n{exc.stdout or ''}"
     reasons = []
+    from .guard import zone_breaks  # late import: guard reads proof
+    reasons += zone_breaks(root)
     if code != 0:
         reasons.append(f"verifier exited {code}")
     canary = item.canary

@@ -60,10 +60,10 @@ updated: 2026-11-15 by LeadQA   # written by a script, never by hand
 | --- | --- | --- |
 | project | `_oway/project.md` | draft, approved, done |
 | milestone | `_oway/milestones/` | draft, approved, in-progress, done |
-| slice | `_oway/slices/` | draft, approved, in-progress, in-review, done, blocked |
+| slice | `_oway/slices/`; in-review or done needs its walkthrough (`<id>.walkthrough.md` or a Walkthrough section) | draft, approved, in-progress, in-review, done, blocked |
 | matrix | a slice's proof matrix | draft, frozen |
 | spine | `_oway/spines/` | draft, approved, superseded |
-| research | `_oway/research/` | draft, done |
+| research | `_oway/research/`; needs a Sources section with full https links, no bare domains (`oway doctor`) | draft, done |
 | design | `_oway/design/` README and version notes | draft, locked, superseded |
 | decision | `_oway/decisions/` (ADRs) | proposed, accepted, superseded |
 | agent | a role card or a project override | draft, approved |
@@ -74,7 +74,7 @@ updated: 2026-11-15 by LeadQA   # written by a script, never by hand
 
 **Files without a header.** `INDEX.md` files are written by the index script and carry only its generated line. `LEDGER.md` and `INBOX.md` are append-only logs written by their scripts: a title, the date line, then entries. JSON files (`config.json`, `capabilities.json`, `state/*.json`) never get a Markdown header; their schema says what they hold. A spine that an older method marked "Proposed" becomes `state: draft`.
 
-**As automatic as possible.** The header is filled by a script or a hook, not typed by the agent: `created` and `updated` come from Git, `approved` comes from GitHub, and `state` changes only through set steps. An agent cannot write a wrong date or a fake approval in the header.
+**As automatic as possible.** The header is filled by a script or a hook, not typed by the agent: `created` and `updated` come from Git (`oway headers`; `--check` for CI), `approved` comes from GitHub, and `state` changes only through set steps. An agent cannot write a wrong date or a fake approval in the header.
 
 ## The index (one per folder)
 

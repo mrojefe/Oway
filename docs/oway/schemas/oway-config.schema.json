@@ -82,6 +82,10 @@
         "design_locked": { "type": "array", "items": { "type": "string" } }
       }
     },
+    "reviewer_command": {
+      "type": "string",
+      "description": "Command that reads the reviewer prompt on stdin and prints the JSON verdict, e.g. a cheap model from another pool. Used for visual proof (video, screenshot)."
+    },
     "legacy": {
       "type": "array",
       "items": { "type": "string" },

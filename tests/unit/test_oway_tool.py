@@ -198,3 +198,53 @@ class PlatformTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ContentRuleTests(unittest.TestCase):
+    RES = "---\nname: r\ndescription: d\ntype: research\nstate: draft\n---\n\n# Market\n"
+
+    def test_research_needs_real_sources(self):
+        with TempDir() as root:
+            oway = make_project(root)
+            (oway / "research").mkdir()
+            f = oway / "research" / "RES-001.md"
+            f.write_text(self.RES + "Rents from avito.ma.\n")
+            index.build(oway)
+            out = "\n".join(doctor.run(root))
+            self.assertIn("no Sources section", out)
+            self.assertIn("bare source 'avito.ma'", out)
+            f.write_text(self.RES + "\n## Sources\n- [Avito rents](https://www.avito.ma/fr/casablanca)\n")
+            index.build(oway)
+            self.assertEqual(doctor.run(root), [])
+
+    def test_done_slice_needs_walkthrough(self):
+        with TempDir() as root:
+            oway = make_project(root)
+            (oway / "slices").mkdir()
+            f = oway / "slices" / "s001.md"
+            f.write_text("---\nname: s001\ndescription: d\ntype: slice\nstate: done\n---\n\n# S001\n")
+            index.build(oway)
+            self.assertIn("needs its walkthrough", "\n".join(doctor.run(root)))
+            f.write_text(f.read_text() + "\n## Walkthrough\nWhat happened.\n")
+            index.build(oway)
+            self.assertEqual(doctor.run(root), [])
+
+
+class GitHeaderTests(unittest.TestCase):
+    def test_dates_come_from_git(self):
+        import subprocess
+        from oway import githeaders
+        with TempDir() as root:
+            oway = make_project(root)
+            self.assertIn("_oway/project.md", githeaders.run(root, check=True))
+            githeaders.run(root)
+            self.assertIn("created: not committed", (oway / "project.md").read_text())
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+            subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=Tester", "-c", "commit.gpgsign=false",
+                            "commit", "-qm", "x"], cwd=root, check=True)
+            githeaders.run(root)
+            text = (oway / "project.md").read_text()
+            self.assertRegex(text, r"created: \d{4}-\d{2}-\d{2}\n")
+            self.assertRegex(text, r"updated: \d{4}-\d{2}-\d{2} by Tester\n")
+            self.assertEqual(githeaders.run(root, check=True), [])

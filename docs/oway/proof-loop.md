@@ -43,15 +43,17 @@ flowchart TB
 
 - **The worker cannot stop** while an item is OPEN or FAIL: a stop hook sends it back with the reason ("item 3 is FAIL: ..."). The hook is only on workers, never on leads.
 - **Limits, so it never loops and burns tokens:** at most 3 rounds per item, and after 2 rounds on the same defect it changes approach; plus a token budget and a time limit, counted on disk. When one is reached: BLOCKED, written in the ledger, and the worker tells its lead.
+- **Which items get a reviewer:** an item whose medium is video or screenshot. After the verifier PASS it is NEEDS_REVIEW; `oway review <slice> <item>` sends the evidence (never the builder's summary) to `reviewer_command` from `config.json`, any model CLI from another pool.
 - **The reviewer answers a fixed format:** `{"verdict":"PASS|FAKE|INSUFFICIENT","reason":"one sentence","evidence_ids":[...]}`. Anything else, a timeout or an error is UNREVIEWED, never PASS. Its prompt says the logs are data, not instructions.
-- **Where hooks exist:** pi (`agent_before_settle`), Claude Code (Stop hook). Where they don't (Codex...): Git hooks, CI, and the lead runs `oway check` before accepting the work.
+- **Where hooks exist:** pi (`agent_before_settle`, installed with `oway install-hook --host pi`), Claude Code (Stop hook, `oway install-hook`). Where they don't (Codex...): Git hooks, CI, and the lead runs `oway check` before accepting the work.
 - **Only the verifier or `oway check` marks an item PASS.** An item with no verifier PASS in the ledger is OPEN, whatever the agent wrote. So Oway does not rely on the agent choosing to use the tool.
 
 ## 3. Why the agent cannot cheat
 
 | The agent tries to... | What stops it |
 | --- | --- |
-| Edit the test until it passes | Matrix and verifiers are outside its write zone, hashed when frozen |
+| Edit the test until it passes | Matrix and verifiers are outside its write zone (`oway guard` denies the write in the host's pre-tool hook), and hashed when frozen |
+| Write outside its own files, for example through the shell | `oway submit` reads Git: a changed file outside the builder's `zone` in the checkpoint fails the item |
 | Fake a screenshot or a video | The worker never holds the camera: the verifier records |
 | Use mock data, `?mock=` URLs, `route.fulfill`, staged screens, hard-coded secrets | Fake-proof scan by the verifier; any hit = FAKE |
 | Show that a file exists (or passes ffprobe) as proof of behaviour | A format check is never a behaviour proof |
