@@ -1,7 +1,7 @@
 # Template: keeper finding
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
 
-One note per finding in the keeper registry (`notes/INDEX.md` plus one file each). A keeper only states facts; it never gives an instruction, a fix or a recommendation. See the keeper rules in [Rules](../rules.md#keeper-rules-learned-from-a-running-keeper).
+One note per finding: `_oway/keeper/notes/<id>.md`, listed in `_oway/keeper/INDEX.md`. The id is the date plus 4 random characters (`F-20261115-a3k9`). A keeper only states facts; it never gives an instruction, a fix or a recommendation. See the keeper rules in [Rules](../rules.md#keeper-rules-learned-from-a-running-keeper).
 
 ```text
 FINDING <TYPE> | <fact> | PROOF: <command + output, file:line, PID, UTC> | SINCE: <UTC>

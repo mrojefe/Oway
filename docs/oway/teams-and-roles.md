@@ -1,5 +1,5 @@
 # Teams and roles
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
 
 Who is who in **Oway**: the teams, the leads, the keepers, the scouts, and who talks to you. Names put the role first, then the team: LeadQA, KeeperQA, ScoutQA. The glossary is in the [Oway README](README.md#glossary).
 
@@ -146,7 +146,7 @@ Three rules hold everything together:
 
 1. **Messages are not memory.** Anything that matters is written in a file (slice, issue, ADR, ledger line); a message only points to it.
 2. **Across teams, only leads talk.** A worker, scout or board member talks only to its own lead.
-3. **One short line + a link.** Every message between agents is one line saying what and where (like the keeper format), never a long text.
+3. **One short line + a link, 200 characters at most.** Every message between agents, and every message an agent starts to the owner, says what and where, never a long text. Only when the owner is talking with an agent may it explain a little more. See [Rules](rules.md#very-concise-the-oway-way-of-talking).
 
 | From | To | When | How |
 | --- | --- | --- | --- |

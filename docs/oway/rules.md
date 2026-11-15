@@ -1,5 +1,5 @@
 # Rules
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
 
 The hard rules every agent follows: code is the truth, the file format, approvals, code rules checked by tools, and the keeper rules. Comment on any line.
 
@@ -200,9 +200,21 @@ The checkpoint file (goal, stage per part, open issues, next action, an "in flig
 4. **Work classes:** GOAL, SIDE (approved in writing by you), HARDENING/REVIEW (anything else). Hardening without your written OK = DRIFT.
 5. **Finding types:** DRIFT, LOOP, STUCK, NO\_PROGRESS, PACE, DESIGN, INTENT, DOC\_STALE, FAKE\_PROOF, HARDCODE, TAMPER, POLICY, SYSTEM.
 6. **PACE, DESIGN and INTENT are checked too** (what your keeper missed): hours per unit and ETA vs your deadline; is the work sized to the provider limits; does the agent do what your written instructions say.
-7. **Registry and dedupe:** `notes/INDEX.md` + one note per finding. Alert once, reminder after 6 h if still open, one "resolved" line when fixed. Keepers read the index before sending.
+7. **Registry and dedupe:** `_oway/keeper/INDEX.md` + one note per finding in `_oway/keeper/notes/`; LeadKeeper's reports go in `_oway/keeper/reports/`. Alert once, reminder after 6 h if still open, one "resolved" line when fixed. Keepers read the index before sending.
 8. **Two channels, two formats:** to the lead, one queued line starting `[KEEPER]`; to you, a short message (max 200 characters: title + fact + one proof, in your language, no paths). Details go in a file. Plus the full report at the interval set in Step 0.
 9. **Full check every run** while the team works, even when nothing changed: an agent can loop with nothing visible in the files.
+
+## Very concise: the Oway way of talking
+
+Agents keep chat short so their context stays small and the owner reads only what matters. What matters is written in a file with a correct index; a message only points to it.
+
+1. **Agent to agent: one line, 200 characters at most**, saying what and where (a link or a file path). No explanations, no copies of a file.
+2. **Agent to the owner, when the agent starts the message: 200 characters at most.** Title, fact, one link. The details go in a file.
+3. **When the owner is talking with an agent**, the agent may explain a little more, but stays short. The owner's preferred length is part of their profile, set at onboarding.
+4. **Nothing to say means saying nothing.** No "still working", no "all good" messages. Keepers are silent unless a finding is verified.
+5. **Files over chat.** A result, a decision or a finding is written in its file first (slice, ADR, ledger line, keeper note), and the index is rebuilt; the message carries the link.
+
+Tools to evaluate for this (not adopted yet): the caveman skill (terse agent output) and beads (a Git-backed issue tracker and memory for coding agents).
 
 ## File format
 

@@ -1,5 +1,5 @@
 # Example setup
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
 
 What you would actually see, once Oway is set up on one project.
 
@@ -43,10 +43,15 @@ my-project/
           screenshots/
           note.md        # what was tried, what you said, what was kept
         v5/
-    agents/
-      leadoway.md
+    agents/              # role cards of THIS project (from the Oway role cards)
+      oway/
+        leadoway.md
+        owayhelper.md      # setup only
+        leadowayboard.md
+        leadowayscout.md
       keeper/            # all the watchers, under LeadKeeper, not under the team leads
         leadkeeper.md
+        keeperoway.md      # watches LeadOway itself
         keeperproduct.md
         keeperuix.md
         keeperdev.md
@@ -63,13 +68,16 @@ my-project/
         leaduixboard.md
         leaduixscout.md
         scoutuix.md
+        uix.md           # UIX1, UIX2... all run from this one card
       dev/
         TEAM.md
         leaddev.md
         leaddevboard.md
         leaddevscout.md
         scoutdev.md
-        dev.md           # Dev1, Dev2... all run from this one card
+        devops.md        # always there
+        devbackend.md    # builders picked at setup, for example
+        devdata.md
       qa/
         TEAM.md
         leadqa.md
@@ -79,6 +87,12 @@ my-project/
         leadqadelivery.md
         leadqaarchitect.md
         scoutqa.md
+    keeper/              # the keepers' working files; only keepers write here
+      INDEX.md           # one line per finding: id, type, team, state, since; read before sending
+      notes/             # one file per finding: fact, proof, since, who was told, resolved line
+        F-20261115-a3k9.md
+      reports/           # LeadKeeper's full report, at the interval set in Step 0
+        2026-11-15T14.md
     milestones/
       m2-supplier-data.md   # the truth; GitHub gets a copy pushed by a script
     slices/
