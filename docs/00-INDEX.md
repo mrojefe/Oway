@@ -1,4 +1,4 @@
-# CGSpec documentation map
+# Oway documentation map
 Created: unknown · Last edited: 2026-10-29T13:37:17Z
 
 [METHOD.md](METHOD.md) is the current specification. [STATUS.md](STATUS.md) is the single implementation-status reference. [CHANGELOG.md](../CHANGELOG.md) maps package versions to changes.

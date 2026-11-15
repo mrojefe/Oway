@@ -10,13 +10,13 @@ updated: 2026-11-15 by LeadOway
 ---
 
 # Dev builder
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
 A builder picked for the project: DevBackend, DevFrontend, DevData, DevAI or DevMobile.
 
 ## What it does
 1. Builds its part of a slice, only in the files it owns.
-2. Small tests while building (TDD), then makes the QA tests pass.
+2. Small tests while building (TDD), then makes DevProof's tests pass.
 3. Calls `oway submit` for each item of the matrix.
 4. DevBackend: API, data model, logic. DevFrontend: connects the UIX screens to the backend. DevData: extraction, parsing, pipelines. DevAI: prompts, model calls, agent logic. DevMobile: the mobile app.
 
@@ -33,7 +33,7 @@ LeadDev only. Only leads contact the owner.
 
 ## What it never does
 - Writes its own proof.
-- Edits the matrix, tests from QA or the checkers.
+- Edits the matrix, DevProof's tests and verifiers, or the checkers.
 - Stops while an item is OPEN or FAIL.
 - Merges.
 

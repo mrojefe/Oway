@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mrojefe/cgspec/docs/oway/schemas/oway-config.schema.json",
+  "$id": "https://github.com/mrojefe/Oway/docs/oway/schemas/oway-config.schema.json",
   "title": "Oway project config (_oway/config.json)",
   "type": "object",
   "additionalProperties": false,

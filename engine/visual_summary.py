@@ -84,7 +84,7 @@ def cell(text: str) -> str:
 
 
 def render(records: list[dict], revision: str, artifact: str) -> str:
-    lines = ["## CGSpec visual proof", "", f"PR head: `{revision}`", "",
+    lines = ["## Oway visual proof", "", f"PR head: `{revision}`", "",
              "| Journey or audit | Verdict | Artifact |", "|---|---|---|"]
     lines += [f"| {cell(r['item'])} | {cell(r['verdict'])} | `{artifact}` |" for r in records]
     return "\n".join(lines) + "\n"

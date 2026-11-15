@@ -18,7 +18,7 @@ One agent doing everything loses the goal, and an agent that both builds and che
 ## Decision and invariants
 
 - LeadOway orchestrates and talks to the owner; it never checks work itself. Its own team: OwayHelpers (setup only), LeadOwayBoard, LeadOwayScout, and KeeperOway.
-- Four teams: Product (scope), UIX (design, only with a UI), Dev (builds), QA (tests and judges). Dev builds, QA tests and judges. Each team has a lead, a board lead and a scout lead. Dev has a fixed core and builders picked per project.
+- Four teams: Product (scope), UIX (design, only with a UI), Dev (builds and runs the proof loop of each item), QA (judges the finished slice: final review, code quality, fit with the architecture). Amended Nov 15: the proof matrix and verifiers are written by DevProof, a separate Dev agent, never a builder. Each team has a lead, a board lead and a scout lead. Dev has a fixed core and builders picked per project.
 - Only leads talk to the owner. Across teams, only leads talk. Messages point to files; they are not memory.
 - One KeeperX per team, read-only, awake only while its team works, reporting to LeadKeeper only. LeadKeeper replays each proof, then warns the lead concerned and always the owner. Leads decide and act.
 - Which agent runs on which model is decided later, per agent.

@@ -118,7 +118,7 @@ class AdoptionDiscoveryTests(unittest.TestCase):
         self.assertEqual(tier.returncode, 0, tier.stdout + tier.stderr)
         git_live(self.root, "add", "README.md", "docs/_cgspec/07-state/tier.json")
         commit = git_live(self.root, "commit", "-m", "docs: first post-adoption change")
-        self.assertIn("CGSpec commit check passed", commit.stdout + commit.stderr)
+        self.assertIn("Oway commit check passed", commit.stdout + commit.stderr)
         ready = adopt(self.root, "ready", "--repos", ".,absent")
         self.assertNotEqual(ready.returncode, 0)  # --slice is required
         make_slice(self.root)

@@ -1,9 +1,9 @@
 ---
 name: cgspec-init
-description: Install, verify, update, or uninstall the current CGSpec package and tool adapters in a project. For an existing unadopted project, use cgspec-adopt first.
+description: Install, verify, update, or uninstall the current Oway package and tool adapters in a project. For an existing unadopted project, use cgspec-adopt first.
 ---
 
-# Initialize CGSpec
+# Initialize Oway
 
 Read only what the current step needs, once per session: the [agent contract](../../engine/CONTRACT.md) and the installed `docs/_cgspec/project.json` if present. This skill manages the package; project discovery and content migration belong to `cgspec-adopt`.
 

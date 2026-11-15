@@ -1,9 +1,9 @@
-# CGSpec Method — Current Specification
+# Oway Method v0.3 — Current Specification (formerly CGSpec)
 Created: unknown · Last edited: 2026-10-30T00:30:00Z
 
 Oct 18, 2026 · @Jean Franck · Replaces "CGSpec Method v0.1 — Architecture". The method specification evolves independently of package release numbers; Git history and the changelog identify exact revisions. Built in this repository; there is no second development checkout (see `AGENTS.md`).
 
-**CGSpec is one package installed into a project: the AI carries the method, you set goals and judge results, and every rule that can be checked by a machine is enforced by one, not left to the AI's goodwill.** It works for a one-page site up to many independent repos, and for new or half-finished projects. Each rule below is stated once; other sections link to it.
+**Oway is one package installed into a project: the AI carries the method, you set goals and judge results, and every rule that can be checked by a machine is enforced by one, not left to the AI's goodwill.** It works for a one-page site up to many independent repos, and for new or half-finished projects. Each rule below is stated once; other sections link to it.
 
 ```mermaid
 flowchart LR
@@ -86,7 +86,7 @@ How the agent talks to you:
 
 IDs: ledger entries `M-YYYYMMDD-xxxx` (date + 4 random hex), so parallel branches and repos never collide. ADRs and slices keep sequential numbers for readability: drafts on a branch use `ADR-draft-<slug>`, and the number is assigned when merged. In multi-repo setups every ID gets the repo prefix (`api:ADR-004`).
 
-**Document dates visible on open.** Every new human-readable CGSpec Markdown document starts with its title followed by a compact provenance line: `Created: <ISO-8601 UTC> · Last edited: <ISO-8601 UTC>`. The agent updates `Last edited` whenever it changes that document's content, including generated index content; an unchanged file keeps its prior dates. The date line belongs to the document so it is visible in a plain text editor, Markdown preview, and Git diff. The two fields mean document creation and the last content edit made under CGSpec, not Git commit time or filesystem metadata. The commit check blocks new or edited documents with missing or stale dates, dates later than the checker's clock (10 minutes slack), a new document dated before CGSpec was installed or claiming `Created: unknown` outside an install or upgrade, a date-only change without a content change, an invented creation date on a document that existed before dates were tracked (it must say `Created: unknown`), and a changed `Created` across edits or renames (a rename git does not detect is matched by record number or title). The doctor warns about untouched legacy documents missing dates, so existing projects remain inspectable until upgrade, and errors on malformed date lines.
+**Document dates visible on open.** Every new human-readable Oway Markdown document starts with its title followed by a compact provenance line: `Created: <ISO-8601 UTC> · Last edited: <ISO-8601 UTC>`. The agent updates `Last edited` whenever it changes that document's content, including generated index content; an unchanged file keeps its prior dates. The date line belongs to the document so it is visible in a plain text editor, Markdown preview, and Git diff. The two fields mean document creation and the last content edit made under Oway, not Git commit time or filesystem metadata. The commit check blocks new or edited documents with missing or stale dates, dates later than the checker's clock (10 minutes slack), a new document dated before Oway was installed or claiming `Created: unknown` outside an install or upgrade, a date-only change without a content change, an invented creation date on a document that existed before dates were tracked (it must say `Created: unknown`), and a changed `Created` across edits or renames (a rename git does not detect is matched by record number or title). The doctor warns about untouched legacy documents missing dates, so existing projects remain inspectable until upgrade, and errors on malformed date lines.
 
 During adoption or upgrade, preserve existing date fields if their source is known. If creation cannot be established, write `Created: unknown` and add `First seen in available Git history: <date>` only when the history actually contains that file; do not relabel Git's first appearance or filesystem birth time as proven creation. Imported documents get `Last edited` when their content is transformed by the upgrade, with their earlier source retained in the migration record. The append-only ledger and inbox are exempt from the file header: each entry carries its own timestamp, and rewriting a header would violate append-only trust. Frozen snapshots and machine JSON are also outside this rule. A rename alone does not reset creation. The installer, document-writing flows, upgrader, and doctor/commit checks must implement this before claiming the rule is enforced.
 
@@ -178,7 +178,7 @@ Before any gate closes, the agent runs coverage checks (every noun has a place, 
 
 ## 5. Adoption: takeover and upgrade
 
-**Adoption builds a trustworthy picture of what exists, then makes CGSpec the project's only method with every fact mapped to a new home before anything is archived, and can be rolled back until you confirm.**
+**Adoption builds a trustworthy picture of what exists, then makes Oway the project's only method with every fact mapped to a new home before anything is archived, and can be rolled back until you confirm.**
 
 ```mermaid
 sequenceDiagram
@@ -207,7 +207,7 @@ Takeover rules:
 - Rollback until you confirm: restore the archive, and export any ledger entries written since adoption to a file so no later work is lost.
 - Midway projects keep their real stage per part.
 
-Upgrade mode (older CGSpec version): a path map from old to new locations, a link rewrite, a doctor run that must pass, and the version marker updated last. CortexGate goes through this mode.
+Upgrade mode (older Oway version): a path map from old to new locations, a link rewrite, a doctor run that must pass, and the version marker updated last. CortexGate goes through this mode.
 
 ## 6. Design path
 
@@ -268,7 +268,7 @@ Where the AI looks: its own web search first, plus your lists ([your fork of awe
 | --- | --- | --- |
 | 1 | Installable package with typed components (npm, PyPI...) | The agent uses the real components instead of re-drawing them; the type checker rejects invented props |
 | 2 | Official tokens in a machine-readable file (DTCG JSON, CSS variables, JS) | Token values come from the package, never typed from the docs |
-| 3 | Official lint rules (for example Atlassian `ensure-design-token-usage`, Primer and Carbon lint configs) | Ready-made checks; otherwise CGSpec generates them from the token file |
+| 3 | Official lint rules (for example Atlassian `ensure-design-token-usage`, Primer and Carbon lint configs) | Ready-made checks; otherwise Oway generates them from the token file |
 | 4 | Machine-readable docs: MCP server, `llms.txt` or agent skill | The agent asks for exact props and tokens while building instead of guessing |
 | 5 | Permissive license (section 12) | No forced disclosure |
 | 6 | Reference renders (Storybook or a docs site per component) | Lets layer 2 compare our screens to the system's own components |
@@ -362,7 +362,7 @@ Minimum checks (the single source; the agent cannot choose less). Cells give the
 | Device run | — | — | T3 | — | — | real device |
 | Team review | T3 | T3 | T3 | T3 | T3 | `cgspec-team-review` |
 
-Code rules the commit hook enforces: files ≤ 400 total lines for new or changed code under the project's declared `code` path class, unless the exact path is listed in `legacy-baseline.json` with an approval; no test may be skipped, emptied or weakened to make a build pass. Other code rules (strict typing, formatter, function size, complexity limit, duplicated-code detection, stack best practices via each linter's recommended configuration) are not enforced by CGSpec itself — adopt them through the project's own lint and formatter configuration.
+Code rules the commit hook enforces: files ≤ 400 total lines for new or changed code under the project's declared `code` path class, unless the exact path is listed in `legacy-baseline.json` with an approval; no test may be skipped, emptied or weakened to make a build pass. Other code rules (strict typing, formatter, function size, complexity limit, duplicated-code detection, stack best practices via each linter's recommended configuration) are not enforced by Oway itself — adopt them through the project's own lint and formatter configuration.
 
 For T1 and above, implementation also requires a per-slice Git plan before the first code edit. It records each repository's full approved base revision, dedicated feature branch or worktree, covered outcomes and shared-file ownership. Branches named in project.json `protected_branches` are integration baselines, never implementation branches; the default and every stacked implementation branch must be distinct from them. A detached baseline is also ineligible. The approved base may be a protected branch revision, and landing automation remains a separate release operation. One feature branch is the plan default; a stacked branch names its dependency and reason. Recorded commits must be real descendants of the approved base and follow red-test → one or more implementation commits → green-test. A commit that implements multiple unrelated outcomes is split by behavior rather than by an arbitrary file quota. Parallel workers identify themselves with `CGSPEC_WORKER_ID`, edit only their owned paths from declared isolated worktrees, and remain subject to frozen-proof checks. Multi-repository plans link every repository to one outcome, contract version, integration order and cross-repository check. Review and required checks bind only to the current recorded candidate HEAD; the sidecar-only commit that stores the binding is its traceability envelope, and any later non-plan candidate change makes the binding stale. Opening a pull request never authorizes merge or destructive history operations.
 
@@ -374,7 +374,7 @@ Integration creates a second signed envelope around the resulting parent revisio
 
 ```mermaid
 flowchart LR
-  P[Push] --> G[CGSpec governance:<br/>doctor, frozen hashes vs history,<br/>test pairs, scripts, tier limits]
+  P[Push] --> G[Oway governance:<br/>doctor, frozen hashes vs history,<br/>test pairs, scripts, tier limits]
   G --> L[Lint, types,<br/>format, size]
   L --> U[Unit + property]
   U --> M[Mutation on<br/>changed code]
@@ -390,7 +390,7 @@ flowchart LR
   SM -->|fail| RB[Rollback or forward-fix]
 ```
 
-Pipeline on GitHub Actions by default; the CGSpec governance stage runs first and cannot be skipped. Releasing to production waits for your approval (section 1). Preview deploys only for profiles that have something to preview. Database migrations run only through the migration contract (section 10). Every release has a rollback or forward-fix plan written before it ships, and a smoke test runs right after deploy.
+Pipeline on GitHub Actions by default; the Oway governance stage runs first and cannot be skipped. Releasing to production waits for your approval (section 1). Preview deploys only for profiles that have something to preview. Database migrations run only through the migration contract (section 10). Every release has a rollback or forward-fix plan written before it ships, and a smoke test runs right after deploy.
 
 ## 8. Enforcement engine
 
@@ -419,7 +419,7 @@ flowchart TB
 
 **Ownership without trusting identity.** Each run lists units, owners and allowed paths in `run.json`. Where the tool passes the agent's identity to hooks, writes outside an owner's paths are refused. Everywhere, frozen criteria are protected by hashes checked at commit and in CI, which needs no identity at all.
 
-**Trust root.** The agent can write files and runs in your shell, so nothing on your disk is fully tamper-proof on its own. CGSpec aims to make tampering detectable by trusted CI. Preventing a merge requires server-side rules, protected workflow changes and effective separation from credentials that can bypass those controls:
+**Trust root.** The agent can write files and runs in your shell, so nothing on your disk is fully tamper-proof on its own. Oway aims to make tampering detectable by trusted CI. Preventing a merge requires server-side rules, protected workflow changes and effective separation from credentials that can bypass those controls:
 
 - **CI never runs the engine inside the commit it judges.** It downloads the published plugin release (the newer of the version before and after the change, from the source recorded before the change) and checks every commit in the push with it. Engine files may change only to match that release exactly.
 - **Append-only records.** `frozen.json`, `04-checks/manifest.json` and `07-state/approvals.json` are compared with git history; existing entries can never change.
@@ -427,9 +427,9 @@ flowchart TB
 - **Failing tests are proven.** A failing-test record must run the project's approved test command on a test file that existed at its recorded commit, belong to the active slice, fail there and pass at the new commit; CI re-runs both. Cache files can never be committed, so nothing hides inside the engine folder.
 - **Rewritten proof is signed, not reconstructed.** A protected CI identity signs a canonical pre-integration seal and a post-integration mapping. Verification pins the complete chain to signer policy at the reviewed base, so a candidate cannot add a key and attest itself. Missing historical objects are accepted only through this chain; records are never rewritten and red commits are never fabricated.
 
-**First-install trust bootstrap.** Before a repository has a trusted CGSpec selector on its default branch, governance CI deliberately fails closed. Publish and inspect the pinned CGSpec release first. Put the installer output, `plugin_source`, initial `approver_keys` (if wanted), workflow and selection script into one proposed installation change. The repository owner reviews that exact change under a protected branch rule requiring owner review; the first merge cannot claim a passing CGSpec governance check because no prior trusted selector exists. After that reviewed baseline is on the default branch, enable the CGSpec governance check as a required status, then verify it on a subsequent harmless PR before treating the protection as active. Do not add the first approver key later through an ordinary PR: the engine cannot verify GitHub review as an authorization source yet, so it fails closed. A trusted key can rotate keys by signing with the previously trusted key. If owner review or the published release cannot be established, mark bootstrap BLOCKED rather than using the proposed change's engine as its own judge.
+**First-install trust bootstrap.** Before a repository has a trusted Oway selector on its default branch, governance CI deliberately fails closed. Publish and inspect the pinned Oway release first. Put the installer output, `plugin_source`, initial `approver_keys` (if wanted), workflow and selection script into one proposed installation change. The repository owner reviews that exact change under a protected branch rule requiring owner review; the first merge cannot claim a passing Oway governance check because no prior trusted selector exists. After that reviewed baseline is on the default branch, enable the Oway governance check as a required status, then verify it on a subsequent harmless PR before treating the protection as active. Do not add the first approver key later through an ordinary PR: the engine cannot verify GitHub review as an authorization source yet, so it fails closed. A trusted key can rotate keys by signing with the previously trusted key. If owner review or the published release cannot be established, mark bootstrap BLOCKED rather than using the proposed change's engine as its own judge.
 
-What remains possible, and how to close it: the implementation now requires an exact, named approval phrase, reads signer keys from the trusted base, and fails closed when the CI selector cannot establish its trusted source. Those fixes passed bounded adversarial review; they do not certify the whole system. A fake approval together with a fake inbox line is rejected without verifiable hook provenance. The installed post-commit and pre-push hooks check finished approval signatures locally as well as in CI. An agent with access to human signing keys could still forge their evidence. The first installation also has no earlier selector to judge it and therefore requires the owner-reviewed bootstrap above. The merge protection guarantee holds only when GitHub branch protection requires the CGSpec check and your review for changes to `.github/`, `docs/_cgspec/` and `docs/slices/`, and the agent lacks your GitHub admin credentials. A hardware signing key that requires your touch can strengthen approval evidence. Install prints the GitHub steps. A pinned release still needs a live protected-branch rehearsal before this section describes a deployed guarantee.
+What remains possible, and how to close it: the implementation now requires an exact, named approval phrase, reads signer keys from the trusted base, and fails closed when the CI selector cannot establish its trusted source. Those fixes passed bounded adversarial review; they do not certify the whole system. A fake approval together with a fake inbox line is rejected without verifiable hook provenance. The installed post-commit and pre-push hooks check finished approval signatures locally as well as in CI. An agent with access to human signing keys could still forge their evidence. The first installation also has no earlier selector to judge it and therefore requires the owner-reviewed bootstrap above. The merge protection guarantee holds only when GitHub branch protection requires the Oway check and your review for changes to `.github/`, `docs/_cgspec/` and `docs/slices/`, and the agent lacks your GitHub admin credentials. A hardware signing key that requires your touch can strengthen approval evidence. Install prints the GitHub steps. A pinned release still needs a live protected-branch rehearsal before this section describes a deployed guarantee.
 
 **Session lifecycle hooks:**
 
@@ -495,7 +495,7 @@ The agent always says which wake-up it set.
 
 **Operate workflow:** release (pipeline, notes, rollback or forward-fix), observation, incidents (straight to triage, then a ledger entry that becomes a constraint), drift (code vs docs vs deployment disagreements shown, never silently resolved), retirement. Runbooks (step-by-step guides for deploy, restore, known failures) live in `docs/spines/05-DELIVERY.md` or its folder. Access to infrastructure never implies permission to change it.
 
-**When CGSpec suggests CortexGate** (once, as an optional suggestion, never a requirement; CGSpec keeps working fully without it):
+**When Oway suggests CortexGate** (once, as an optional suggestion, never a requirement; Oway keeps working fully without it):
 
 | Signal (any one) | Why CortexGate helps |
 | --- | --- |
@@ -508,7 +508,7 @@ The suggestion is recorded in the ledger with these reasons; if you decline, it 
 
 ## 11. Package and install
 
-**The plugin ships each script exactly once, uses no symlinks, and must pass an install smoke test before it touches any real project.** The 24 broken links in live CGSpec came from copying scripts into each skill through symlinks; that pattern is banned.
+**The plugin ships each script exactly once, uses no symlinks, and must pass an install smoke test before it touches any real project.** The 24 broken links in live Oway came from copying scripts into each skill through symlinks; that pattern is banned.
 
 Plugin repository layout:
 
@@ -577,7 +577,7 @@ Smoke test, required to pass in the plugin's CI before step 5 of the plan:
 
 ## 13. Historical requirements traceability
 
-**This table is a preserved planning snapshot at CGSpec revision `716306b`, not current implementation status.** It maps the original requirements to this specification. Use `docs/STATUS.md` for current implementation claims.
+**This table is a preserved planning snapshot at Oway revision `716306b`, not current implementation status.** It maps the original requirements to this specification. Use `docs/STATUS.md` for current implementation claims.
 
 | Your requirement | Where | Live |
 | --- | --- | --- |
@@ -634,7 +634,7 @@ Smoke test, required to pass in the plugin's CI before step 5 of the plan:
 | Token sheet in DTCG format | [W3C Design Tokens 2025.10](https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/) |
 | References first (your choice) | Research warns of fixation on first examples ([CHI study](https://arxiv.org/abs/2403.11164)); mitigated by deliberately contrasting references |
 
-No published evidence yet for: wireframe-first and style tiles (practitioner consensus only), your quota thresholds, and CGSpec's benefit over one careful agent. The pilot measures the last one.
+No published evidence yet for: wireframe-first and style tiles (practitioner consensus only), your quota thresholds, and Oway's benefit over one careful agent. The pilot measures the last one.
 
 **Plan (historical, Oct 2026 — not current instructions):**
 

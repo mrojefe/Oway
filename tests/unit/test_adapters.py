@@ -45,7 +45,7 @@ class AntigravityPayloadTests(unittest.TestCase):
         result = self.run_hook({"conversationId": "c1", "workspacePaths": [str(self.root)]}, "session-start")
         self.assertEqual(result.returncode, 0)
         steps = json.loads(result.stdout)["injectSteps"]
-        self.assertIn("CGSpec session pack", steps[0]["systemMessage"]["systemMessage"])
+        self.assertIn("Oway session pack", steps[0]["systemMessage"]["systemMessage"])
 
     def test_post_tool_returns_empty_json_object(self):
         result = self.run_hook(ag_payload(self.root, "replace_file_content",
@@ -191,7 +191,7 @@ class WiringTests(unittest.TestCase):
     def test_governance_upload_keeps_only_generated_proof_after_attempt(self):
         self.assertEqual(self.do_install().returncode, 0)
         workflow = (self.root / ".github/workflows/cgspec.yml").read_text()
-        governance = workflow[workflow.index("- name: CGSpec governance (cannot be skipped)"):]
+        governance = workflow[workflow.index("- name: Oway governance (cannot be skipped)"):]
         upload = governance[:governance.index("- name: Install pinned Playwright")]
         self.assertIn("id: proof", upload)
         self.assertIn("CGSPEC_PROOF_DIR: ${{ runner.temp }}/cgspec-proof", upload)

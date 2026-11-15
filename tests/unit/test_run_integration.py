@@ -216,7 +216,7 @@ class RunIntegrationTests(unittest.TestCase):
         # Case B: Clean CI evaluation
         ci_res = call_hook(self.root, "ci", None, "--base", base_commit)
         self.assertEqual(ci_res.returncode, 0, f"CI failed: {ci_res.stdout}{ci_res.stderr}")
-        self.assertIn("CGSpec governance passed", ci_res.stdout)
+        self.assertIn("Oway governance passed", ci_res.stdout)
 
 
 if __name__ == "__main__":

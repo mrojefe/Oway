@@ -1,6 +1,6 @@
 # 01-INTENT: Problem, Intent & Day-in-the-Life Journey
 
-> **Stage 1 (Intent): Why CGSpec Exists, Who It Serves, Plain-English Glossary & Scope**
+> **Stage 1 (Intent): Why Oway Exists, Who It Serves, Plain-English Glossary & Scope**
 
 ---
 
@@ -12,7 +12,7 @@ Modern engineering teams increasingly rely on autonomous AI coding agents across
 2. **Missing Multi-Agent Governance & Granular Permissions:** AI agents run with unbounded, dangerous permissions. There is no unified specification standard linking intent to explicit **Resource Ownership (`Owner`)** and **Granular Authorization (`read | invoke | propose_edit | write | share | admin`)**.
 3. **The Premature Coding Trap:** Autonomous agents instinctively jump to writing backend code and physical database schemas before human intent, spatial zoning, and UI/UX flows are established.
 
-**Mission:** **CGSpec (`cgspec`)** is a first-principles, vendor-neutral specification engine and governance bridge for AI-native software engineering. It enforces that human experience strictly precedes technical architecture (Law 3), logs all engineering events in an append-only verifiable ledger (`.memlog.md`), and operates through portable skills (`skills/cgspec-*/SKILL.md`) and AST integrity hooks (`doctor.py`).
+**Mission:** **Oway (`cgspec`)** is a first-principles, vendor-neutral specification engine and governance bridge for AI-native software engineering. It enforces that human experience strictly precedes technical architecture (Law 3), logs all engineering events in an append-only verifiable ledger (`.memlog.md`), and operates through portable skills (`skills/cgspec-*/SKILL.md`) and AST integrity hooks (`doctor.py`).
 
 ---
 
@@ -59,7 +59,7 @@ sequenceDiagram
 ## 4. Scope & Invariants
 
 ### In Scope for `v0.1`
-- Complete, vendor-neutral **CGSpec Blueprint Repository** (`/home/ojefe/Documents/Project/cgspec/`).
+- Complete, vendor-neutral **Oway Blueprint Repository** (`/home/ojefe/Documents/Project/cgspec/`).
 - Universal **`AGENTS.md`** + 1-line DRY **`CLAUDE.md`** pointer.
 - Portable **`skills/cgspec-*/SKILL.md`** suite + **`.cgspec/scripts/memlog.py`**, **`.cgspec/scripts/doctor.py`**, **`.cgspec/scripts/ingest.py`**.
 

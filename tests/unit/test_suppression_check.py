@@ -55,7 +55,7 @@ BASELINE = "eslint-suppressions.json"
 
 
 def real_commit(root, message):
-    """git commit with the installed CGSpec hooks active (no --no-verify, no hooksPath override)."""
+    """git commit with the installed Oway hooks active (no --no-verify, no hooksPath override)."""
     result = subprocess.run(["git", "-c", "user.name=Test", "-c", "user.email=t@example.com",
                              "-c", "commit.gpgsign=false", "commit", "-m", message], cwd=root,
                             capture_output=True, text=True)

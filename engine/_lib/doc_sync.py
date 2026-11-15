@@ -1,6 +1,6 @@
 """Keep visible document dates true without the agent hand-editing them (spec 2).
 
-Compares each human-readable CGSpec document with its version at HEAD:
+Compares each human-readable Oway document with its version at HEAD:
 new documents get Created/Last edited now; edited ones keep Created and get a newer Last edited;
 date-only changes are reverted; edited legacy documents are labelled Created: unknown.
 Run at the end of a turn (stop hook) and by `cgspec_hook.py doc sync`.
@@ -50,7 +50,7 @@ def _without_stamp(text: str) -> str:
 
 def sync_text(head: str | None, current: str, now: str) -> str:
     if not current.startswith("# "):
-        return current  # not a CGSpec document shape; the commit check reports it
+        return current  # not a Oway document shape; the commit check reports it
     if head is None:
         return current if _split(current)[1] else stamp_new(current, now)
     head_lines, head_match = _split(head)

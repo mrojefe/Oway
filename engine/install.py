@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""install.py: install, upgrade, verify or uninstall CGSpec in a project.
+"""install.py: install, upgrade, verify or uninstall Oway in a project.
 
   install    copy the template and a vendored engine; write the version marker
   upgrade    refresh the vendored engine from this plugin; never touches project records
@@ -53,7 +53,7 @@ PATH_CLASSES = {
 def plugin_root() -> Path:
     root = HERE.parent
     if not (root / "templates").is_dir():
-        raise CgspecError("templates not found: run install/upgrade from the CGSpec plugin, not a vendored copy")
+        raise CgspecError("templates not found: run install/upgrade from the Oway plugin, not a vendored copy")
     return root
 
 
@@ -178,13 +178,13 @@ def new_owned() -> dict:
 
 def cmd_install(root: Path, args: argparse.Namespace) -> int:
     if (root / "docs/_cgspec/01-script").exists() and not (root / PROJECT_FILE).exists():
-        raise CgspecError("Earlier CGSpec v0.1 layout found (docs/_cgspec/01-script); use the cgspec-adopt upgrade mode")
+        raise CgspecError("Earlier Oway v0.1 layout found (docs/_cgspec/01-script); use the cgspec-adopt upgrade mode")
     if (root / PROJECT_FILE).exists():
         current = read_json(root / PROJECT_FILE).get("cgspec_version")
         if current == version():
-            print(f"already installed (CGSpec {current}); nothing changed")
+            print(f"already installed (Oway {current}); nothing changed")
             return EXIT_OK
-        raise CgspecError(f"CGSpec {current} is installed; run 'install.py upgrade' to move to {version()}")
+        raise CgspecError(f"Oway {current} is installed; run 'install.py upgrade' to move to {version()}")
     if args.topology.startswith("polyrepo") and not args.repo_prefix:
         raise CgspecError("polyrepo topologies need --repo-prefix")
     safe_target(root, PROJECT_FILE.as_posix())
@@ -206,7 +206,7 @@ def cmd_install(root: Path, args: argparse.Namespace) -> int:
     write_json(root / PROJECT_FILE, project)  # written last: its presence means "install finished"
     owned["created"][PROJECT_FILE.as_posix()] = sha256_file(root / PROJECT_FILE)
     write_json(root / OWNED, owned)
-    print(f"installed CGSpec {version()} ({args.profile}, {args.topology}) in {root}")
+    print(f"installed Oway {version()} ({args.profile}, {args.topology}) in {root}")
     return EXIT_OK
 
 
@@ -249,11 +249,11 @@ def cmd_upgrade(root: Path, args: argparse.Namespace) -> int:
         print(json.dumps(report, indent=2))
         return code
     if not (root / PROJECT_FILE).exists():
-        raise CgspecError("CGSpec is not installed here; run 'install.py install'")
+        raise CgspecError("Oway is not installed here; run 'install.py install'")
     project = read_json(root / PROJECT_FILE)
     old = project.get("cgspec_version", "0.0.0")
     if str(old).startswith("1.") or (root / "docs/_cgspec/01-script").exists():
-        raise CgspecError("Earlier CGSpec v0.1 layout needs 'upgrade --from-v1' with a reviewed dry-run")
+        raise CgspecError("Earlier Oway v0.1 layout needs 'upgrade --from-v1' with a reviewed dry-run")
     if version_tuple(version()) < version_tuple(old) and not args.force:
         raise CgspecError(f"refusing downgrade {old} -> {version()} (use --force if you mean it)")
     owned = read_json(root / OWNED) if (root / OWNED).is_file() else new_owned()
@@ -274,7 +274,7 @@ def cmd_upgrade(root: Path, args: argparse.Namespace) -> int:
     project["cgspec_version"] = version()  # the version marker is updated last (spec 5)
     project.setdefault("protected_branches", ["main", "master"])
     write_json(root / PROJECT_FILE, project)
-    print(f"engine refreshed; CGSpec {old} -> {version()}")
+    print(f"engine refreshed; Oway {old} -> {version()}")
     return EXIT_OK
 
 
@@ -343,7 +343,7 @@ def cmd_uninstall(root: Path, _args: argparse.Namespace) -> int:
     for line in report:
         print(line)
     kept = sum(1 for line in report if line.startswith("kept"))
-    print(f"uninstalled CGSpec; kept {kept} changed files")
+    print(f"uninstalled Oway; kept {kept} changed files")
     return EXIT_OK
 
 

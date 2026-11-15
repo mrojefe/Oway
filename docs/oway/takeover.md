@@ -1,5 +1,5 @@
 # Taking over a project
-Created: 2026-11-15T15:00:00Z · Last edited: 2026-11-15T15:00:00Z
+Created: 2026-11-15T15:00:00Z · Last edited: 2026-11-15T15:40:00Z
 
 How Oway joins a project that already has code or docs, including a project on CGSpec 0.3. Written from the CampusNest test run. Comment on any line.
 
@@ -9,7 +9,7 @@ How Oway joins a project that already has code or docs, including a project on C
 
 ## Order of steps
 
-Each step is one commit on one branch, so any step can be reverted alone.
+Each step is one commit on one branch, so any step can be reverted alone. For a CGSpec 0.3 project, `oway takeover --from cgspec-0.3 --language <xx>` does steps 2 to 7 in one go: `--dry-run` prints the map; then it moves files with `git mv`, fixes the links that pointed to them, adds headers (decisions as `proposed`), keeps the old ledger under "Before Oway", writes the map to `research/RES-takeover-map.md`, rebuilds the indexes and runs the doctor. It never touches the old engine. Design files named `vN-...` go to `design/versions/vN/`; anything else it cannot place is listed as unknown for you.
 
 1. **Check the tool.** The Oway tool is installed on the Platform and `oway version` answers. If not, stop at step 3 and list what is missing (see "When the owner or the Platform is not there").
 2. **Map.** Scouts list every file with the table below: old path, new path, type, state. The list goes to `_oway/research/RES-NNN-takeover-map.md`. Nothing moves yet.
@@ -72,4 +72,4 @@ An agent alone cannot finish Step 0. It writes what is missing in `_oway/project
 
 ## Upgrade mode
 
-When Oway itself gets a new version, the same steps run with the change list of that version in place of the table above.
+When Oway itself gets a new version, `oway upgrade` runs the same steps with the change list of each release in place of the table above: `--dry-run` shows the moves, then it moves files with `git mv`, sets the version in `config.json`, writes a ledger line and rebuilds the indexes. Change lists live with the tool (`engine/oway/upgrades/`), one per release that moves files; a project newer than the tool is refused.

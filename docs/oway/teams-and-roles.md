@@ -1,5 +1,5 @@
 # Teams and roles
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T14:20:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
 Who is who in **Oway**: the teams, the leads, the keepers, the scouts, and who talks to you. Names put the role first, then the team: LeadQA, KeeperQA, ScoutQA. The glossary is in the [Oway README](README.md#glossary).
 
@@ -73,7 +73,7 @@ LeadOway is the guide: it keeps the full overview and lets the teams work. That 
 
 Same shape for the two helpers of every lead: **LeadXBoard** runs the team's boards (LeadQABoard for LeadQA), and **LeadXScout** runs the team's scouts (LeadQAScout for LeadQA). Both supervise, summarise, and give the result to their team lead.
 
-**What each team is for.** Product (was Product Owner): brainstorms with you and writes the scope, the v1; uses a "grill me" skill. UIX: design and user experience, only if there is a UI; you talk to it directly; uses the UI style packs. Dev (was Work): builds the slices and brings the proof. QA: checks the proof, independently; owns the checkers and the road to production.
+**What each team is for.** Product (was Product Owner): brainstorms with you and writes the scope, the v1; uses a "grill me" skill. UIX: design and user experience, only if there is a UI; you talk to it directly; uses the UI style packs. Dev (was Work): builds the slices and runs the proof loop while building, item by item, until every item passes. QA: comes in when a slice or milestone is built: checks code quality and fit with the overall architecture, does the final review, owns those checkers and the road to production.
 
 **The Platform is not a team.** It is the shared setup all projects use (see [Example setup](example-setup.md)).
 
@@ -81,9 +81,9 @@ Same shape for the two helpers of every lead: **LeadXBoard** runs the team's boa
 
 | Sub-lead | Its workers | Its job |
 | --- | --- | --- |
-| LeadQATester | QATester1, 2... | Writes and runs the tests that prove each check of a slice |
+| LeadQATester | QATester1, 2... | Final review of a built slice or milestone: re-runs the proof, probes edge cases, never reads the builder's summary |
 | LeadQADelivery | QADelivery1, 2... | Does git, CI/CD, versioning, releases, docs, and owns the index script. Security scanning is a skill of its workers |
-| LeadQAArchitect | QAArchitect1, 2... | Reviews the architecture against the code rules, and chooses and keeps the checkers (Semgrep, ast-grep...). Does not design |
+| LeadQAArchitect | QAArchitect1, 2... | Checks code quality and fit with the overall architecture at the end of a slice or milestone, and chooses and keeps those checkers (Semgrep, ast-grep...). Does not design |
 
 LeadQATester and LeadQAArchitect also advise LeadQA. LeadQADelivery works both ways with LeadQA.
 
@@ -94,7 +94,10 @@ LeadQATester and LeadQAArchitect also advise LeadQA. LeadQADelivery works both w
 | Design the architecture | Dev |
 | Review it against the code rules | QA architect |
 | Write the code and the small tests used while building (TDD) | Dev |
-| Write and run the tests that prove each check | QA tester |
+| Draft the proof matrix, write the verifiers and the tests that prove each check | DevProof (a separate Dev agent, never a builder) |
+| Run the proof loop item by item while building | Dev builders, with `oway submit`; the script decides |
+| Final review of the built slice or milestone | QA tester |
+| Check code quality and fit with the architecture | QA architect |
 | Choose and set up the checkers | QA architect |
 | CI/CD, versioning, releases, docs, security scan | QA delivery |
 | Fix a bug QA found | Dev |
@@ -113,13 +116,14 @@ LeadQATester and LeadQAArchitect also advise LeadQA. LeadQADelivery works both w
 
 So when the doc says "the keeper" without a name, it means the KeeperX of the team doing that work (KeeperDev for Dev's work), with LeadKeeper verifying before anyone is warned.
 
-**The Dev team.** One line with QA: **Dev builds, QA tests and judges.** A fixed core in every project, plus builders picked to fit the project.
+**The Dev team.** One line with QA: **Dev builds and proves each item; QA judges the finished slice.** A fixed core in every project, plus builders picked to fit the project.
 
 | Role | Core or picked | Its job |
 | --- | --- | --- |
 | LeadDev | Core | Drafts the architecture (reviewed by a board), splits each slice into tasks, writes its Git plan (base, branch or worktree, which files each builder owns), starts and assigns the builders, decides when one is stuck, tells LeadOway "ready for QA". Writes no product code |
 | LeadDevBoard | Core | Runs the architecture boards (stack, data store, auth, hosting...): members on different models, one log per round, a summary to LeadDev |
 | LeadDevScout | Core | Runs the scouts that read official docs and libraries before anyone builds, search open-source code to reuse, or map the code of a project being taken over |
+| DevProof | Core | Drafts the proof matrix once the goal is clear (on a strong model), then writes the verifiers and the tests that prove each check, before the builders start. Never builds; the builders cannot edit its files (name still open) |
 | DevOps | Core | Builds the product's environments, infrastructure and database migrations. The CI pipelines, versions and releases stay with LeadQADelivery |
 | DevBackend | Picked | API, data model, business logic |
 | DevFrontend | Picked | Connects the real screens from UIX (tokens, locked design version) to the backend |
@@ -127,7 +131,7 @@ So when the doc says "the keeper" without a name, it means the KeeperX of the te
 | DevAI | Picked | Prompts, model calls, agent logic |
 | DevMobile | Picked | Mobile app |
 
-The OwayHelpers pick the builders at setup from this list; LeadDev can add one later if a slice needs it, and a small slice may use only one. Each builder works in its own worktree, only in the files it owns: small tests while building (TDD), then `oway submit` for each item of the matrix. The tests that prove each check are written first by LeadQATester's workers, from the proof matrix; Dev makes them pass. Example, data extraction: DevData builds the extractor; QA builds the test set (real sample documents with the expected output) and measures accuracy (for example with DeepEval). Dev never writes its own proof, never edits the matrix or the checkers, and never merges.
+The OwayHelpers pick the builders at setup from this list; LeadDev can add one later if a slice needs it, and a small slice may use only one. Each builder works in its own worktree, only in the files it owns: small tests while building (TDD), then `oway submit` for each item of the matrix. The tests that prove each check are written first by DevProof, from the frozen matrix; the builders make them pass, and the slice stays in Dev until every item is PASS. Example, data extraction: DevData builds the extractor; DevProof builds the test set (real sample documents with the expected output) and the accuracy check (for example with DeepEval); QA then judges the finished slice. A builder never writes its own proof, never edits the matrix, the verifiers or the checkers, and never merges.
 
 **The UIX team**
 

@@ -18,6 +18,7 @@ TYPES: dict[str, tuple[str, ...]] = {
     "team": ("draft", "approved"),
     "rule": ("draft", "approved"),
     "profile": ("draft", "approved"),
+    "feedback": ("draft", "sent"),
 }
 REQUIRED = ("name", "description", "type", "state")
 # Files that never carry a header (logs and generated files).

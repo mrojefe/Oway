@@ -1,4 +1,4 @@
-// CGSpec browser driver. Reads a JSON job on stdin, drives Chromium through Playwright (the project's,
+// Oway browser driver. Reads a JSON job on stdin, drives Chromium through Playwright (the project's,
 // or only the trusted CGSPEC_PLAYWRIGHT_DIR copy when that is set), prints one JSON result on stdout.
 // Never writes outside the screenshot folder.
 "use strict";

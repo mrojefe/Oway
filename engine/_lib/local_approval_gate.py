@@ -54,7 +54,7 @@ def post_commit(root: Path) -> int:
     reasons = commit_problems(view)
     if reasons:
         sha = git(root, "rev-parse", "--short", "HEAD").stdout.strip()
-        print(f"CGSpec local approval check failed ({sha}):\n- " + "\n- ".join(reasons), file=sys.stderr)
+        print(f"Oway local approval check failed ({sha}):\n- " + "\n- ".join(reasons), file=sys.stderr)
         return EXIT_FAIL
     return EXIT_OK
 
@@ -248,7 +248,7 @@ def pre_push(root: Path, raw: str) -> int:
             continue
         reasons += [f"{sha[:12]}: {problem}" for problem in commit_problems(view)]
     if reasons:
-        print("CGSpec local approval check failed (push blocked):\n- " + "\n- ".join(reasons))
+        print("Oway local approval check failed (push blocked):\n- " + "\n- ".join(reasons))
         return EXIT_FAIL
     if commits:
         test_failures = []
@@ -256,7 +256,7 @@ def pre_push(root: Path, raw: str) -> int:
             if revision_commits:
                 test_failures.extend(_run_at_revision(root, revision, revision_commits))
         if test_failures:
-            print("CGSpec pre-push test run failed (push blocked):\n- " + "\n- ".join(test_failures))
+            print("Oway pre-push test run failed (push blocked):\n- " + "\n- ".join(test_failures))
             return EXIT_FAIL
-    print("CGSpec local approval check passed")
+    print("Oway local approval check passed")
     return EXIT_OK

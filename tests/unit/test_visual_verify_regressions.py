@@ -1,4 +1,4 @@
-"""Regression tests for CGSpec visual-verify repair round (defects 1-21)."""
+"""Regression tests for Oway visual-verify repair round (defects 1-21)."""
 
 from __future__ import annotations
 

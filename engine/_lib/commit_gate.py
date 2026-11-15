@@ -194,7 +194,7 @@ def _governance_reasons(root: Path, view: View, changes) -> list[str]:
                                                    "--", project_path).stdout.strip())
     bootstrap = old_project is None and new_project is not None and not prior_project_history
     if old_project is not None and new_project is None:
-        reasons.append(f"{project_path}: established CGSpec project state cannot be deleted or renamed away")
+        reasons.append(f"{project_path}: established Oway project state cannot be deleted or renamed away")
     if old_project is None and new_project is not None and prior_project_history:
         reasons.append(f"{project_path}: restoring prior project state is not a new installation")
     authorized = trust.governance_authorized(view)

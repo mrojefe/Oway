@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""doctor.py: check a project against the CGSpec spec. Read-only unless --fix.
+"""doctor.py: check a project against the Oway spec. Read-only unless --fix.
 
 Exit 0 when there are no errors (warnings allowed), 1 when there are errors.
 --fix only does safe repairs: regenerate the index section, create missing folders,

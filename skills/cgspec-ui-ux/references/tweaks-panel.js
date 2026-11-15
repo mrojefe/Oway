@@ -1,4 +1,4 @@
-/* CGSpec tweaks panel: lets the user change type, density, accent, radius and light/dark on a live
+/* Oway tweaks panel: lets the user change type, density, accent, radius and light/dark on a live
    prototype instead of describing changes in words. No dependencies. Include it with
      <script src="tweaks-panel.js" defer></script>
    and style the page with these CSS custom properties (the token roles of the register):

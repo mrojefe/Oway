@@ -1,5 +1,5 @@
 # Rules
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
 The hard rules every agent follows: code is the truth, the file format, approvals, code rules checked by tools, and the keeper rules. Comment on any line.
 
@@ -70,6 +70,7 @@ updated: 2026-11-15 by LeadQA   # written by a script, never by hand
 | team | `_oway/agents/<team>/TEAM.md` | draft, approved |
 | rule | `AGENTS.md`, `CONSTRAINTS.md` | draft, approved |
 | profile | the owner profile on the Platform | draft, approved |
+| feedback | `_oway/feedback/` notes for the Oway repo | draft, sent |
 
 **Files without a header.** `INDEX.md` files are written by the index script and carry only its generated line. `LEDGER.md` and `INBOX.md` are append-only logs written by their scripts: a title, the date line, then entries. JSON files (`config.json`, `capabilities.json`, `state/*.json`) never get a Markdown header; their schema says what they hold. A spine that an older method marked "Proposed" becomes `state: draft`.
 
@@ -128,14 +129,15 @@ The checkers run inside the QA team's tests and before every commit, so a broken
 
 **If you skip the talk**, the Dev team does not wait: it uses the default good practices from the skills (Addy Osmani's), enforced by the same checkers.
 
-**Who owns what (draft, waiting for the owner's OK):**
+**Who owns what (agreed Nov 15):**
 
 |  | Dev team | QA team |
 | --- | --- | --- |
 | Technical choices (language, framework, architecture) | Decides, with you or a board | Gives no opinion |
 | The rules (what must be true) | Asks you, writes them down | Reads them |
 | The checkers (tools and their settings that say yes or no) | Can run them for fast feedback, **cannot change them** | Chooses, sets up and keeps them |
-| Deciding pass or fail | Never | Yes, from the checker results |
+| The proof loop of each item while building | Runs it: DevProof writes the matrix and verifiers, builders `oway submit`, the script decides | Not involved |
+| Pass or fail of the finished slice or milestone | Never | Yes: final review, code quality, fit with the architecture |
 
 The distinction: the Dev team decides **how to build**; the QA team owns **how we know it is right**. Same reason as "the builder never checks its own work": if the Dev team could edit the checkers, it could make them pass.
 

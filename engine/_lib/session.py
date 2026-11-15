@@ -34,7 +34,7 @@ def last_ledger(root: Path, count: int = 5) -> list[str]:
 def pack(root: Path, doctor_summary: str) -> str:
     cp, recovery = context(root)
     tier = _load(root, STATE_DIR / "tier.json").get("active")
-    lines = ["CGSpec session pack (read docs/_cgspec/01-engine/CONTRACT.md before acting)",
+    lines = ["Oway session pack (read docs/_cgspec/01-engine/CONTRACT.md before acting)",
              f"goal: {cp.get('goal') or '(not set)'}",
              "stages: " + (", ".join(f"{k}: {v}" for k, v in cp.get("stages", {}).items()) or "(none yet)"),
              f"next action: {cp.get('next_action') or '(none)'}",
@@ -110,4 +110,4 @@ def capture_before_compact(root: Path) -> None:
     try:
         capture_only(root)
     except CgspecError as exc:
-        print(f"CGSpec pre-compact capture failed: {exc}", file=sys.stderr)
+        print(f"Oway pre-compact capture failed: {exc}", file=sys.stderr)

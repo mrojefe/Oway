@@ -1,4 +1,4 @@
-# CGSpec documentation
+# Oway documentation
 Created: unknown · Last edited: 2026-10-29T13:37:17Z
 
 Start with the [method specification](METHOD.md) for rules or [STATUS.md](STATUS.md) for what is implemented and what remains unproven. [00-INDEX.md](00-INDEX.md) maps current documentation, repository-only records and history.

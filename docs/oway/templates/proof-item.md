@@ -1,7 +1,7 @@
 # Template: proof matrix
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
-One matrix per slice: `_oway/slices/<id>.matrix.md`. Drafted by a separate agent on a strong model, never by the builder; approved by the owner; then frozen (hashed). Only the verifier or `oway check` marks an item PASS. See [The proof loop](../proof-loop.md).
+One matrix per slice: `_oway/slices/<id>.matrix.md`. Drafted by DevProof, a separate Dev agent on a strong model, never by the builder; approved by the owner; then frozen (hashed). Only the verifier or `oway check` marks an item PASS. See [The proof loop](../proof-loop.md).
 
 ```markdown
 ---
@@ -12,7 +12,7 @@ parent: s<NNN>-<short-title>
 state: draft            # draft / frozen
 created: <filled from Git>
 approved: no
-owner: LeadQATester
+owner: DevProof
 frozen_hash: <filled when frozen>
 ---
 

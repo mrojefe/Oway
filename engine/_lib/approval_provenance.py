@@ -87,12 +87,12 @@ def commit_msg_problem(root: Path, text: str) -> str | None:
     view = View.staged(root)
     problems = trust.approvals_have_inbox_lines(view)
     if problems:
-        return "CGSpec: " + "; ".join(problems)
+        return "Oway: " + "; ".join(problems)
     if trust.TRAILER.search(text):
         return None
     if trust.staged_trailer_refs(view):
-        return "CGSpec: this commit cites the 'trailer' approval; add 'Approved-by: <you>' to the message yourself"
+        return "Oway: this commit cites the 'trailer' approval; add 'Approved-by: <you>' to the message yourself"
     if trust.governance_change(view):
-        return ("CGSpec: this commit changes governance files (hooks, workflows, ownership, plugin source); "
+        return ("Oway: this commit changes governance files (hooks, workflows, ownership, plugin source); "
                 "add 'Approved-by: <you>' yourself and sign the commit with a trusted approver key")
     return None

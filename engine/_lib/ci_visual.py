@@ -42,7 +42,7 @@ VISUAL_WORKFLOW = """      - name: Install pinned Playwright outside the checkou
           printf '{"private": true}\\n' > package.json
           npm install --ignore-scripts --no-audit --no-fund --save-exact "playwright@@PLAYWRIGHT_VERSION@" &&
             ./node_modules/.bin/playwright install --with-deps chromium ||
-            echo "CGSpec: pinned Playwright could not be installed; browser checks will be BLOCKED"
+            echo "Oway: pinned Playwright could not be installed; browser checks will be BLOCKED"
           exit 0
       - name: CI visual proof (PR head)
         id: @PROOF_STEP_ID@
@@ -64,7 +64,7 @@ VISUAL_WORKFLOW = """      - name: Install pinned Playwright outside the checkou
              [ "$(git -C "$TREE" rev-parse HEAD)" = "$PR_HEAD" ]; then
             CLEAN=1
           else
-            echo "CGSpec: $PR_HEAD did not check out clean; visual proof BLOCKED" >> "$OUT/checkout.log"
+            echo "Oway: $PR_HEAD did not check out clean; visual proof BLOCKED" >> "$OUT/checkout.log"
           fi
           J="$OUT/journeys.json"
           A="$OUT/visual-audit.json"

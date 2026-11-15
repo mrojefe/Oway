@@ -1,7 +1,7 @@
-# CGSpec
+# Oway
 Created: unknown · Last edited: 2026-11-15T12:30:00Z
 
-[![Version](https://img.shields.io/badge/version-0.3.4-2563eb?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.3.6-2563eb?style=flat-square)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.10%2B-059669?style=flat-square)](engine/)
 [![Hosts](https://img.shields.io/badge/hosts-Claude_Code_%7C_Codex_%7C_Antigravity-7c3aed?style=flat-square)](plugin.json)
 [![Enforcement](https://img.shields.io/badge/enforcement-Deterministic_Hooks_%26_CI-d97706?style=flat-square)](docs/METHOD.md#8-enforcement-engine)
@@ -10,7 +10,7 @@ Created: unknown · Last edited: 2026-11-15T12:30:00Z
 
 When building software with AI coding agents, projects frequently degrade as they grow: agents forget earlier architectural choices, silently alter scope, claim tests passed without running them, or ship user interfaces that drift from the approved design.
 
-**CGSpec solves this through a strict division of labor:**
+**Oway solves this through a strict division of labor:**
 1. **You speak in ordinary language:** You set goals, constraints, and taste, and approve consequential choices. You never need to memorize the method.
 2. **The agent carries the method:** It maps what exists, brings sourced evidence and design references, maintains living architecture records, slices the work, writes failing tests before code, and records gaps honestly.
 3. **Deterministic scripts enforce the rules:** Every rule that a machine can verify is enforced by local Git/tool hooks and CI (`engine/`) — never left to an AI's goodwill. Human judgment stays with you.
@@ -19,11 +19,11 @@ When building software with AI coding agents, projects frequently degrade as the
 > The canonical [Method Specification](docs/METHOD.md) defines the full contract, repository layout, 6-layer UI/UX design path, review rules, adoption flow, and limits. [Implementation Status](docs/STATUS.md) separates implemented engine checks from outcomes that still require live proof.
 
 > [!NOTE]
-> **CGSpec is becoming Oway (v0.4).** The new method is in [docs/oway/](docs/oway/README.md): teams of agents with read-only keepers, and a proof loop an agent cannot fake. It is documentation for now; the engine still enforces v0.3 and moves to Oway in small tested slices ([ADR-007](docs/adr/ADR-007-cgspec-becomes-oway.md)).
+> **Oway was called CGSpec up to v0.3.** The v0.4 method is in [docs/oway/](docs/oway/README.md): teams of agents with read-only keepers, and a proof loop an agent cannot fake. The first Oway tool commands are in `engine/oway/`; the v0.3 engine still runs in projects and keeps its file names (`cgspec_hook.py`, `docs/_cgspec/`, `cgspec-*` skills) until `oway upgrade` moves them ([ADR-007](docs/adr/ADR-007-cgspec-becomes-oway.md), [STATUS](docs/STATUS.md)).
 
 ---
 
-## How CGSpec Works (The 5 Pillars)
+## How Oway Works (The 5 Pillars)
 
 ```mermaid
 flowchart TB
@@ -32,7 +32,7 @@ flowchart TB
         H2["Approve Consequential Choices & Final Outcomes"]
     end
 
-    subgraph AGENT["2. AI AGENT (Carries the CGSpec Method)"]
+    subgraph AGENT["2. AI AGENT (Carries the Oway Method)"]
         P1["Pillar 1: Idea & Sourced Research"]
         P2["Pillar 2: Shared Vision & 6-Layer UI/UX Design"]
         P3["Pillar 3: Slice Execution (Test-First Red -> Green)"]
@@ -72,9 +72,9 @@ flowchart TB
 
 ---
 
-## Why CGSpec? (Ungoverned AI vs. CGSpec Governance)
+## Why Oway? (Ungoverned AI vs. Oway Governance)
 
-| Dimension | Ungoverned AI Coding | With CGSpec |
+| Dimension | Ungoverned AI Coding | With Oway |
 | --- | --- | --- |
 | **Project Memory** | Lost across chat sessions; repeated prompting | Versioned in **5 Living Spines**, **ADRs**, and a structured state ledger |
 | **Test Discipline** | Tests written after code, mocked away, or skipped | Enforced **Red -> Implementation -> Green** Git commit ancestry |
@@ -86,7 +86,7 @@ flowchart TB
 
 ## Repository Architecture: The 5 Spines & Engine State
 
-When CGSpec is installed into a project, it structures architectural knowledge and machine verification into three clear zones:
+When Oway is installed into a project, it structures architectural knowledge and machine verification into three clear zones:
 
 ```mermaid
 flowchart LR
@@ -161,7 +161,7 @@ flowchart LR
 | **Design** | Taste, priorities, chosen direction | Finds up to 6 real references, builds HTML prototypes, checks visual parity | Choice between real design alternatives |
 | **Architecture** | Constraints (cost, hosting, privacy, licenses) | Researches, runs spikes, drafts ADRs and spines | Consequential or hard-to-reverse trade-offs |
 | **Delivery** | What ships first | Slices, failing tests, code, runtime proof, review packets | Irreversible actions (data deletion, production deploy, publishing) |
-| **Method** | Nothing | Follows CGSpec, repairs drift, updates records, respects quota budget | Never burdens you with method plumbing |
+| **Method** | Nothing | Follows Oway, repairs drift, updates records, respects quota budget | Never burdens you with method plumbing |
 
 ### The 9 Workflows (`skills/`)
 
@@ -170,7 +170,7 @@ Skills under `skills/` load on demand for the task at hand (`cgspec-pivot` is in
 | Skill | When to Use It | What It Produces |
 | --- | --- | --- |
 | `cgspec-init` | Starting a brand-new project from an idea | Initializes `docs/spines/`, `docs/_cgspec/01-engine/`, hooks, and initial intent |
-| `cgspec-adopt` | Bringing an existing codebase under CGSpec governance | Read-only discovery, legacy baseline snapshot (`SLICE-000`), and staged adoption |
+| `cgspec-adopt` | Bringing an existing codebase under Oway governance | Read-only discovery, legacy baseline snapshot (`SLICE-000`), and staged adoption |
 | `cgspec-forge` | Shaping product intent, domain nouns (OOUX), and system architecture | Updates Spines `01` to `05` and records architectural decisions (`ADR-XXX`) |
 | `cgspec-ui-ux` | Designing or refining user interfaces before implementation | Sourced visual references, interactive HTML prototypes, and Playwright journeys |
 | `cgspec-council` | Resolving high-stakes architectural or product trade-offs | Structured multi-perspective analysis with explicit recommendation |
@@ -189,14 +189,14 @@ Skills under `skills/` load on demand for the task at hand (`cgspec-pivot` is in
 | Check what is implemented vs. what still needs live rehearsal | [Implementation Status](docs/STATUS.md) |
 | Read the short operating contract installed into projects | [Short Agent Contract](engine/CONTRACT.md) |
 | Inspect engine CLI commands, state files, and JSON schemas | [Engine Formats & Commands](engine/FORMATS.md) |
-| Contribute to CGSpec itself | [Contributor Entry](AGENTS.md) |
+| Contribute to Oway itself | [Contributor Entry](AGENTS.md) |
 | Browse historical v0.1 records, ADRs, and research benchmarks | [Documentation Map](docs/00-INDEX.md) |
 
 ---
 
 ## Quickstart & Installation
 
-### 1. Try CGSpec in a Disposable Sandbox
+### 1. Try Oway in a Disposable Sandbox
 
 ```bash
 mkdir -p /tmp/cgspec-example
@@ -237,6 +237,6 @@ python3 -m unittest discover -s tests -t .
 claude plugin validate . --strict
 ```
 
-First installation of governance on a GitHub repository requires an owner-reviewed baseline before the CGSpec check can gate protected branches. The exact trust sequence and the limits of local hooks are detailed in [Section 8 of the Method Specification](docs/METHOD.md#8-enforcement-engine): no local script alone proves a message came from the human when the agent controls the same shell.
+First installation of governance on a GitHub repository requires an owner-reviewed baseline before the Oway check can gate protected branches. The exact trust sequence and the limits of local hooks are detailed in [Section 8 of the Method Specification](docs/METHOD.md#8-enforcement-engine): no local script alone proves a message came from the human when the agent controls the same shell.
 
-CortexGate is optional and independent of CGSpec; using this method does not require that service.
+CortexGate is optional and independent of Oway; using this method does not require that service.

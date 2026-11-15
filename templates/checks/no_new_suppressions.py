@@ -51,7 +51,7 @@ def main(argv: list[str]) -> int:
         print("usage: no_new_suppressions.py <baseline.json>...", file=sys.stderr)
         return 2
     if not base or not repo:
-        print("CGSPEC_BASE_REV and CGSPEC_REPO_ROOT are not set; run this as a registered CGSpec check",
+        print("CGSPEC_BASE_REV and CGSPEC_REPO_ROOT are not set; run this as a registered Oway check",
               file=sys.stderr)
         return 2
     grew = False

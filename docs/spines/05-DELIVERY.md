@@ -6,7 +6,7 @@
 
 ## 1. Atomic Vertical Slices (Law 6)
 
-CGSpec delivers software exclusively through atomic, bounded vertical slices. An AI agent is strictly forbidden from writing widespread, speculative code without an approved slice specification.
+Oway delivers software exclusively through atomic, bounded vertical slices. An AI agent is strictly forbidden from writing widespread, speculative code without an approved slice specification.
 
 ```mermaid
 flowchart LR
@@ -44,7 +44,7 @@ Every slice produces a formal contract before code is scaffolded:
 
 ## 3. Delivery Integrity Hooks
 
-### A. The CGSpec Doctor (`.cgspec/scripts/doctor.py`)
+### A. The Oway Doctor (`.cgspec/scripts/doctor.py`)
 The automated doctor hook runs pre-flight and post-slice:
 - Verifies existence of all 6 core spines (`00-INDEX.md`, `01-INTENT.md`, `02-OOUX.md`, `03-EXPERIENCE.md`, `04-ARCHITECTURE.md`, `05-DELIVERY.md`).
 - Enforces strict chronological continuity of `docs/.memlog.md` (`M-001` .. `M-NNN`).

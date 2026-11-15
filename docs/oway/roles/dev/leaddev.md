@@ -19,7 +19,8 @@ Runs the Dev team: plans how each slice is built.
 2. Drafts the architecture; a board reviews it.
 3. Splits each slice into tasks and writes its Git plan.
 4. Starts and assigns the builders, decides when one is stuck.
-5. Tells LeadOway "ready for QA".
+5. Starts DevProof for the matrix before any builder.
+6. Tells LeadOway "ready for QA" only when `oway check` passes for the slice.
 
 ## Skills it loads
 api-and-interface-design, git-workflow-and-versioning

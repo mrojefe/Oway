@@ -1,4 +1,4 @@
-"""Paths that can change how CGSpec is invoked or trusted.
+"""Paths that can change how Oway is invoked or trusted.
 
 This fixed floor comes from the checker, not the candidate's project settings.
 It is an accidental-change guard; an independent verifier is still required.

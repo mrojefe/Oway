@@ -6,7 +6,7 @@
 
 ## 1. Modular Boundaries & Ports & Adapters (Hexagonal Architecture)
 
-CGSpec enforces strict separation between domain logic and external infrastructure across all projects:
+Oway enforces strict separation between domain logic and external infrastructure across all projects:
 
 ```mermaid
 flowchart TB
@@ -83,7 +83,7 @@ sequenceDiagram
 
 ## 3. Dual Storage & MCP Integration
 
-CGSpec supports two operational modes without vendor lock-in:
+Oway supports two operational modes without vendor lock-in:
 
 1. **Local Mode (Offline Git Repository):**
    - Decisions logged to `docs/.memlog.md`.

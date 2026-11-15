@@ -39,7 +39,7 @@ class GitHookRelocationTests(unittest.TestCase):
         return result
 
     def uninstall_refused(self, root, env: dict | None = None):
-        """A hook that might still invoke CGSpec after removal blocks the whole uninstall."""
+        """A hook that might still invoke Oway after removal blocks the whole uninstall."""
         result = run_script("install.py", "uninstall", "--root", str(root), env=env)
         self.assertNotEqual(result.returncode, 0)
         return result
@@ -250,7 +250,7 @@ class GitHookRelocationTests(unittest.TestCase):
             self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
             record = json.loads((root / self.OWNED).read_text())["adapters"]
             self.assertEqual(record.get("git_hooks"), ["pre-commit", "commit-msg", "pre-push"])
-            # A modified owned hook might still call CGSpec: the whole uninstall is refused,
+            # A modified owned hook might still call Oway: the whole uninstall is refused,
             # both hooks and the engine stay in place (finding 3).
             engine_file = root / "docs/_cgspec/01-engine/cgspec_hook.py"
             res_un = run_script("install.py", "uninstall", "--root", str(root))
@@ -325,7 +325,7 @@ class GitHookRelocationTests(unittest.TestCase):
                              "--topology", "single", "--tools", "git")
             self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
             self.assertEqual(target.read_bytes(), modified_bytes)
-            self.assertIn("left existing git pre-commit hook alone; add the CGSpec call to it yourself", res.stdout)
+            self.assertIn("left existing git pre-commit hook alone; add the Oway call to it yourself", res.stdout)
 
     # --- Round 2 Review 51 Regressions ---
 
@@ -352,7 +352,7 @@ class GitHookRelocationTests(unittest.TestCase):
             res = run_script("install.py", "uninstall", "--root", str(copied_wt))
             self.assertNotEqual(res.returncode, 0)
             self.assertEqual(hooks_before, {p.name: p.read_bytes() for p in (main / ".git/hooks").iterdir()})
-            # Original commit succeeds with CGSpec hooks active (finding 5: a real commit, not
+            # Original commit succeeds with Oway hooks active (finding 5: a real commit, not
             # one run under the test helper's core.hooksPath=/dev/null override).
             (main / "file.txt").write_text("content" + chr(10))  # modifies the tracked file
             tier = run_script("cgspec_hook.py", "tier", "set", "--tier", "T0", "--reason", "verify hooks",
@@ -486,7 +486,7 @@ class GitHookRelocationTests(unittest.TestCase):
     def test_f1r3_fresh_install_into_shared_gitdir_does_not_claim_foreign_hooks(self):
         """A copy that was never itself installed (no ownership record yet) must not claim
         hooks that already sit in the external gitdir it happens to share, even when their
-        bytes are byte-identical to the CGSpec template."""
+        bytes are byte-identical to the Oway template."""
         with TempDir() as tmp:
             meta = tmp / "meta"
             original = tmp / "original"

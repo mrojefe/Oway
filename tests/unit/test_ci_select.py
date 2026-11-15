@@ -197,7 +197,7 @@ class SelectorFallbackTests(unittest.TestCase):
             origin = tmp / "origin"
             origin.mkdir()
             git(origin, "init", "-q", "-b", "main")
-            (origin / "README.md").write_text("before CGSpec\n")
+            (origin / "README.md").write_text("before Oway\n")
             git(origin, "add", "-A")
             git(origin, "commit", "-q", "-m", "baseline")
             before = git(origin, "rev-parse", "HEAD").stdout.strip()

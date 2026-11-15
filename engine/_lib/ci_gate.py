@@ -230,7 +230,7 @@ def install_commit(root: Path) -> str | None:
 
 
 def effective_base(root: Path, base: str | None) -> str:
-    """Never judge history from before CGSpec was installed; fall back to the install commit."""
+    """Never judge history from before Oway was installed; fall back to the install commit."""
     installed = install_commit(root)
     valid = bool(base) and git(root, "cat-file", "-e", f"{base}^{{commit}}").returncode == 0
     if not valid:

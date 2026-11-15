@@ -854,7 +854,7 @@ class PrePushTestExecutionGateTests(unittest.TestCase):
         ref_update = f"refs/heads/codex/test-work {current_head} refs/heads/codex/test-work {self.base}\n"
         res = run_script("cgspec_hook.py", "git-pre-push", "--root", str(self.root), "--tool", "git", stdin=ref_update)
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
-        self.assertIn("CGSpec local approval check passed", res.stdout)
+        self.assertIn("Oway local approval check passed", res.stdout)
 
 
 if __name__ == "__main__":

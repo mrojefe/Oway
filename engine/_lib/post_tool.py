@@ -55,6 +55,6 @@ def count_helper(root: Path) -> str | None:
     used["helpers"] = int(used.get("helpers", 0)) + 1
     write_json(path, data)
     if used["helpers"] > int(limits.get("helpers", 0)):
-        return (f"CGSpec budget: {used['helpers']} helper agents used, limit {limits.get('helpers')} for "
+        return (f"Oway budget: {used['helpers']} helper agents used, limit {limits.get('helpers')} for "
                 f"{data.get('task')}; stop starting helpers and report, or ask to raise the limit")
     return None

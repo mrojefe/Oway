@@ -23,7 +23,7 @@ def layout(root: Path, profile: str) -> Iterator[Finding]:
         if folder.is_dir():
             for child in sorted(folder.iterdir()):
                 if child.name not in allowed:
-                    yield Finding("E-LAYOUT-UNKNOWN", _rel(child, root), "not part of the CGSpec layout (spec 2)")
+                    yield Finding("E-LAYOUT-UNKNOWN", _rel(child, root), "not part of the Oway layout (spec 2)")
     yield from _nested(root)
     for spine in L.SPINES:
         if not (root / f"docs/spines/{spine}.md").is_file() and not (root / f"docs/spines/{spine}/INDEX.md").is_file():

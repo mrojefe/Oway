@@ -51,7 +51,7 @@ class DateReviewTests(unittest.TestCase):
 
     def test_new_document_cannot_be_backdated_before_install(self):
         self.stage("docs/adrs/ADR-001-x.md", stamped("X", "2001-01-01T00:00:00Z", self.now))
-        self.assertTrue(any("before CGSpec was installed" in r for r in reasons(self.root)), reasons(self.root))
+        self.assertTrue(any("before Oway was installed" in r for r in reasons(self.root)), reasons(self.root))
 
     def test_honest_new_document_passes(self):
         self.stage("docs/adrs/ADR-001-x.md", stamped("X", self.now, self.now))

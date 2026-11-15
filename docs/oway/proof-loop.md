@@ -1,5 +1,5 @@
 # The proof loop
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
 The heart of Oway. Built from the CGM integrity charter, the proof-of-life design and CGSpec's verification part. One principle carries all of it:
 
@@ -7,7 +7,7 @@ The heart of Oway. Built from the CGM integrity charter, the proof-of-life desig
 
 ## 1. The proof matrix, written before any work
 
-After the goal is clear (see "Every piece of work starts with three parts" in How work flows), a separate agent, on a strong model, drafts the **exhaustive proof matrix**: every interaction the user will have with the result, each paired with the real proof that shows it works, as close as possible to what the user will really do.
+After the goal is clear (see "Every piece of work starts with three parts" in How work flows), a separate agent, DevProof, on a strong model, drafts the **exhaustive proof matrix**: every interaction the user will have with the result, each paired with the real proof that shows it works, as close as possible to what the user will really do.
 
 One line of the matrix is a **proof item**:
 
@@ -22,7 +22,7 @@ One line of the matrix is a **proof item**:
 Example (a shop website): (1) video scrolling every section of the storefront; (2) filter, choose a size, add to cart; (3) checkout and payment end to end; (4) account space and order tracking.
 
 - An item can need several tests (normal case, error case, edge case). If one needs a whole matrix of its own, it is its own slice.
-- You approve the matrix. Then it is **frozen** (hashed). The worker can neither edit it nor touch the verifiers: they live outside its write zone and the QA team owns them.
+- You approve the matrix. Then it is **frozen** (hashed). The worker can neither edit it nor touch the verifiers: they live outside its write zone, DevProof owns them, and their content is part of the frozen hash.
 
 ## 2. The loop for each item, during the work
 
@@ -64,7 +64,7 @@ flowchart TB
 
 Both, not one or the other: a gate per item during the work, and one final review at the end (CGM's old rule "review once at the end" is replaced).
 
-- One reviewer, fresh context, other model, gets only: the goal, the restrictions, the protected zones, the frozen matrix, the ledger and the `oway check` output. It **re-runs**, it does not read. It probes edge cases too.
+- The QA team does it (LeadQATester), plus LeadQAArchitect's code quality and architecture checks. One reviewer, fresh context, other model, gets only: the goal, the restrictions, the protected zones, the frozen matrix, the ledger and the `oway check` output. It **re-runs**, it does not read. It probes edge cases too.
 - FAIL: repair, new real proof, review again; at most 3 rounds, then BLOCKED with the remaining defects.
 - The report never says "zero defects". It says: "these checks passed at this revision; these were not run".
 - Judged on two points: the proofs pass, and the proofs are well founded. A passing proof that is not well founded counts as a FAIL.
