@@ -1,5 +1,5 @@
 ---
-name: cgspec-main
+name: oway-main
 description: Main project agent that talks with the user, routes work, maintains spines, ledger, and checkpoints, and coordinates independent review.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: cgspec-builder
+name: oway-builder
 description: Implements one bounded unit in a slice or team run, within assigned paths and frozen acceptance criteria.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: cgspec-inspector
+name: oway-inspector
 description: Supervises a bounded team review or T3 run, separates builders and reviewers, and returns one evidence-based report to the main agent.
 ---
 

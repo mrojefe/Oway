@@ -1,5 +1,5 @@
 ---
-name: cgspec-ux-regression-auditor
+name: oway-ux-regression-auditor
 description: Re-runs locked screen journeys and visual baselines after a change, reporting behavior and rendering differences.
 ---
 

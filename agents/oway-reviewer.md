@@ -1,5 +1,5 @@
 ---
-name: cgspec-reviewer
+name: oway-reviewer
 description: Independently judges one unit or change against frozen criteria and evidence, without fixing or rewriting the work.
 ---
 

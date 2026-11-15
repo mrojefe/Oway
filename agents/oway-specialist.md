@@ -1,5 +1,5 @@
 ---
-name: cgspec-specialist
+name: oway-specialist
 description: Contributes one relevant specialist lens, such as accessibility, UX, typography, motion, security, or performance, in a bounded review.
 ---
 

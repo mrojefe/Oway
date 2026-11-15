@@ -209,9 +209,9 @@ python3 engine/install.py verify --root /tmp/cgspec-example
 
 Keep the host plugin and the project's vendored engine (`docs/_cgspec/01-engine/`) in step: update the plugin directory first, then run the project `upgrade` command below.
 
-- **Claude Code:** `claude plugin update cgspec@<marketplace>`
+- **Claude Code:** `claude plugin update oway@<marketplace>`
 - **Antigravity:** `agy plugin install <plugin-directory>` (re-import/reinstall when updating the directory)
-- **Codex:** `codex plugin marketplace add <plugin-directory>` and install `cgspec@cgspec-local` (or `codex plugin marketplace upgrade <marketplace>` for a Git marketplace)
+- **Codex:** `codex plugin marketplace add <plugin-directory>` and install `oway@oway-local` (or `codex plugin marketplace upgrade <marketplace>` for a Git marketplace)
 
 The root `plugin.json` and `.agents/plugins/marketplace.json` package the same ten skills for Claude Code, Codex, and Antigravity.
 

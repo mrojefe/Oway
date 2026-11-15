@@ -1,5 +1,5 @@
 ---
-name: cgspec-scout
+name: oway-scout
 description: Read-only survey of one existing repository or subsystem, including docs, git history, tests, deployment clues, and access gaps.
 ---
 

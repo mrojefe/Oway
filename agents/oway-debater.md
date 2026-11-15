@@ -1,5 +1,5 @@
 ---
-name: cgspec-debater
+name: oway-debater
 description: Takes one evidence-based lens in a council on a consequential technical or product decision.
 ---
 
