@@ -1,5 +1,5 @@
 # Template: slice
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-16T10:00:00Z
 
 One file per slice: `_oway/slices/<id>.md`. It holds the start agreement (T1 and bigger) and the Git plan. Its proof matrix is a separate file, frozen and hashed once the owner approves it.
 
@@ -48,4 +48,14 @@ Proof matrix: `<slice-id>.matrix.md`, frozen at <hash>.
 ## Budget
 - Rounds per item: 3 at most
 - Tokens: <budget>  Time: <limit>
+- Size cap: a change over 800 lines (not counting mechanical edits) is split into slices; code files stay under the project's file-size rule
+
+## Done checklist
+The agent lists each entry and says whether it applied. The project's rules file adds its own entries (from t3code's "hit every surface").
+- [ ] Every way to reach the behaviour (screen, menu, command, shortcut, agent tool)
+- [ ] Every client or surface
+- [ ] Contracts and schemas changed on both sides
+- [ ] The way back for every way in (undo, reopen, cancel)
+- [ ] Each connection mode or environment
+- [ ] Docs made wrong by this change are rewritten or removed
 ```

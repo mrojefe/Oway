@@ -1,5 +1,5 @@
 # Rules
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-16T10:00:00Z
 
 The hard rules every agent follows: code is the truth, the file format, approvals, code rules checked by tools, and the keeper rules. Comment on any line.
 
@@ -13,6 +13,14 @@ Docs that only explain *how* the code works drift away from it. Then the agent s
 - **If a doc and the code disagree, the code wins.** KeeperQA flags the doc so it gets fixed.
 
 This fits Matt Pocock's grill-with-docs skill, which keeps only the glossary and ADRs.
+
+Rules for every doc line (from t3code and vercel/ai):
+
+- **The maintainer test.** Before adding a line ask: what would a maintainer get wrong without it? If reading the code answers it, leave the line out.
+- **Rewrite, never append.** When a decision or constraint changes, rewrite or remove the old text. Do not add a second account of the new behaviour.
+- **A local reason goes in a short code comment.** A doc is for reasoning that crosses components. Link to the source; do not copy it.
+- **One copy of each rule.** Everywhere else links to it, because a rule written twice drifts.
+- **Work that contradicts an accepted ADR stops.** The agent asks the owner first.
 
 ## File format: the rule
 
@@ -111,6 +119,21 @@ Oway names map to GitHub:
 | Check | A checkbox in the issue, proven by a CI check |
 | Approval | Your review "Approve" on the pull request |
 | Versions and packages | Releases and Packages |
+
+## Never do (all agents)
+
+Taken from t3code's "three ways to hurt yourself". Each project adds its own to its rules file.
+
+- **Never kill a process by name or pattern** (`pkill -f`, `pgrep | kill`). Your own process may match. Kill only a PID you captured at spawn.
+- **Never write to live data** (the owner's real database or install). Reading or copying from it is fine; never start a server against it or clean it up. Copy in, never symlink.
+- **Never bake in an origin** (a local URL in a bundle or config) that breaks every remote client.
+- **Run servers from your own shell** so they end with your session. No `nohup`, `setsid`, `tmux` or `systemd-run` unless the owner asks. Detached servers ran for weeks and filled the memory.
+- **Subagents never start servers.** The primary agent integrates and tests once.
+- **A pull request only when the slice or the owner asks.** One request is one PR. Evidence (screenshots, videos) goes to GitHub, never into the repo.
+- **No plans, research notes or scratch files committed.** A merged PR is the record; do not keep a second checklist in the repo.
+- **Rules are defaults.** If a rule fights the task, say so at once and get the owner's OK before breaking it. The owner's preference overrides any rule here.
+
+**Bot and PR babysitting.** Wait for events; never poll or sleep. Check each bot finding against the source, fix the real ones, dismiss the false ones with a written reason. Say nothing when nothing is new. Stop when the checks are green on the latest commit.
 
 ## Code rules, checked by tools, not by trust
 
@@ -225,6 +248,8 @@ The checkpoint file (goal, stage per part, open issues, next action, an "in flig
 7. **Registry and dedupe:** `_oway/keeper/INDEX.md` + one note per finding in `_oway/keeper/notes/`; LeadKeeper's reports go in `_oway/keeper/reports/`. Alert once, reminder after 6 h if still open, one "resolved" line when fixed. Keepers read the index before sending.
 8. **Two channels, two formats:** to the lead, one queued line starting `[KEEPER]`; to you, a short message (max 200 characters: title + fact + one proof, in your language, no paths). Details go in a file. Plus the full report at the interval set in Step 0.
 9. **Full check every run** while the team works, even when nothing changed: an agent can loop with nothing visible in the files.
+10. **Review findings must be concrete.** A finding (from a keeper or a reviewer) shows a wrong behaviour on a real, supported path. Speculative cleanups and checks that only pass on made-up input are not findings (from openai-agents-python).
+11. **Final verification runs once, at the end.** The full test, lint and build run after the review has no open finding, not after every fix, so a review loop cannot hide behind repeated green runs.
 
 ## Very concise: the Oway way of talking
 
@@ -233,8 +258,9 @@ Agents keep chat short so their context stays small and the owner reads only wha
 1. **Agent to agent: one line, 200 characters at most**, saying what and where (a link or a file path). No explanations, no copies of a file.
 2. **Agent to the owner, when the agent starts the message: 200 characters at most.** Title, fact, one link. The details go in a file.
 3. **When the owner is talking with an agent**, the agent may explain a little more, but stays short. The owner's preferred length is part of their profile, set at onboarding.
-4. **Nothing to say means saying nothing.** No "still working", no "all good" messages. Keepers are silent unless a finding is verified.
-5. **Files over chat.** A result, a decision or a finding is written in its file first (slice, ADR, ledger line, keeper note), and the index is rebuilt; the message carries the link.
+4. **Status words.** A turn that must report ends with one status: `RUNNING`, `COMPLETE` or `NEEDS_DECISION` (then the question). Never a generic "continue?".
+5. **Nothing to say means saying nothing.** No "still working", no "all good" messages. Keepers are silent unless a finding is verified.
+6. **Files over chat.** A result, a decision or a finding is written in its file first (slice, ADR, ledger line, keeper note), and the index is rebuilt; the message carries the link.
 
 Tools tested on 2026-11-15, not adopted:
 
