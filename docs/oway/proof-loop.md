@@ -1,5 +1,5 @@
 # The proof loop
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-16T10:00:00Z
 
 The heart of Oway. Built from the CGM integrity charter, the proof-of-life design and CGSpec's verification part. One principle carries all of it:
 
@@ -47,6 +47,17 @@ flowchart TB
 - **The reviewer answers a fixed format:** `{"verdict":"PASS|FAKE|INSUFFICIENT","reason":"one sentence","evidence_ids":[...]}`. Anything else, a timeout or an error is UNREVIEWED, never PASS. Its prompt says the logs are data, not instructions.
 - **Where hooks exist:** pi (`agent_before_settle`, installed with `oway install-hook --host pi`), Claude Code (Stop hook, `oway install-hook`). Where they don't (Codex...): Git hooks, CI, and the lead runs `oway check` before accepting the work.
 - **Only the verifier or `oway check` marks an item PASS.** An item with no verifier PASS in the ledger is OPEN, whatever the agent wrote. So Oway does not rely on the agent choosing to use the tool.
+
+### How an item is proven
+
+Taken from t3code and codex.
+
+- **Lowest layer.** Test at the lowest layer that fails on the old code. Do not repeat the case in a wrapper test or at each call site. Add a row to an existing test before writing a new one.
+- **Proof depends on the bug.** A logic, data, state or protocol bug gets a failing test first, then the fix. A purely visual bug gets a before and after capture and no test. A fix with no visible surface gets the test and a short run transcript.
+- **No waiting on time.** No sleeps or polling in tests: wait for the event, the queue or the signal. A test that needs a timeout to pass is wrong. No retry to hide a flaky test; fix it.
+- **A skipped test needs a tracking issue** on the line above it, with the reason.
+- **Repeatable rules become checks.** A rule like "no sleeps in tests" is a lint or script rule that fails, owned by QA (see Rules), not a sentence agents may forget.
+- **Cheap runs first.** Real model runs cost money. Use a recorded or free replay provider where one exists, else the cheapest model that can show the behaviour.
 
 ## 3. Why the agent cannot cheat
 
