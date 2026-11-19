@@ -8,7 +8,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import doctor, feedback, githeaders, guard, index, keeper, ledger, proof, setup, review, scout, stophook, style, takeover, upgrade
+from . import doctor, feedback, githeaders, guard, index, install_home, keeper, ledger, proof, setup, review, scout, stophook, style, takeover, upgrade
 from .project import OwayError, find_root
 
 
@@ -64,8 +64,19 @@ def _parser() -> argparse.ArgumentParser:
     s = sub.add_parser("install-hook", help="install the builder stop hook for a host")
     s.add_argument("--host", choices=("claude", "pi"), default="claude")
     _style_parser(sub)
+    _sync_parser(sub)
     sub.add_parser("version")
     return p
+
+
+def _sync_parser(sub) -> None:
+    s = sub.add_parser("sync", help="link om and Oway skills/agents into local agent harnesses")
+    s.add_argument("--tools", help="comma-separated harnesses: pi,opencode,claude,codex,antigravity,oway")
+    s.add_argument("--oway-skills", action="store_true", help="also link every oway-* skill")
+    s.add_argument("--oway-agents", action="store_true", help="also install all canonical Oway role cards")
+    s.add_argument("--dry-run", action="store_true", help="print actions without changing files")
+    s.add_argument("--check", action="store_true", help="check only; exit 1 on drift")
+    s.add_argument("--home", type=Path, help="override target home directory (default: $OM_HOME or $HOME)")
 
 
 def _style_parser(sub) -> None:
@@ -119,6 +130,8 @@ def _run(args) -> int:
     if args.cmd == "version":
         print(setup.VERSION_FILE.read_text().strip())
         return 0
+    if args.cmd == "sync":
+        return _sync_cmd(args)
     if args.cmd == "style":
         return _style_cmd(args)
     if args.cmd == "platform":
@@ -173,6 +186,15 @@ def _run(args) -> int:
     if args.cmd in ("upgrade", "feedback", "install-hook"):
         return _project_cmd(args, root)
     raise OwayError(f"unknown command {args.cmd}")
+
+
+def _sync_cmd(args) -> int:
+    code, lines = install_home.run(
+        tools_arg=args.tools, oway_skills=args.oway_skills, oway_agents=args.oway_agents,
+        dry_run=args.dry_run, check=args.check, home_dir=args.home,
+    )
+    print("\n".join(lines))
+    return code
 
 
 def _style_cmd(args) -> int:
