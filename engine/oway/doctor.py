@@ -5,7 +5,7 @@ import json
 import re
 from pathlib import Path
 
-from . import headers, index
+from . import headers, hierarchy, index
 from .project import rel
 
 LINK = re.compile(r"\]\(([^)\s]+)\)")
@@ -83,6 +83,7 @@ def run(root: Path) -> list[str]:
     out += [f"_oway/config.json: {p}" for p in check_config(cfg)] if cfg.exists() \
         else ["_oway/config.json is missing"]
     current: list[str] = []
+    parsed_docs: list[tuple[str, Path, dict[str, str]]] = []
     for f in sorted(oway.rglob("*.md")):
         name = rel(root, f)
         text = f.read_text(encoding="utf-8")
@@ -90,6 +91,9 @@ def run(root: Path) -> list[str]:
             h = headers.parse(text)
             out += [f"{name}: {p}" for p in headers.problems(h)]
             out += content_rules(name, text, h, oway)
+            out += hierarchy.check_three_parts(name, text, h)
+            if h:
+                parsed_docs.append((name, f, h))
             if h and h.get("type") == "milestone" and h.get("current") == "true":
                 current.append(name)
         for target in LINK.findall(text):
@@ -103,6 +107,7 @@ def run(root: Path) -> list[str]:
                 out.append(f"{name}: broken link '{target}'")
         if ABSOLUTE_HOME.search(text):
             out.append(f"{name}: points to a personal machine path (/home/..., /Users/...)")
+    out += hierarchy.check_parents(parsed_docs, oway)
     if len(current) > 1:
         out.append(f"more than one milestone has current: true ({', '.join(current)})")
     out += [f"{rel(root, p)}: out of date, run `oway index`" for p in index.build(oway, check=True)]

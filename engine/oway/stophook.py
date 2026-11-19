@@ -47,7 +47,7 @@ def decide(root: Path) -> tuple[bool, str]:
         return False, f"{exc}. Restore the frozen matrix and verifiers; the keeper is told."
     except OwayError as exc:
         return True, f"hook not active: {exc}"
-    todo = [(i, s) for i, s in st.items() if s["state"] in {"OPEN", "FAIL", "FAKE"}]
+    todo = [(i, s) for i, s in st.items() if s["state"] in {"OPEN", "FAIL", "FAKE", "INSUFFICIENT", "NEEDS_REVIEW"}]
     blocked = [i for i, s in st.items() if s["state"] == "BLOCKED"]
     if not todo:
         return True, "all items PASS" if not blocked else f"BLOCKED items {', '.join(blocked)}: tell your lead"
@@ -70,7 +70,8 @@ def decide(root: Path) -> tuple[bool, str]:
     parts = []
     for i, s in todo:
         why = f": {s['last']['reason']}" if s["last"] else ""
-        parts.append(f"{i} is {s['state']}{why}")
+        pivot = " [PIVOT_REQUIRED]" if s.get("pivot_required") else ""
+        parts.append(f"{i} is {s['state']}{pivot}{why}")
     return False, (f"Slice {slice_id} not done. " + "; ".join(parts) +
                    f". Fix it, then run `oway submit {slice_id} <item>`.")
 
