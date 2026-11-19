@@ -1,5 +1,5 @@
 # Oway implementation status
-Created: 2026-10-20T17:46:07Z · Last edited: 2026-11-15T12:30:00Z
+Created: 2026-10-20T17:46:07Z · Last edited: 2026-11-19T13:10:00Z
 
 This is the current status reference. The method describes required behavior; this page identifies limits of its implementation. Historical audit results are tied to their source revision and do not automatically apply to later changes.
 
@@ -9,9 +9,17 @@ The merged source lives in the `mrojefe/Oway` repository. Develop on feature bra
 
 The source tree is a plugin package, not an installed consumer layout. Run the package tests and plugin validation here. Run doctor, hooks and upgrade rehearsals in disposable consumer projects; do not force-install over the source tree. Consumer changes, including CortexGate upgrades, need their own authorized scope.
 
-## Oway v0.4: method written, first tool commands built
+## Oway v0.4: method, 48 roles, 5-harness sync, and proof-loop CLI (0.3.5–0.3.12)
 
-The Oway method in [docs/oway/](oway/README.md) ([ADR-007](adr/ADR-007-cgspec-becomes-oway.md)) is mostly documentation. Engines 0.3.5 to 0.3.7 add the first Oway tool commands in `engine/oway/` (index, doctor, freeze, submit, check, builder stop hook, keeper notes and scan, Platform and project setup, upgrade, feedback, takeover from CGSpec 0.3, the reviewer step, the pi stop-hook extension, builder write zones, headers from Git, research-source and walkthrough rules), with unit and end-to-end behaviour tests in `tests/unit/test_oway_*.py`. They are source-tested; `oway takeover` also ran on a disposable copy of CampusNest (36 files moved with history, 23 left for the owner, links fixed, doctor clean). Not yet used on a live project, not wired into CI or the installed skills; the pi extension is written to the documented `agent_before_settle` API but not yet run inside pi; and the v0.3 installer does not ship them. Still planned: approvals read from GitHub, video capture by the verifier, write zones on pi (Git backstop only), and host agent files from `TEAM.md`. Everything below describes the v0.3 engine, which is what consumer projects run today.
+The Oway v0.4 method lives in [docs/oway/](oway/README.md) ([ADR-007](adr/ADR-007-cgspec-becomes-oway.md)) with canonical terms in [docs/GLOSSARY.md](GLOSSARY.md). Engine versions `0.3.5` through `0.3.12` implement the stdlib-only `engine/oway/` CLI alongside the v0.3 engine, covered by source unit and disposable-consumer E2E tests (`tests/unit/test_oway_*.py`):
+
+- **`0.3.5`–`0.3.8`**: Core Oway CLI (`index`, `doctor`, `freeze`, `submit`, `review`, `check`, `guard`, `stop-hook`, `keeper`, `platform init`, `setup`, `headers`, `upgrade`, `feedback`, `takeover`, `install-hook --host claude|pi`, `style fetch|list|search|show|scout`) and `om/` light workflow. `oway takeover` was rehearsed on a disposable copy of CampusNest (36 files moved with history, 23 left for the owner, links fixed, doctor clean).
+- **`0.3.9` (PR 1)**: 48 canonical role cards under `docs/oway/roles/` across Oway, Product, UIX, Dev, QA, and Keepers, plus the single-source 5-harness installer (`oway sync` across `pi`, `opencode`, `claude`, `codex`, `antigravity`, and `oway` binary, with `--dry-run`, `--check`, `--oway-skills`, `--oway-agents`). `om/sync-om.sh` delegates directly to `oway sync`.
+- **`0.3.10` (PR 2)**: Unified `oway-uix` design skill covering both Full Oway (8-layer locked funnel) and Light `om` mode (references first, no locked layers), with offline CLI tests for `oway style` and `oway style scout`.
+- **`0.3.11` (PR 3)**: Hierarchy and three-first-parts validation in `oway doctor`; proof-loop hardening (`proof.freeze()` role enforcement blocking builders, `guard` protecting `_oway/state/*` and frozen matrices/evidence, `stop-hook` blocking `NEEDS_REVIEW` and `INSUFFICIENT`, reviewer `evidence_ids` sequence verification); `keeper` read-only replay/verify, drift, loop, and fake-proof scans; and `LeadQADelivery` sole Git management authority with `LeadQADelivery -> LeadQA -> Owner` escalation.
+- **`0.3.12` (PR 4)**: Package manifests (`plugin.json`, `.claude-plugin/plugin.json`, `.agents/plugins/marketplace.json`) renamed to `oway` at SemVer parity with `engine/VERSION` (`0.3.12`), legacy `cgspec-*` agents retired, and personal-path hygiene scrubbed across source and tests.
+
+**Honest remaining live limits (v0.4)**: Source and disposable-consumer E2E tests pass, but Oway v0.4 has not yet run an uncontaminated live multi-agent project from start to finish; the `pi` extension (`agent_before_settle`) is source-tested rather than live-rehearsed inside `pi`; GitHub-backed approvals, verifier-driven video capture, and non-Claude write-zone hooks (beyond the Git backstop) remain planned. Everything below describes the v0.3 engine, which existing consumer installations still run until upgraded.
 
 ## Implemented and bounded
 

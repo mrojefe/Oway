@@ -1,7 +1,7 @@
 # Teams and roles
 Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:40:00Z
 
-Who is who in **Oway**: the teams, the leads, the keepers, the scouts, and who talks to you. Names put the role first, then the team: LeadQA, KeeperQA, ScoutQA. The glossary is in the [Oway README](README.md#glossary).
+Who is who in **Oway**: the teams, the leads, the keepers, the scouts, and who talks to you. Names put the role first, then the team: LeadQA, KeeperQA, ScoutQA. See the [canonical glossary](../GLOSSARY.md) and the summary in the [Oway README](README.md#glossary).
 
 ## The whole tree
 

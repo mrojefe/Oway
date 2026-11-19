@@ -6,8 +6,15 @@ All notable changes, architectural invariants, and skill evolutions to `cgspec` 
 
 ## [Unreleased]
 
+### Added
+- **Docs consolidation and disposable-consumer E2E (`0.3.12`, PR 5)**: Added canonical [docs/GLOSSARY.md](docs/GLOSSARY.md) linked from `docs/README.md`, `docs/oway/README.md`, `docs/oway/teams-and-roles.md`, and `docs/00-INDEX.md`; codified non-polling `gh pr checks <pr> --watch` CI notification in `LeadQADelivery` and `QADelivery` role cards; added full disposable-consumer subprocess E2E suite in `tests/unit/test_oway_e2e.py`.
+- **Manifest rename and hygiene (`0.3.12`, PR 4)**: Renamed plugin manifests (`plugin.json`, `.claude-plugin/plugin.json`, `.agents/plugins/marketplace.json`) to `oway` at version `0.3.12`, retired legacy `cgspec-*` agents, and scrubbed personal paths across the repository.
+- **Hierarchy checks, proof-loop hardening, keeper replay/drift, and Git authority (`0.3.11`, PR 3)**: Enforced milestone/slice three-first-parts and parent links in `oway doctor`; restricted `oway freeze` from builder roles; extended `oway guard` to protect `_oway/state/*` and frozen proof files; made `oway stop-hook` block `NEEDS_REVIEW` and `INSUFFICIENT`; enforced reviewer `evidence_ids` sequence binding; added `keeper replay`/`verify`, drift, loop, and fake-proof scanning; codified `LeadQADelivery` sole Git authority with `LeadQADelivery -> LeadQA -> Owner` escalation.
+- **Unified `oway-uix` design skill (`0.3.10`, PR 2)**: Consolidated Full Oway (8-layer locked funnel) and Light `om` mode into `skills/oway-uix/` with offline CLI test coverage for `oway style` and `oway style scout`.
+- **48 canonical role cards and 5-harness `oway sync` (`0.3.9`, PR 1)**: Completed all 48 canonical Oway role cards under `docs/oway/roles/` and added `oway sync` (`engine/oway/install_home.py`) as the single-source installer for `pi`, `opencode`, `claude`, `codex`, `antigravity`, and `~/.local/bin/oway`, with `om/sync-om.sh` delegating to it.
+
 ### Changed
-- The ten skills are renamed from `cgspec-*` to `oway-*` (`oway-adopt`, `-council`, `-forge`, `-init`, `-migrate`, `-operate`, `-pivot`, `-slice`, `-team-review`, `-uix`). The plugin id, the agents (`cgspec-main` and the others), `cgspec_hook.py` and `docs/_cgspec/` keep their names for now. Earlier entries below keep the old names as written.
+- The ten skills are renamed from `cgspec-*` to `oway-*` (`oway-adopt`, `-council`, `-forge`, `-init`, `-migrate`, `-operate`, `-pivot`, `-slice`, `-team-review`, `-uix`). Earlier entries below keep the old names as written.
 
 ### Added
 - `oway style scout "<query>"` (engine 0.3.8): the free reference scout (godly.website and land-book.com, no key) from the owner's `design_scout.py`; downloads screenshots and writes a references page with a carousel block, breakdown, plain list and a token plan to fill in. `om/sync-om.sh` gains a `claude` tool and `--oway-skills`, which links every `oway-*` skill from one clone into the chosen tools.
