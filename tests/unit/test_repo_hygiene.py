@@ -144,7 +144,7 @@ class VersionParityTests(unittest.TestCase):
         version = (REPO / "engine/VERSION").read_text(encoding="utf-8").strip()
         self.assertRegex(version, r"^\d+\.\d+\.\d+$")
         self.assertEqual(version, "0.3.13")
-        for rel in ("plugin.json", ".claude-plugin/plugin.json"):
+        for rel in ("plugin.json", ".claude-plugin/plugin.json", "om/plugin.json"):
             data = json.loads((REPO / rel).read_text(encoding="utf-8"))
             self.assertEqual(data["version"], version, f"{rel} version mismatch")
         mp = json.loads((REPO / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))

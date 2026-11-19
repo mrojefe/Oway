@@ -62,6 +62,17 @@ class ShapeTests(unittest.TestCase):
             if f.is_file() and f.name not in allowed and "catalog" not in f.parts:
                 self.assertNotIn("cgm", f.read_text(encoding="utf-8", errors="ignore").lower(), f)
 
+    def test_om_plan_template_and_skill_start_with_three_first_parts(self):
+        tmpl = (OM / "skills/om-plan/references/plan-template.md").read_text(encoding="utf-8")
+        h2s = re.findall(r"^##\s+(.+?)\s*$", tmpl, flags=re.M)
+        self.assertGreaterEqual(len(h2s), 3, h2s)
+        self.assertIn("goal", h2s[0].lower())
+        self.assertIn("what you get", h2s[1].lower())
+        self.assertIn("proof", h2s[2].lower())
+        skill = (OM / "skills/om-plan/SKILL.md").read_text(encoding="utf-8")
+        for part in ("## 1. The goal", "## 2. What you get", "## 3. The proof you will have"):
+            self.assertIn(part, skill)
+
 
 class DesignSkillTests(unittest.TestCase):
     def setUp(self):
