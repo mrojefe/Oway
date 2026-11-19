@@ -21,11 +21,12 @@ This folder is the method part of v0.4. The engine (`engine/`), the installed sk
 | [Example setup](example-setup.md) | What a project looks like once Oway is set up: the repo tree, GitHub, one slice from start to end, the Platform |
 | [Templates](templates/) | Blank files to start from: project, the five spines, milestone, slice, proof item, keeper finding, team, role card, ADR, profile |
 | [Config schema](schemas/oway-config.schema.json) | What `_oway/config.json` may hold |
-| [Role cards](roles/) | One card per role |
+| [Role cards](roles/) | One card per role (48 canonical roles across Oway, Product, UIX, Dev, QA, Keepers) |
+| [Canonical glossary](../GLOSSARY.md) | Shared Oway and om terminology |
 
 ## Glossary
 
-Role first, then team: LeadDev, KeeperQA. The last column gives the CGSpec v0.3 or earlier name when there was one.
+See also the [canonical Oway and om glossary](../GLOSSARY.md). Role first, then team: LeadDev, KeeperQA. The last column gives the CGSpec v0.3 or earlier name when there was one.
 
 | Name | What it is | How many | Earlier name |
 | --- | --- | --- | --- |

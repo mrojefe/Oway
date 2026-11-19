@@ -1,13 +1,15 @@
 # Oway documentation map
-Created: unknown · Last edited: 2026-10-29T13:37:17Z
+Created: unknown · Last edited: 2026-11-19T13:10:00Z
 
-[METHOD.md](METHOD.md) is the current specification. [STATUS.md](STATUS.md) is the single implementation-status reference. [CHANGELOG.md](../CHANGELOG.md) maps package versions to changes.
+[oway/README.md](oway/README.md) is the v0.4 Oway method entry. [GLOSSARY.md](GLOSSARY.md) defines canonical Oway and om terms. [METHOD.md](METHOD.md) is the v0.3 engine specification. [STATUS.md](STATUS.md) is the single implementation-status reference. [CHANGELOG.md](../CHANGELOG.md) maps package versions to changes.
 
 ## Current implementation
 
 | Area | Entry | Status |
 | --- | --- | --- |
-| Method and design path | [METHOD.md](METHOD.md) | Current specification; implementation limits are in STATUS |
+| Oway v0.4 method | [oway/README.md](oway/README.md) | Method, templates, 48 role cards, and `engine/oway/` CLI (`0.3.12`) |
+| Canonical glossary | [GLOSSARY.md](GLOSSARY.md) | Shared Oway and om terminology |
+| Method and design path (v0.3) | [METHOD.md](METHOD.md) | Current v0.3 engine specification; implementation limits are in STATUS |
 | Agent operating contract | [CONTRACT.md](../engine/CONTRACT.md) | Installed short contract |
 | Engine state and hook formats | [FORMATS.md](../engine/FORMATS.md) | Current formats and command contract |
 | Install, doctor and ledger | [engine/](../engine/) | Implemented; validation must cite the tested revision and skipped checks |
