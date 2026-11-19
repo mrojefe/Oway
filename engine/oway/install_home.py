@@ -13,7 +13,7 @@ from .project import OwayError
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 OM_ROOT = REPO_ROOT / "om"
 SKILLS_ROOT = REPO_ROOT / "skills"
-ROLES_ROOT = REPO_ROOT / "docs/oway/roles"
+ROLES_ROOT = REPO_ROOT / "agents"
 SUPPORTED_TOOLS = ("pi", "opencode", "claude", "codex", "antigravity", "oway")
 OM_AGENTS = ("om-caps", "om-review", "om-assist")
 PROTECTED_USER_FILES = (
@@ -105,8 +105,8 @@ def _skill_rows(tool: str, dest_dir: str, oway_skills: bool) -> list[tuple[str, 
         (tool, "symlink", f"{dest_dir}/oway-uix", SKILLS_ROOT / "oway-uix"),
     ]
     if oway_skills and SKILLS_ROOT.is_dir():
-        for d in sorted(SKILLS_ROOT.glob("oway-*")):
-            if d.is_dir() and d.name != "oway-uix":
+        for d in sorted(SKILLS_ROOT.iterdir()):
+            if d.is_dir() and (d / "SKILL.md").is_file() and d.name != "oway-uix":
                 rows.append((tool, "symlink", f"{dest_dir}/{d.name}", d))
     return rows
 
@@ -114,7 +114,8 @@ def _skill_rows(tool: str, dest_dir: str, oway_skills: bool) -> list[tuple[str, 
 def _oway_roles() -> list[Path]:
     if not ROLES_ROOT.is_dir():
         return []
-    return sorted(p for p in ROLES_ROOT.glob("*/*.md") if p.is_file() and p.name != "README.md")
+    return sorted(p for p in ROLES_ROOT.glob("*/*.md")
+                  if p.is_file() and p.name not in ("README.md", "TEAM.md"))
 
 
 def _tool_rows(tool: str, oway_skills: bool, oway_agents: bool) -> list[tuple[str, str, str, Path]]:

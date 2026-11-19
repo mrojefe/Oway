@@ -55,6 +55,29 @@ def platform_init(path: Path) -> list[str]:
     return made
 
 
+def _write_agents_index(oway: Path, uix: bool, builders: list[str]) -> str:
+    """Scaffold `_oway/agents/README.md` listing active teams without copying tool cards."""
+    agents_dir = oway / "agents"
+    agents_dir.mkdir(parents=True, exist_ok=True)
+    uix_line = "enabled (`LeadUIX`, 8 layers, `oway-uix` + `free-ui-ux-scout`)" if uix else "disabled (no UI)"
+    picked = ", ".join(["DevOps", *builders]) if builders else "DevOps"
+    body = (
+        "---\nname: project-teams\n"
+        "description: Active Oway teams and picked builders; base cards stay in the installed tool\n"
+        "type: team\nstate: draft\napproved: no\nowner: LeadOway\n---\n\n"
+        "# Project Teams\n\n"
+        "- `oway`: `LeadOway`, `OwayHelpers`, `LeadOwayBoard`, `LeadOwayScout`, `ScoutOway`\n"
+        "- `keeper`: `LeadKeeper`, `KeeperOway`, `KeeperProduct`, `KeeperUIX`, `KeeperDev`, `KeeperQA`\n"
+        "- `product`: `LeadProduct`, `AdvisorProduct`, `LeadProductBoard`, `LeadProductScout`, `ScoutProduct`\n"
+        f"- `uix`: {uix_line}\n"
+        f"- `dev`: active builders: {picked}\n"
+        "- `qa`: `LeadQA`, `AdvisorQA`, `LeadQATester`, `LeadQADelivery`, `LeadQAArchitect`, boards, scouts\n\n"
+        "Add project-only overrides at `_oway/agents/<team>/<role>.md`; never copy the engine or role pack here.\n"
+    )
+    (agents_dir / "README.md").write_text(body, encoding="utf-8")
+    return "_oway/agents/README.md"
+
+
 def project_setup(root: Path, language: str, builders: list[str], uix: bool,
                   platform: Path | None = None, claude_hook: bool = False) -> list[str]:
     """Create `_oway/` for a project. Refuses when one exists (use the takeover steps)."""
@@ -83,7 +106,7 @@ def project_setup(root: Path, language: str, builders: list[str], uix: bool,
         "approved: no\nowner: LeadOway\n---\n\n# Project\n\n## 1. Main goal\nNot set: needs the owner.\n\n"
         "## 2. What you get\nNot set.\n\n## 3. The proof you will have\nNot set.\n\n## Setup pending\n"
         + "".join(f"- {p}\n" for p in pending), encoding="utf-8")
-    made = ["_oway/config.json", "_oway/project.md"]
+    made = ["_oway/config.json", "_oway/project.md", _write_agents_index(oway, uix, builders)]
     ledger.append(oway, f"Oway setup, version {cfg['oway_version']}; pending: {len(pending)} items")
     made.append("_oway/LEDGER.md")
     if claude_hook:

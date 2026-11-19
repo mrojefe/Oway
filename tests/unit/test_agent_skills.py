@@ -32,7 +32,7 @@ class AgentSkillsTests(unittest.TestCase):
             self.assertFalse((root / ".agents").exists())
 
     def test_plugin_docs_and_skills_have_no_broken_or_workstation_links(self):
-        for folder in (REPO / "skills", REPO / "docs", REPO / "engine"):
+        for folder in (REPO / "agents", REPO / "skills", REPO / "docs", REPO / "engine"):
             for md in folder.rglob("*.md"):
                 rel = md.relative_to(REPO).as_posix()
                 if any(rel.startswith(p) for p in ("docs/_cgspec/02-research/Design", "docs/_cgspec/02-research/scrollcraft")):

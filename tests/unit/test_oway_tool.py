@@ -47,6 +47,9 @@ class SetupAndDoctorTests(unittest.TestCase):
             cfg = json.loads((oway / "config.json").read_text())
             self.assertEqual(cfg["language"], "fr")
             self.assertIn("owner profile (OwayHelpers interview)", cfg["setup_pending"])
+            agents_readme = oway / "agents" / "README.md"
+            self.assertTrue(agents_readme.is_file())
+            self.assertIn("DevBackend", agents_readme.read_text(encoding="utf-8"))
             self.assertEqual(doctor.run(root), [])
 
     def test_setup_refuses_existing_project(self):

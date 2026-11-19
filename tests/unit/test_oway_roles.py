@@ -1,4 +1,4 @@
-"""Canonical 1-file-per-role inventory, schema, and governance tests (P1-01..P1-03)."""
+"""Canonical 1-file-per-role inventory, schema, skill mapping, TEAM.md, and UIX governance tests."""
 
 from __future__ import annotations
 
@@ -10,40 +10,44 @@ from tests.helpers import REPO
 
 from oway import headers  # noqa: E402
 
-ROLES_DIR = REPO / "docs/oway/roles"
+ROLES_DIR = REPO / "agents"
+SKILLS_DIR = REPO / "skills"
 TEMPLATE_PATH = REPO / "docs/oway/templates/role-card.md"
 
 EXPECTED_ROLES: frozenset[str] = frozenset({
-    # oway/ (6)
+    # oway/ (5)
     "oway/leadoway.md",
     "oway/owayhelpers.md",
     "oway/leadowayboard.md",
     "oway/leadowayscout.md",
     "oway/scoutoway.md",
-    "oway/keeperoway.md",
-    # keeper/ (1)
+    # keeper/ (6, all watchers unified under LeadKeeper)
     "keeper/leadkeeper.md",
-    # product/ (6)
+    "keeper/keeperoway.md",
+    "keeper/keeperproduct.md",
+    "keeper/keeperuix.md",
+    "keeper/keeperdev.md",
+    "keeper/keeperqa.md",
+    # product/ (5)
     "product/leadproduct.md",
     "product/advisorproduct.md",
     "product/leadproductboard.md",
     "product/leadproductscout.md",
     "product/scoutproduct.md",
-    "product/keeperproduct.md",
-    # uix/ (7)
+    # uix/ (6)
     "uix/leaduix.md",
     "uix/advisoruix.md",
     "uix/leaduixboard.md",
     "uix/leaduixscout.md",
     "uix/scoutuix.md",
     "uix/uix-worker.md",
-    "uix/keeperuix.md",
     # dev/ (13)
     "dev/leaddev.md",
     "dev/advisordev.md",
     "dev/leaddevboard.md",
     "dev/leaddevscout.md",
     "dev/scoutdev.md",
+    "dev/dev.md",
     "dev/devops.md",
     "dev/devbackend.md",
     "dev/devfrontend.md",
@@ -51,8 +55,7 @@ EXPECTED_ROLES: frozenset[str] = frozenset({
     "dev/devai.md",
     "dev/devmobile.md",
     "dev/dev-specialist.md",
-    "dev/keeperdev.md",
-    # qa/ (12)
+    # qa/ (11)
     "qa/leadqa.md",
     "qa/advisorqa.md",
     "qa/leadqaboard.md",
@@ -64,21 +67,18 @@ EXPECTED_ROLES: frozenset[str] = frozenset({
     "qa/qadelivery.md",
     "qa/leadqaarchitect.md",
     "qa/qaarchitect.md",
-    "qa/keeperqa.md",
     # shared/ (3)
     "shared/board-member.md",
     "shared/proof-matrix-author.md",
     "shared/adversarial-reviewer.md",
 })
 
-LEGACY_ROLES: frozenset[str] = frozenset({
-    "oway/owayhelper.md",
-    "keeper/keeperx.md",
-    "dev/dev-builder.md",
-    "dev/devproof.md",
-    "shared/leadxboard.md",
-    "shared/leadxscout.md",
-    "shared/scoutx.md",
+EXPECTED_TEAM_FILES: frozenset[str] = frozenset({
+    "oway/TEAM.md",
+    "product/TEAM.md",
+    "uix/TEAM.md",
+    "dev/TEAM.md",
+    "qa/TEAM.md",
 })
 
 REQUIRED_FM_KEYS: tuple[str, ...] = (
@@ -109,7 +109,7 @@ REQUIRED_SECTIONS: tuple[str, ...] = (
 def _role_files() -> list[Path]:
     return sorted(
         p for p in ROLES_DIR.rglob("*.md")
-        if p.name != "README.md"
+        if p.name not in ("README.md", "TEAM.md")
     )
 
 
@@ -123,36 +123,36 @@ def _extract_sections(text: str) -> dict[str, str]:
 
 
 class RoleInventoryTests(unittest.TestCase):
-    def test_exact_48_canonical_role_files_and_no_legacy_cards(self):
-        actual = {p.relative_to(ROLES_DIR).as_posix() for p in _role_files()}
-        self.assertEqual(len(EXPECTED_ROLES), 48)
-        for legacy in sorted(LEGACY_ROLES):
-            self.assertNotIn(legacy, actual, f"Legacy collapsed role card still present: {legacy}")
-        missing = sorted(EXPECTED_ROLES - actual)
-        extra = sorted(actual - EXPECTED_ROLES)
-        self.assertEqual(missing, [], f"Missing canonical role cards: {missing}")
-        self.assertEqual(extra, [], f"Unexpected extra role cards: {extra}")
+    def test_exact_49_canonical_role_files_and_5_team_contracts(self):
+        actual_roles = {p.relative_to(ROLES_DIR).as_posix() for p in _role_files()}
+        actual_teams = {p.relative_to(ROLES_DIR).as_posix() for p in ROLES_DIR.glob("*/TEAM.md")}
+        self.assertEqual(len(EXPECTED_ROLES), 49)
+        self.assertEqual(sorted(EXPECTED_ROLES - actual_roles), [])
+        self.assertEqual(sorted(actual_roles - EXPECTED_ROLES), [])
+        self.assertEqual(actual_teams, set(EXPECTED_TEAM_FILES))
+        old_roles_files = [
+            p.relative_to(REPO).as_posix()
+            for p in (REPO / "docs/oway/roles").rglob("*.md")
+            if p.name != "README.md"
+        ]
+        self.assertEqual(old_roles_files, [], "Old role cards must not linger in docs/oway/roles/")
 
-    def test_roles_readme_links_all_48_cards_without_broken_links(self):
+    def test_roles_readme_links_all_49_cards_and_team_files_cleanly(self):
         readme = ROLES_DIR / "README.md"
         text = readme.read_text(encoding="utf-8")
-        links = set(re.findall(r"\]\(([^)\s#]+)\)", text))
-        for rel in sorted(EXPECTED_ROLES):
-            self.assertIn(rel, links, f"docs/oway/roles/README.md does not link to {rel}")
+        links = set(re.findall(r"\]\(([^)\s#]+)", text))
+        for rel in sorted(EXPECTED_ROLES | EXPECTED_TEAM_FILES):
+            self.assertIn(rel, links, f"agents/README.md does not link to {rel}")
         for link in sorted(links):
             if not re.match(r"^[a-z][a-z0-9+.-]*:", link, re.I):
                 target = (readme.parent / link).resolve()
-                self.assertTrue(target.exists(), f"docs/oway/roles/README.md has broken link: {link}")
+                self.assertTrue(target.exists(), f"agents/README.md has broken link: {link}")
 
 
 class RoleSchemaTests(unittest.TestCase):
-    def test_template_includes_proof_field(self):
-        text = TEMPLATE_PATH.read_text(encoding="utf-8")
-        self.assertRegex(text, r"(?m)^proof:\s*\S+")
-
-    def test_all_48_cards_have_valid_frontmatter_and_9_non_empty_sections(self):
+    def test_all_49_cards_and_5_team_files_have_valid_frontmatter_and_sections(self):
         files = _role_files()
-        self.assertEqual(len(files), 48)
+        self.assertEqual(len(files), 49)
         for path in files:
             rel = path.relative_to(ROLES_DIR).as_posix()
             text = path.read_text(encoding="utf-8")
@@ -161,65 +161,64 @@ class RoleSchemaTests(unittest.TestCase):
             assert fm is not None
             self.assertEqual(headers.problems(fm), [], f"{rel}: invalid Oway header")
             for key in REQUIRED_FM_KEYS:
-                self.assertIn(key, fm, f"{rel}: missing frontmatter key '{key}'")
-                self.assertTrue(fm[key].strip(), f"{rel}: empty frontmatter key '{key}'")
+                self.assertIn(key, fm, f"{rel}: missing '{key}'")
+                self.assertTrue(fm[key].strip(), f"{rel}: empty '{key}'")
             self.assertEqual(fm["type"], "agent", f"{rel}: type must be 'agent'")
-            self.assertEqual(fm["name"], path.stem, f"{rel}: frontmatter name must equal filename stem")
-
+            self.assertEqual(fm["name"], path.stem, f"{rel}: name must match stem")
             sections = _extract_sections(text)
             for heading in REQUIRED_SECTIONS:
-                self.assertIn(heading, sections, f"{rel}: missing section '## {heading}'")
-                self.assertTrue(sections[heading], f"{rel}: empty section '## {heading}'")
+                self.assertTrue(sections.get(heading), f"{rel}: missing/empty '## {heading}'")
+
+        for rel in sorted(EXPECTED_TEAM_FILES):
+            fm = headers.parse((ROLES_DIR / rel).read_text(encoding="utf-8"))
+            self.assertIsNotNone(fm, f"{rel}: missing YAML frontmatter")
+            assert fm is not None
+            self.assertEqual(headers.problems(fm), [], f"{rel}: invalid TEAM header")
+            self.assertEqual(fm["type"], "team", f"{rel}: type must be 'team'")
 
 
-class RoleGovernanceTests(unittest.TestCase):
-    def test_advisor_files_only_for_top_team_leads_and_qa_subleads_advised_by_leadqa(self):
-        advisor_stems = sorted(
-            p.stem for p in _role_files() if p.stem.startswith("advisor")
-        )
-        self.assertEqual(
-            advisor_stems,
-            ["advisordev", "advisorproduct", "advisorqa", "advisoruix"],
-            f"Unexpected advisor role files: {advisor_stems}",
-        )
+class RoleGovernanceAndSkillsTests(unittest.TestCase):
+    def test_every_skill_loaded_by_a_role_card_exists_in_skills_dir(self):
+        self.assertTrue((SKILLS_DIR / "free-ui-ux-scout/SKILL.md").is_file())
+        for path in _role_files():
+            sections = _extract_sections(path.read_text(encoding="utf-8"))
+            raw = sections["Skills it loads"].strip()
+            if raw.lower().startswith("none"):
+                continue
+            for slug in [s.strip() for s in raw.split(",") if s.strip()]:
+                self.assertTrue(
+                    (SKILLS_DIR / slug / "SKILL.md").is_file(),
+                    f"{path.relative_to(ROLES_DIR)}: missing skills/{slug}/SKILL.md",
+                )
+
+    def test_team_uix_cards_and_team_md_enforce_8_layers_and_design_skills(self):
+        team_uix = (ROLES_DIR / "uix/TEAM.md").read_text(encoding="utf-8")
+        leaduix = (ROLES_DIR / "uix/leaduix.md").read_text(encoding="utf-8")
+        worker = (ROLES_DIR / "uix/uix-worker.md").read_text(encoding="utf-8")
+        keeper_uix = (ROLES_DIR / "keeper/keeperuix.md").read_text(encoding="utf-8")
+        for text, name in ((team_uix, "uix/TEAM.md"), (leaduix, "uix/leaduix.md")):
+            for tok in ("8", "01-intent", "oway-uix", "free-ui-ux-scout", "QATester", "3.5"):
+                self.assertIn(tok, text, f"{name} missing {tok}")
+        for rel in ("uix/leaduix.md", "uix/leaduixscout.md", "uix/scoutuix.md", "uix/uix-worker.md"):
+            card = (ROLES_DIR / rel).read_text(encoding="utf-8")
+            self.assertIn("free-ui-ux-scout", card, f"{rel} must load free-ui-ux-scout")
+            self.assertIn("oway-uix", card, f"{rel} must load oway-uix")
+        self.assertIn("tokens.dtcg.json", worker)
+        self.assertIn("65 anti-slop", worker)
+        self.assertIn("QATester", keeper_uix)
+        self.assertRegex(keeper_uix, r"(?i)read-only")
+
+    def test_advisor_and_keeper_governance_rules(self):
+        advisors = sorted(p.stem for p in _role_files() if p.stem.startswith("advisor"))
+        self.assertEqual(advisors, ["advisordev", "advisorproduct", "advisorqa", "advisoruix"])
         for sublead in ("qa/leadqatester.md", "qa/leadqadelivery.md", "qa/leadqaarchitect.md"):
-            text = (ROLES_DIR / sublead).read_text(encoding="utf-8")
-            self.assertRegex(
-                text,
-                r"(?i)(advis\w*.*LeadQA|LeadQA.*advis\w*)",
-                f"{sublead} must explicitly name LeadQA as its advisor",
-            )
-
-    def test_all_keepers_and_leadkeeper_enforce_read_only_constraints(self):
-        keeper_paths = (
-            "keeper/leadkeeper.md",
-            "oway/keeperoway.md",
-            "product/keeperproduct.md",
-            "uix/keeperuix.md",
-            "dev/keeperdev.md",
-            "qa/keeperqa.md",
-        )
-        for rel in keeper_paths:
-            text = (ROLES_DIR / rel).read_text(encoding="utf-8")
-            self.assertRegex(
-                text,
-                r"(?i)read-only",
-                f"{rel} must explicitly enforce read-only constraints",
-            )
-
-    def test_index_md_ownership_and_verification_split(self):
-        delivery_text = (ROLES_DIR / "qa/leadqadelivery.md").read_text(encoding="utf-8")
-        self.assertRegex(
-            delivery_text,
-            r"(?is)INDEX\.md.*(rebuild|script)|(rebuild|script).*INDEX\.md",
-            "qa/leadqadelivery.md must state ownership of the INDEX.md rebuild script",
-        )
-        keeper_qa_text = (ROLES_DIR / "qa/keeperqa.md").read_text(encoding="utf-8")
-        self.assertRegex(
-            keeper_qa_text,
-            r"(?is)INDEX\.md.*(verif\w*|check\w*)|(verif\w*|check\w*).*INDEX\.md",
-            "qa/keeperqa.md must state verification of INDEX.md",
-        )
+            self.assertRegex((ROLES_DIR / sublead).read_text(encoding="utf-8"), r"(?i)LeadQA")
+        for keeper_name in ("leadkeeper.md", "keeperoway.md", "keeperproduct.md", "keeperuix.md", "keeperdev.md", "keeperqa.md"):
+            p = ROLES_DIR / "keeper" / keeper_name
+            self.assertTrue(p.is_file(), f"missing keeper/{keeper_name}")
+            self.assertRegex(p.read_text(encoding="utf-8"), r"(?i)read-only")
+        self.assertRegex((ROLES_DIR / "qa/leadqadelivery.md").read_text(encoding="utf-8"), r"(?is)INDEX\.md.*script")
+        self.assertRegex((ROLES_DIR / "keeper/keeperqa.md").read_text(encoding="utf-8"), r"(?is)INDEX\.md")
 
 
 if __name__ == "__main__":

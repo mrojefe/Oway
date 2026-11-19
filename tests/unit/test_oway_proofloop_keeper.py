@@ -346,8 +346,8 @@ class GitAuthorityDocsTests(unittest.TestCase):
 
     def test_role_cards_encode_leadqadelivery_git_authority_and_escalation(self):
         cards = {p.stem: (REPO / p).read_text(encoding="utf-8") for p in (
-            Path("docs/oway/roles/qa/leadqadelivery.md"), Path("docs/oway/roles/qa/qadelivery.md"),
-            Path("docs/oway/roles/qa/leadqa.md"), Path("docs/oway/roles/dev/leaddev.md"),
+            Path("agents/qa/leadqadelivery.md"), Path("agents/qa/qadelivery.md"),
+            Path("agents/qa/leadqa.md"), Path("agents/dev/leaddev.md"),
         )}
         for name, text in cards.items():
             for token in ("LeadQADelivery", "QADelivery", "LeadQATester", "LeadQADelivery -> LeadQA -> Owner", "main"):
