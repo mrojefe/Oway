@@ -191,6 +191,23 @@ class RoleGovernanceAndSkillsTests(unittest.TestCase):
                     f"{path.relative_to(ROLES_DIR)}: missing skills/{slug}/SKILL.md",
                 )
 
+    def test_all_oway_workflow_skills_and_templates_enforce_v04_and_three_first_parts(self):
+        for slug in ("oway-init", "oway-adopt", "oway-forge", "oway-uix", "oway-council",
+                     "oway-slice", "oway-migrate", "oway-operate", "oway-team-review"):
+            text = (SKILLS_DIR / slug / "SKILL.md").read_text(encoding="utf-8")
+            self.assertIn("_oway/", text, f"skills/{slug}/SKILL.md must document _oway/ v0.4 workflow")
+        for slug in ("oway-init", "oway-adopt", "oway-forge", "oway-slice", "oway-migrate"):
+            text = (SKILLS_DIR / slug / "SKILL.md").read_text(encoding="utf-8")
+            for part in ("1. The goal", "2. What you get", "3. The proof you will have"):
+                self.assertIn(part, text, f"skills/{slug}/SKILL.md missing {part}")
+        for tmpl_name in ("project.md", "milestone.md", "slice.md"):
+            t = (REPO / "docs/oway/templates" / tmpl_name).read_text(encoding="utf-8")
+            h2s = re.findall(r"^##\s+(.+?)\s*$", t, flags=re.M)
+            self.assertGreaterEqual(len(h2s), 3, tmpl_name)
+            self.assertIn("goal", h2s[0].lower(), tmpl_name)
+            self.assertIn("what you get", h2s[1].lower(), tmpl_name)
+            self.assertIn("proof you will have", h2s[2].lower(), tmpl_name)
+
     def test_team_uix_cards_and_team_md_enforce_8_layers_and_design_skills(self):
         team_uix = (ROLES_DIR / "uix/TEAM.md").read_text(encoding="utf-8")
         leaduix = (ROLES_DIR / "uix/leaduix.md").read_text(encoding="utf-8")
