@@ -19,8 +19,15 @@ from . import headers, proof
 from .stophook import active_slice
 
 WRITE_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
-PROTECTED = ("_oway/evidence/*", "_oway/keeper/*", "_oway/slices/*.matrix.md", "_oway/LEDGER.md")
-FREE_ROLES = ("lead", "devproof")
+PROTECTED = ("_oway/evidence/*", "_oway/keeper/*", "_oway/state/*", "_oway/slices/*.matrix.md", "_oway/LEDGER.md")
+FREE_ROLES = ("lead", "devproof", "proof-matrix-author")
+
+
+def _is_frozen_matrix(root: Path, path: str) -> bool:
+    if not _match(path, ["_oway/slices/*.matrix.md"]):
+        return False
+    target = root / path
+    return target.is_file() and (headers.read(target) or {}).get("state") == "frozen"
 
 
 def _checkpoint(oway: Path) -> dict:
@@ -37,7 +44,12 @@ def _match(path: str, globs: list[str]) -> bool:
 
 
 def reason(root: Path, path: str, check_protected: bool = True) -> str | None:
-    """Why this builder may not write `path` (relative to root), or None when it may."""
+    """Why this role may not write `path` (relative to root), or None when it may."""
+    if check_protected:
+        if _match(path, ["_oway/evidence/*"]):
+            return f"{path} is proof or Oway state; no role may write evidence directly (owner: the tool)"
+        if _is_frozen_matrix(root, path):
+            return f"{path} is proof or Oway state; an already-frozen matrix cannot be edited by any role"
     oway = root / "_oway"
     slice_id, role = active_slice(oway)
     if not slice_id or role.lower().startswith(FREE_ROLES):
@@ -48,7 +60,7 @@ def reason(root: Path, path: str, check_protected: bool = True) -> str | None:
         h = headers.read(matrix) or {}
         protected += [v.strip() for v in h.get("verifiers", "").split(",") if v.strip()]
     if check_protected and _match(path, protected):
-        return f"{path} is proof or Oway state; a builder never writes it (owner: DevProof or the tool)"
+        return f"{path} is proof or Oway state; a builder never writes it (owner: proof-matrix-author or the tool)"
     zone = _checkpoint(oway).get("zone")
     if zone and not _match(path, zone):
         return f"{path} is outside your zone for {slice_id} ({', '.join(zone)})"

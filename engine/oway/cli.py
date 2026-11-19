@@ -111,6 +111,8 @@ def _keeper_parser(sub) -> None:
     k.add_parser("report")
     m = k.add_parser("owner-message")
     m.add_argument("id")
+    for name in ("replay", "verify"):
+        k.add_parser(name).add_argument("id")
 
 
 
@@ -261,4 +263,8 @@ def _keeper(args, oway: Path) -> int:
         if f is None:
             raise OwayError(f"no finding {args.id}")
         print(keeper.owner_message(f))
+    elif c in ("replay", "verify"):
+        ok, msg = keeper.replay(oway, args.id)
+        print(msg)
+        return 0 if ok else 1
     return 0

@@ -36,7 +36,7 @@ The owner (technical choices requiring approval), LeadOway, LeadUIX, LeadQA, and
 ## What it never does
 - Writes product code directly.
 - Writes or edits proofs, the frozen proof matrix, verifiers, or QA checkers.
-- Merges pull requests.
+- Manages repository Git merges or pushes to `main` (sole Git management belongs to LeadQADelivery, delegating to QADelivery, landing only after LeadQATester `PASS` and escalating `main` merges via `LeadQADelivery -> LeadQA -> Owner`).
 
 ## Model
 Decided later, per agent.

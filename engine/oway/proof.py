@@ -118,7 +118,19 @@ def load(oway: Path, slice_id: str) -> tuple[dict[str, str], list[Item]]:
     return h, parse_matrix(text)
 
 
-def freeze(oway: Path, slice_id: str) -> str:
+FREEZE_ROLES = ("proof-matrix-author", "devproof", "lead")
+
+
+def _norm_reason(text: str) -> str:
+    return " ".join((text or "").lower().split())
+
+
+def freeze(oway: Path, slice_id: str, role: str | None = None) -> str:
+    caller = (role if role is not None else os.environ.get("OWAY_ROLE", "")).strip()
+    if caller and not caller.lower().startswith(FREEZE_ROLES):
+        raise OwayError(
+            f"role '{caller}' cannot freeze the proof matrix; only proof-matrix-author, DevProof, or a Lead may"
+        )
     path = matrix_path(oway, slice_id)
     h, items = load(oway, slice_id)
     if h.get("state") == "frozen":
@@ -186,24 +198,38 @@ def _append(oway: Path, slice_id: str, rec: dict) -> dict:
 # ---- submit and check -----------------------------------------------------
 
 def states(oway: Path, slice_id: str, digest: str, items: list[Item]) -> dict[str, dict]:
-    """Per item: state (OPEN/PASS/NEEDS_REVIEW/FAIL/FAKE/INSUFFICIENT/BLOCKED), rounds, last record."""
-    out = {i.id: {"state": "OPEN", "rounds": 0, "last": None} for i in items}
+    """Per item: state (OPEN/PASS/NEEDS_REVIEW/FAIL/FAKE/INSUFFICIENT/BLOCKED), rounds, last, pivot."""
+    out = {i.id: {"state": "OPEN", "rounds": 0, "last": None, "pivot_required": False, "last_fail_reason": None}
+           for i in items}
     needs = {i.id for i in items if needs_review(i)}
     for rec in read_chain(oway, slice_id):
         if rec.get("matrix_hash") != digest or rec.get("item") not in out:
             continue  # evidence for an older matrix never counts
         s = out[rec["item"]]
         s["last"] = rec
-        review = rec.get("kind") == "review"
-        if review and s["state"] != "NEEDS_REVIEW":
+        is_review = rec.get("kind") == "review"
+        if is_review and s["state"] != "NEEDS_REVIEW":
             continue  # a review counts only right after a verifier PASS
         if rec["verdict"] == "PASS":
-            s["state"] = "NEEDS_REVIEW" if rec["item"] in needs and not review else "PASS"
+            if rec["item"] in needs and not is_review:
+                s["state"] = "NEEDS_REVIEW"
+            else:
+                s["state"] = "PASS"
+                s["pivot_required"] = False
+                s["last_fail_reason"] = None
         elif rec["verdict"] == "UNREVIEWED":
             s["state"] = "NEEDS_REVIEW"
         else:
             s["rounds"] += 1
-            s["state"] = "BLOCKED" if s["rounds"] >= MAX_ROUNDS else rec["verdict"]
+            reason_norm = _norm_reason(rec.get("reason", ""))
+            same_defect = bool(reason_norm and s["last_fail_reason"] == reason_norm)
+            s["last_fail_reason"] = reason_norm
+            if s["rounds"] >= MAX_ROUNDS:
+                s["state"] = "BLOCKED"
+                s["pivot_required"] = False
+            else:
+                s["state"] = rec["verdict"]
+                s["pivot_required"] = same_defect
     return out
 
 
@@ -238,13 +264,19 @@ def submit(root: Path, slice_id: str, item_id: str, timeout: int = 600) -> dict:
         reasons.append("output shows staged or mocked proof")
     else:
         verdict = "FAIL" if reasons else "PASS"
-    rec = _append(oway, slice_id, {
+    reason_text = "; ".join(reasons) or "verifier passed"
+    pivot = (verdict != "PASS" and current["rounds"] + 1 < MAX_ROUNDS
+             and bool(_norm_reason(reason_text))
+             and _norm_reason(reason_text) == current.get("last_fail_reason"))
+    payload = {
         "ts": ledger.now(), "slice": slice_id, "item": item_id, "matrix_hash": digest,
         "rev": git_head(root), "command": item.command, "exit": code,
         "output_sha256": hashlib.sha256(output.encode()).hexdigest(),
-        "output_tail": output[-OUTPUT_KEEP:], "verdict": verdict,
-        "reason": "; ".join(reasons) or "verifier passed",
-    })
+        "output_tail": output[-OUTPUT_KEEP:], "verdict": verdict, "reason": reason_text,
+    }
+    if pivot:
+        payload["pivot_required"] = True
+    rec = _append(oway, slice_id, payload)
     if verdict != "PASS" and current["rounds"] + 1 >= MAX_ROUNDS:
         ledger.append(oway, f"{slice_id} {item_id} BLOCKED after {MAX_ROUNDS} rounds: {rec['reason']}")
     return rec
@@ -264,6 +296,7 @@ def check(root: Path, slice_id: str, require_head: bool = False) -> tuple[bool, 
             state = "STALE"
         if state != "PASS":
             ok = False
+        pivot = " PIVOT_REQUIRED" if s.get("pivot_required") else ""
         why = f" ({s['last']['reason']})" if s["last"] and state != "PASS" else ""
-        lines.append(f"{i.id} {state} rounds={s['rounds']}{why}")
+        lines.append(f"{i.id} {state} rounds={s['rounds']}{pivot}{why}")
     return ok, lines

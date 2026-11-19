@@ -8,7 +8,7 @@ One file per project: `_oway/project.md`. Short; the detail lives in the five sp
 name: <project-id>
 description: <one line: what this project is>
 type: project
-state: draft            # draft / approved / in-progress / done
+state: draft            # draft / approved / done
 created: <filled from Git>
 approved: no            # becomes "<date> by @<github-username>" after the owner's review
 owner: LeadOway

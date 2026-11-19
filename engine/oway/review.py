@@ -80,8 +80,14 @@ def run(root: Path, slice_id: str, item_id: str, timeout: int = 300) -> dict:
         answer = None
     verdict = answer["verdict"] if answer else "UNREVIEWED"
     reason = answer["reason"] if answer else "reviewer answer missing or not in the fixed format"
+    if answer and not any(type(x) is int and x == last["seq"] for x in answer["evidence_ids"]):
+        verdict = "UNREVIEWED"
+        reason = f"reviewer evidence_ids did not cite seq {last['seq']}"
     rec = proof._append(oway, slice_id, {
         "kind": "review", "ts": ledger.now(), "slice": slice_id, "item": item_id, "matrix_hash": digest,
         "rev": git_head(root), "reviews_seq": last["seq"], "reviewer": cmd[0], "verdict": verdict,
         "reason": reason})
+    if verdict in {"FAKE", "INSUFFICIENT"} and st["rounds"] + 1 >= proof.MAX_ROUNDS:
+        ledger.append(oway, f"{slice_id} {item_id} BLOCKED after {proof.MAX_ROUNDS} rounds "
+                            f"(review {verdict}): {rec['reason']}")
     return rec
