@@ -48,8 +48,8 @@ How the agent talks to you:
 - Clear feedback is applied, not interviewed. Only ambiguous or intent-changing feedback gets one focused question, and a consequential or hard-to-undo approval gets one short understanding check (contract, "Push back when the work is at risk").
 - Diagrams (Mermaid) over walls of text; details live in files.
 - No decorative emojis in chat, docs or code (enforced by the commit hook).
-- No secrets (keys, tokens, passwords, private keys) in files, and no reading credential stores (shell history, `.ssh/`, `.aws/credentials`, `.netrc`, `.git-credentials`, Docker config) from a shell command — use environment variables, reference them by name only (enforced by the write hook, the commit hook, and the shell-command gate; the lab finding that triggered this is in `cgspec-workspace/dossier/`).
-- The agent never force-pushes, rewrites history (`filter-branch`, `filter-repo`), runs `git reset --hard`, force-deletes a branch, or merges a pull request; it tells the user the exact command to run themselves (enforced by the shell-command gate on every host, including Antigravity; the incident that triggered this is in `cgspec-workspace/dossier/`: a delegated fixer agent rewrote branch history and force-pushed without asking).
+- No secrets (keys, tokens, passwords, private keys) in files, and no reading credential stores (shell history, `.ssh/`, `.aws/credentials`, `.netrc`, `.git-credentials`, Docker config) from a shell command — use environment variables, reference them by name only (enforced by the write hook, the commit hook, and the shell-command gate; motivated by earlier lab findings).
+- The agent never force-pushes, rewrites history (`filter-branch`, `filter-repo`), runs `git reset --hard`, force-deletes a branch, or merges a pull request; it tells the user the exact command to run themselves (enforced by the shell-command gate on every host, including Antigravity; motivated by an earlier incident where a delegated fixer agent rewrote branch history and force-pushed without asking).
 
 **No hidden decisions.** You can hand any choice to the agent. Then it is recorded with status `Delegated` (section 2): what was chosen, the other options, why, and whether it can be undone. Every report ends with "Decisions I made for you" with links; you can reverse any of them. Choices made by helper agents reach you through the same list. A decision counts as significant when it would surprise you later, cost time to undo, or limit future options.
 
@@ -516,7 +516,7 @@ Plugin repository layout:
 | --- | --- |
 | `.claude-plugin/plugin.json` | Claude Code manifest |
 | `skills/<name>/SKILL.md` | The 9 skills (section 12); they call the engine, they never contain copies of it |
-| `agents/<role>.md` | Role definitions |
+| `docs/oway/roles/<role>.md` | Oway v0.4 role cards and keeper specs |
 | `engine/` | The only copy of every script (doctor, memlog, ingest, audit, journey, bundler, hook, impact, install) |
 | `adapters/claude/hooks.json`, `adapters/antigravity/hooks.json`, `adapters/git/` (pre-commit via Lefthook), `adapters/ci/` | Per-tool wiring |
 | `templates/` | Project skeleton matching section 2, one per topology |
@@ -619,7 +619,7 @@ Smoke test, required to pass in the plugin's CI before step 5 of the plan:
 
 ## 14. Historical evidence base and plan
 
-**This is the evidence base and plan preserved from the original method design.** Full research with all links: `cgspec-workspace/dossier/13-RESEARCH-PASS.md`. Current implementation status lives in `docs/STATUS.md`.
+**This is the evidence base and plan preserved from the original method design.** Current implementation status lives in `docs/STATUS.md`.
 
 | Choice | Evidence |
 | --- | --- |

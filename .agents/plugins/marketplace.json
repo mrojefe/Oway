@@ -1,13 +1,13 @@
 {
-  "name": "cgspec-local",
+  "name": "oway-local",
   "plugins": [
     {
-      "name": "cgspec",
-      "version": "0.3.11",
+      "name": "oway",
+      "version": "0.3.12",
       "source": { "source": "local", "path": "./" },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Productivity",
-      "interface": { "displayName": "CGSpec" }
+      "interface": { "displayName": "Oway" }
     }
   ]
 }

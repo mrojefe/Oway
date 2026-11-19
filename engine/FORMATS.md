@@ -258,7 +258,7 @@ are still read so old projects can be upgraded.
 ## Ledger entry (`docs/_memlog.md`)
 
 ```
-### [M-20261018-a3f9] 2026-10-18T21:40:00Z | tags: decision,design | owner: @ojefe | perms: public
+### [M-20261018-a3f9] 2026-10-18T21:40:00Z | tags: decision,design | owner: @owner | perms: public
 - **Summary:** one line
 - **Details:** optional
 - **Status:** Delegated            (decisions only; spec 2 statuses)

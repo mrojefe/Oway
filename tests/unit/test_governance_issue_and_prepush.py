@@ -37,7 +37,7 @@ class IssueLinkingGateTests(unittest.TestCase):
 
         class IssueHandler(BaseHTTPRequestHandler):
             def do_GET(self):
-                if self.path in ("/repos/BeOjefe/cgspec", "/repos/mrojefe/cgspec", "/repos/other/cgspec"):
+                if self.path in ("/repos/mrojefe/Oway", "/repos/mrojefe/cgspec", "/repos/other/cgspec"):
                     repo = self.path.removeprefix("/repos/")
                     payload = json.dumps({"id": 2 if repo == "other/cgspec" else 1,
                                           "full_name": "other/cgspec" if repo == "other/cgspec" else "mrojefe/cgspec"}).encode()
@@ -48,7 +48,7 @@ class IssueLinkingGateTests(unittest.TestCase):
                     return
                 number = self.path.rsplit("/", 1)[-1]
                 repo = self.path.removeprefix("/repos/").rsplit("/issues/", 1)[0]
-                if repo in ("BeOjefe/cgspec", "mrojefe/cgspec", "other/cgspec") and number in ("76", "77"):
+                if repo in ("mrojefe/Oway", "mrojefe/cgspec", "other/cgspec") and number in ("76", "77"):
                     canonical = "other/cgspec" if repo == "other/cgspec" else "mrojefe/cgspec"
                     body = {"number": int(number),
                             "repository_url": f"http://127.0.0.1:{self.server.server_port}/repos/{canonical}"}
@@ -115,16 +115,16 @@ class IssueLinkingGateTests(unittest.TestCase):
         self.set_t0()
         (self.root / "src/a.ts").write_text("export const a = 2;\n")
         commit(self.root, "fix: update logic")
-        res = self.ci("--pr", "https://github.com/BeOjefe/cgspec/issues/76")
+        res = self.ci("--pr", "https://github.com/mrojefe/Oway/issues/76")
         self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
         self.assertIn("verified PR-to-issue reference", res.stdout)
 
     def test_repository_aliases_work_in_both_directions(self):
         from _lib.issue_linking import existing_issue
-        self.assertTrue(existing_issue("BeOjefe/cgspec", "mrojefe/cgspec", 76, "fixture-token"))
-        self.assertTrue(existing_issue("mrojefe/cgspec", "BeOjefe/cgspec", 76, "fixture-token"))
-        self.assertFalse(existing_issue("BeOjefe/cgspec", "other/cgspec", 76, "fixture-token"))
-        os.environ["GITHUB_REPOSITORY"] = "BeOjefe/cgspec"
+        self.assertTrue(existing_issue("mrojefe/Oway", "mrojefe/cgspec", 76, "fixture-token"))
+        self.assertTrue(existing_issue("mrojefe/cgspec", "mrojefe/Oway", 76, "fixture-token"))
+        self.assertFalse(existing_issue("mrojefe/Oway", "other/cgspec", 76, "fixture-token"))
+        os.environ["GITHUB_REPOSITORY"] = "mrojefe/Oway"
         self.set_t0()
         (self.root / "src/a.ts").write_text("export const a = 2;\n")
         commit(self.root, "fix: update logic")

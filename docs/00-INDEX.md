@@ -14,7 +14,7 @@ Created: unknown · Last edited: 2026-10-29T13:37:17Z
 | Source ingestion and v0.1 adoption | [engine/](../engine/) | Implemented; independent safety review open |
 | Browser journeys, visual audit, prototype bundling, impact map | [engine/](../engine/) | Implemented; browser-backed and agent-driven review open |
 | Workflow skills | [skills/](../skills/) | Nine skills plus pivot alias; runtime rehearsal pending |
-| Team roles | [agents/](../agents/) | Eight definitions; runtime rehearsal pending |
+| Team roles | [teams-and-roles.md](oway/teams-and-roles.md) | Oway v0.4 role cards and keeper specs |
 | Project templates | [templates/](../templates/) | Packaged; consumer validation remains project-specific |
 | Current research | [02-research/](_cgspec/02-research/README.md) | [RES-007](_cgspec/02-research/RES-007-claude-code-hooks-benchmark-and-hygiene-gates.md) hook taxonomy and [RES-008](_cgspec/02-research/RES-008-ostack-gstack-governance-philosophy-comparison.md) ostack/gstack comparison concluded 2026-10-30; queued spikes in [RESEARCH-QUEUE.md](_cgspec/02-research/RESEARCH-QUEUE.md) |
 

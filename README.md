@@ -1,7 +1,7 @@
 # Oway
 Created: unknown · Last edited: 2026-11-15T12:30:00Z
 
-[![Version](https://img.shields.io/badge/version-0.3.8-2563eb?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.3.12-2563eb?style=flat-square)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.10%2B-059669?style=flat-square)](engine/)
 [![Hosts](https://img.shields.io/badge/hosts-Claude_Code_%7C_Codex_%7C_Antigravity-7c3aed?style=flat-square)](plugin.json)
 [![Enforcement](https://img.shields.io/badge/enforcement-Deterministic_Hooks_%26_CI-d97706?style=flat-square)](docs/METHOD.md#8-enforcement-engine)
@@ -165,7 +165,7 @@ flowchart LR
 
 ### The 9 Workflows (`skills/`)
 
-Skills under `skills/` load on demand for the task at hand (`oway-pivot` is included as a compatibility alias), supported by eight bounded team role definitions under `agents/`:
+Skills under `skills/` load on demand for the task at hand (`oway-pivot` is included as a compatibility alias), paired with the v0.4 Oway team roles under `docs/oway/roles/`:
 
 | Skill | When to Use It | What It Produces |
 | --- | --- | --- |
@@ -199,19 +199,19 @@ Skills under `skills/` load on demand for the task at hand (`oway-pivot` is incl
 ### 1. Try Oway in a Disposable Sandbox
 
 ```bash
-mkdir -p /tmp/cgspec-example
-python3 engine/install.py install --root /tmp/cgspec-example --profile web-workspace --topology single --tools git
-python3 engine/doctor.py --root /tmp/cgspec-example
-python3 engine/install.py verify --root /tmp/cgspec-example
+mkdir -p /tmp/oway-example
+python3 engine/install.py install --root /tmp/oway-example --profile web-workspace --topology single --tools git
+python3 engine/doctor.py --root /tmp/oway-example
+python3 engine/install.py verify --root /tmp/oway-example
 ```
 
 ### 2. Install or Upgrade the Host Plugin
 
 Keep the host plugin and the project's vendored engine (`docs/_cgspec/01-engine/`) in step: update the plugin directory first, then run the project `upgrade` command below.
 
-- **Claude Code:** `claude plugin update cgspec@<marketplace>`
+- **Claude Code:** `claude plugin update oway@<marketplace>`
 - **Antigravity:** `agy plugin install <plugin-directory>` (re-import/reinstall when updating the directory)
-- **Codex:** `codex plugin marketplace add <plugin-directory>` and install `cgspec@cgspec-local` (or `codex plugin marketplace upgrade <marketplace>` for a Git marketplace)
+- **Codex:** `codex plugin marketplace add <plugin-directory>` and install `oway@oway-local` (or `codex plugin marketplace upgrade <marketplace>` for a Git marketplace)
 
 The root `plugin.json` and `.agents/plugins/marketplace.json` package the same ten skills for Claude Code, Codex, and Antigravity.
 
