@@ -357,14 +357,15 @@ class GitAuthorityDocsTests(unittest.TestCase):
 
 
 class VersionAndCanaryTests(unittest.TestCase):
-    """P3-10: SemVer 0.3.11 across all 4 manifests."""
+    """P3-10 / P4-05: SemVer parity across all 4 manifests (read dynamically from engine/VERSION)."""
 
-    def test_all_four_manifests_at_0_3_11(self):
-        self.assertEqual((REPO / "engine/VERSION").read_text(encoding="utf-8").strip(), "0.3.11")
+    def test_all_four_manifests_match_engine_version(self):
+        version = (REPO / "engine/VERSION").read_text(encoding="utf-8").strip()
+        self.assertRegex(version, r"^\d+\.\d+\.\d+$")
         for rel_path in ("plugin.json", ".claude-plugin/plugin.json"):
-            self.assertEqual(json.loads((REPO / rel_path).read_text(encoding="utf-8"))["version"], "0.3.11")
+            self.assertEqual(json.loads((REPO / rel_path).read_text(encoding="utf-8"))["version"], version)
         mp = json.loads((REPO / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
-        self.assertEqual(mp["plugins"][0]["version"], "0.3.11")
+        self.assertEqual(mp["plugins"][0]["version"], version)
 
 
 if __name__ == "__main__":

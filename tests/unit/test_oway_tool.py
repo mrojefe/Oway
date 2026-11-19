@@ -60,7 +60,7 @@ class SetupAndDoctorTests(unittest.TestCase):
             oway = make_project(root)
             (oway / "spines").mkdir()
             (oway / "spines" / "01-intent.md").write_text(
-                SPINE.replace("state: draft", "state: Proposed") + "[x](../missing.md) /home/ojefe/x\n")
+                SPINE.replace("state: draft", "state: Proposed") + "[x](../missing.md) /home/user/x\n")
             (oway / "milestones").mkdir()
             for n in (1, 2):
                 (oway / "milestones" / f"m{n}.md").write_text(

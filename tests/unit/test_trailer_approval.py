@@ -61,7 +61,7 @@ class TrailerApprovalTests(unittest.TestCase):
         key, pub = self.signing_key()
         self.trust_key(pub)
         make_slice(self.root, approval="trailer")
-        self.signed_commit(key, "Approve login slice\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(key, "Approve login slice\n\nApproved-by: Alex <me@example.com>")
         result = self.ci()
         self.assertEqual(result.returncode, 0, result.stdout)
 
@@ -70,7 +70,7 @@ class TrailerApprovalTests(unittest.TestCase):
         other, _ = self.signing_key("agent")
         self.trust_key(pub)
         make_slice(self.root, approval="trailer")
-        self.signed_commit(other, "Approve login slice\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(other, "Approve login slice\n\nApproved-by: Alex <me@example.com>")
         result = self.ci()
         self.assertEqual(result.returncode, 1)
         self.assertIn("not signed by a key", result.stdout)
@@ -127,7 +127,7 @@ class TrailerApprovalTests(unittest.TestCase):
         msg = self.root / ".git/COMMIT_EDITMSG"
         msg.write_text("Approve login slice\n")
         self.assertEqual(run_script("cgspec_hook.py", "commit-msg", str(msg), "--root", str(self.root)).returncode, 1)
-        msg.write_text("Approve login slice\n\nApproved-by: Ojefe <me@example.com>\n")
+        msg.write_text("Approve login slice\n\nApproved-by: Alex <me@example.com>\n")
         self.assertEqual(run_script("cgspec_hook.py", "commit-msg", str(msg), "--root", str(self.root)).returncode, 0)
 
     def local_push(self):
@@ -188,7 +188,7 @@ class TrailerApprovalTests(unittest.TestCase):
         key, pub = self.signing_key()
         self.trust_key(pub)
         make_slice(self.root, approval="trailer")
-        self.signed_commit(key, "Approve\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(key, "Approve\n\nApproved-by: Alex <me@example.com>")
         result = run_script("cgspec_hook.py", "tier", "set", "--tier", "T1", "--reason", "login work",
                             "--slice", "SLICE-001", "--root", str(self.root))
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -202,7 +202,7 @@ class TrailerApprovalTests(unittest.TestCase):
         key, pub = self.signing_key()
         self.trust_key(pub)
         slice_path = make_slice(self.root, approval="trailer")
-        self.signed_commit(key, "Approve slice\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(key, "Approve slice\n\nApproved-by: Alex <me@example.com>")
         source = self.root / ".cgspec-scratch/start.json"
         source.parent.mkdir(exist_ok=True)
         source.write_text(json.dumps(draft()))
@@ -213,7 +213,7 @@ class TrailerApprovalTests(unittest.TestCase):
 
         self.assertEqual(start("set", "--file", str(source)).returncode, 0)
         self.assertNotEqual(start("agree", "--approval", "trailer").returncode, 0)
-        self.signed_commit(key, "Approve exact start draft\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(key, "Approve exact start draft\n\nApproved-by: Alex <me@example.com>")
         self.assertEqual(start("agree", "--approval", "trailer").returncode, 0)
         git(self.root, "commit", "--allow-empty", "-q", "--no-verify", "-m", "unrelated work")
         self.assertEqual(start("ready").returncode, 0)
@@ -242,7 +242,7 @@ class TrailerApprovalTests(unittest.TestCase):
 
         self.assertEqual(cap("set", "--file", str(source)).returncode, 0)
         self.assertNotEqual(cap("agree", "--approval", "trailer").returncode, 0)
-        self.signed_commit(key, "Approve capability registry\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(key, "Approve capability registry\n\nApproved-by: Alex <me@example.com>")
         self.assertEqual(cap("agree", "--approval", "trailer").returncode, 0)
         self.assertEqual(cap("check").returncode, 0)
         git(self.root, "add", "-A")
@@ -283,7 +283,7 @@ class TrailerApprovalTests(unittest.TestCase):
         _, pub = self.signing_key()
         self.trust_key(pub)
         make_slice(self.root, approval="trailer")
-        commit(self.root, "Approve login slice\n\nApproved-by: Ojefe <me@example.com>")
+        commit(self.root, "Approve login slice\n\nApproved-by: Alex <me@example.com>")
         head = git(self.root, "rev-parse", "HEAD").stdout.strip()
         self.assertEqual(post_commit(self.root), 1)
         ref_update = f"refs/heads/main {head} refs/heads/main {self.base}\n"
@@ -294,7 +294,7 @@ class TrailerApprovalTests(unittest.TestCase):
         key, pub = self.signing_key()
         self.trust_key(pub)
         make_slice(self.root, approval="trailer")
-        self.signed_commit(key, "Approve login slice\n\nApproved-by: Ojefe <me@example.com>")
+        self.signed_commit(key, "Approve login slice\n\nApproved-by: Alex <me@example.com>")
         head = git(self.root, "rev-parse", "HEAD").stdout.strip()
         self.assertEqual(post_commit(self.root), 0)
         ref_update = f"refs/heads/main {head} refs/heads/main {self.base}\n"

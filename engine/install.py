@@ -29,7 +29,7 @@ from _lib.document_dates import stamp_new  # noqa: E402
 from _lib.layout import GUI_PROFILES  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-PLUGIN_SOURCE = "https://github.com/BeOjefe/cgspec.git"
+PLUGIN_SOURCE = "https://github.com/mrojefe/Oway.git"
 OWNED = ENGINE_DIR / "owned-files.json"
 MANIFEST = ENGINE_DIR / "manifest.json"
 ARCHIVE = Path("docs/_cgspec/_archive/pre-cgspec")

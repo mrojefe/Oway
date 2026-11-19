@@ -69,7 +69,7 @@ class UpgradeTests(unittest.TestCase):
 
 class FeedbackTests(unittest.TestCase):
     def test_scrub_removes_secrets_emails_and_paths(self):
-        out = feedback.scrub("key ghp_abcdefghijklmnop mail a.b@example.com at /home/ojefe/Desktop/x.md")
+        out = feedback.scrub("key ghp_abcdefghijklmnop mail a.b@example.com at /home/user/Desktop/x.md")
         self.assertNotIn("ghp_", out)
         self.assertNotIn("example.com", out)
         self.assertNotIn("/home/", out)
@@ -79,7 +79,7 @@ class FeedbackTests(unittest.TestCase):
             oway = project(root, "0.3.5")
             with mock.patch.dict(os.environ, {"OWAY_PLATFORM": str(root / "none")}):
                 path, url, cmd = feedback.create(oway, "Takeover has no recipe",
-                                                 "Seen in /home/ojefe/campusnest")
+                                                 "Seen in /home/user/example-project")
             self.assertTrue(path.exists())
             self.assertNotIn("/home/", path.read_text())
             self.assertTrue(url.startswith("https://github.com/mrojefe/Oway/issues/new?"))
