@@ -131,9 +131,10 @@ class DocsConsolidationTests(unittest.TestCase):
         status = (REPO / "docs/STATUS.md").read_text(encoding="utf-8")
         changelog = (REPO / "CHANGELOG.md").read_text(encoding="utf-8")
         for doc_name, text in (("docs/STATUS.md", status), ("CHANGELOG.md", changelog)):
-            for token in ("0.3.12", "oway sync", "oway-uix", "LeadQADelivery"):
+            for token in ("0.3.13", "0.3.12", "oway sync", "oway-uix", "LeadQADelivery", "free-ui-ux-scout"):
                 self.assertIn(token, text, f"{doc_name} missing {token}")
-        self.assertIn("48", status)
+        self.assertIn("49", status)
+        self.assertIn("36", status)
         self.assertIn("0.3.9", changelog)
         self.assertIn("0.3.10", changelog)
         self.assertIn("0.3.11", changelog)
@@ -143,7 +144,7 @@ class DeliveryCiWatchDocsTests(unittest.TestCase):
     """P5-02: LeadQADelivery and QADelivery non-polling CI watch rule."""
 
     def test_delivery_role_cards_codify_gh_pr_checks_watch_and_ban_polling_loops(self):
-        for rel in ("docs/oway/roles/qa/leadqadelivery.md", "docs/oway/roles/qa/qadelivery.md"):
+        for rel in ("agents/qa/leadqadelivery.md", "agents/qa/qadelivery.md"):
             text = (REPO / rel).read_text(encoding="utf-8")
             low = text.lower()
             self.assertIn("gh pr checks", text, f"{rel} must document gh pr checks")

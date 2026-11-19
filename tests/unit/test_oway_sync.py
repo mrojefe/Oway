@@ -16,7 +16,7 @@ from tests.helpers import REPO
 OM = REPO / "om"
 SYNC_SH = OM / "sync-om.sh"
 OWAY_BIN = REPO / "engine/oway"
-ROLES_DIR = REPO / "docs/oway/roles"
+ROLES_DIR = REPO / "agents"
 ALL_TOOLS = "pi,opencode,claude,codex,antigravity,oway"
 ANTIGRAVITY_TOOLS = ("run_command", "read_file", "search_web", "send_message")
 
@@ -152,11 +152,12 @@ class ThinAdapterTests(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertTrue((self.home / ".pi/agent/prompts/om-caps.md").is_symlink())
         self.assertTrue((self.home / ".codex/agents/om-caps.md").is_symlink())
-        role_files = [p for p in ROLES_DIR.glob("*/*.md") if p.name != "README.md"]
-        self.assertTrue(role_files)
+        role_files = [p for p in ROLES_DIR.glob("*/*.md") if p.name not in ("README.md", "TEAM.md")]
+        self.assertEqual(len(role_files), 49)
         sample = role_files[0].name
         self.assertTrue((self.home / ".claude/agents" / sample).is_symlink())
         self.assertTrue((self.home / ".codex/agents" / sample).is_symlink())
+        self.assertFalse((self.home / ".claude/agents/TEAM.md").exists())
 
 
 class OwayAgentsSyncTests(unittest.TestCase):
@@ -175,8 +176,8 @@ class OwayAgentsSyncTests(unittest.TestCase):
         )
         self.assertFalse((self.home / ".gemini/config/agents").exists())
 
-    def test_with_flag_installs_all_48_role_cards_and_check_passes(self):
-        r = run_oway_sync(self.home, "--tools", ALL_TOOLS, "--oway-agents")
+    def test_with_flag_installs_all_49_role_cards_and_all_36_skills(self):
+        r = run_oway_sync(self.home, "--tools", ALL_TOOLS, "--oway-skills", "--oway-agents")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
         om_names = {"om-caps.md", "om-review.md", "om-assist.md"}
@@ -189,9 +190,17 @@ class OwayAgentsSyncTests(unittest.TestCase):
         ):
             present = {p.name for p in (self.home / rel).iterdir()}
             oway_only = present - om_names if includes_om else present
-            self.assertEqual(len(oway_only), 48, f"{rel} has {len(oway_only)} oway agents")
+            self.assertEqual(len(oway_only), 49, f"{rel} has {len(oway_only)} oway agents")
+            self.assertNotIn("TEAM.md", present)
 
-        chk = run_oway_sync(self.home, "--check", "--tools", ALL_TOOLS, "--oway-agents")
+        for skill_dir in (".pi/agent/skills", ".config/opencode/skills", ".claude/skills",
+                          ".agents/skills", ".gemini/config/skills"):
+            installed = {p.name for p in (self.home / skill_dir).iterdir()}
+            for expected_skill in ("free-ui-ux-scout", "interview-me", "constraint-driven-development",
+                                   "frontend-ui-engineering", "oway-uix", "om-plan"):
+                self.assertIn(expected_skill, installed, f"{skill_dir} missing {expected_skill}")
+
+        chk = run_oway_sync(self.home, "--check", "--tools", ALL_TOOLS, "--oway-skills", "--oway-agents")
         self.assertEqual(chk.returncode, 0, chk.stdout + chk.stderr)
 
 

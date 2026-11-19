@@ -3,7 +3,7 @@
   "plugins": [
     {
       "name": "oway",
-      "version": "0.3.12",
+      "version": "0.3.13",
       "source": { "source": "local", "path": "./" },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
       "category": "Productivity",

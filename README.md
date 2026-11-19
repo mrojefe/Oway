@@ -1,202 +1,129 @@
 # Oway
-Created: unknown · Last edited: 2026-11-15T12:30:00Z
+Created: unknown · Last edited: 2026-11-19T15:00:00Z
 
-[![Version](https://img.shields.io/badge/version-0.3.12-2563eb?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.3.13-2563eb?style=flat-square)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.10%2B-059669?style=flat-square)](engine/)
-[![Hosts](https://img.shields.io/badge/hosts-Claude_Code_%7C_Codex_%7C_Antigravity-7c3aed?style=flat-square)](plugin.json)
-[![Enforcement](https://img.shields.io/badge/enforcement-Deterministic_Hooks_%26_CI-d97706?style=flat-square)](docs/METHOD.md#8-enforcement-engine)
+[![Harnesses](https://img.shields.io/badge/harnesses-Pi_%7C_OpenCode_%7C_Claude_%7C_Codex_%7C_Antigravity-7c3aed?style=flat-square)](plugin.json)
+[![Enforcement](https://img.shields.io/badge/enforcement-Deterministic_Hooks_%26_Proof_Loop-d97706?style=flat-square)](engine/oway/)
 
-**Deterministic Spec-Driven Software Engineering for AI Agents.**
+**Team-Based Method & Deterministic Proof Loop for AI-Built Software.**
 
-When building software with AI coding agents, projects frequently degrade as they grow: agents forget earlier architectural choices, silently alter scope, claim tests passed without running them, or ship user interfaces that drift from the approved design.
+When AI coding agents work without structure, projects drift: agents invent scope, fake screenshots, lose decisions between sessions, or loop endlessly on side work. **Oway** fixes this by organizing work across clear teams, read-only watchers, an 8-layer real-reference design workflow, and a deterministic proof loop that scripts enforce on disk and in CI.
 
-**Oway solves this through a strict division of labor:**
-1. **You speak in ordinary language:** You set goals, constraints, and taste, and approve consequential choices. You never need to memorize the method.
-2. **The agent carries the method:** It maps what exists, brings sourced evidence and design references, maintains living architecture records, slices the work, writes failing tests before code, and records gaps honestly.
-3. **Deterministic scripts enforce the rules:** Every rule that a machine can verify is enforced by local Git/tool hooks and CI (`engine/`) — never left to an AI's goodwill. Human judgment stays with you.
+1. **You hold goals, taste, and gates:** You talk in plain language to `LeadOway` or the team lead (`LeadProduct`, `LeadUIX`, `LeadDev`, `LeadQA`). You never memorize method plumbing.
+2. **Named teams carry the method:** [49 role cards and 5 `TEAM.md` contracts](agents/README.md) split orchestration, scope, design, building, independent verification, and read-only keeping.
+3. **Scripts enforce the rules:** The `engine/oway/` CLI freezes proof matrices, locks builder write zones, enforces the stop hook, rebuilds `INDEX.md`, and replays keeper proofs without trusting an agent's claims.
 
 > [!IMPORTANT]
-> The canonical [Method Specification](docs/METHOD.md) defines the full contract, repository layout, 6-layer UI/UX design path, review rules, adoption flow, and limits. [Implementation Status](docs/STATUS.md) separates implemented engine checks from outcomes that still require live proof.
-
-> [!NOTE]
-> **Oway was called CGSpec up to v0.3.** The v0.4 method is in [docs/oway/](docs/oway/README.md): teams of agents with read-only keepers, and a proof loop an agent cannot fake. The first Oway tool commands are in `engine/oway/`; the v0.3 engine still runs in projects and keeps its file names (`cgspec_hook.py`, `docs/_cgspec/`, `cgspec-*` skills) until `oway upgrade` moves them ([ADR-007](docs/adr/ADR-007-cgspec-becomes-oway.md), [STATUS](docs/STATUS.md)).
+> Start with the [Oway Method Entry](docs/oway/README.md), [Teams and Roles (`agents/`)](agents/README.md), [Canonical Glossary](docs/GLOSSARY.md), and [Implementation Status](docs/STATUS.md). For everyday light workflows (`Quick` / `Task` / `Mission`), use [`om/`](om/README.md). Legacy CGSpec v0.3 rules in [`docs/METHOD.md`](docs/METHOD.md) remain only for existing v0.3 consumer projects until migrated via `oway takeover --from cgspec-0.3`.
 
 ---
 
-## How Oway Works (The 5 Pillars)
+## 1. Organization: Teams, Keepers, and Repository Layout
 
 ```mermaid
 flowchart TB
-    subgraph HUMAN["1. YOU (Human Authority — Plain Language)"]
-        H1["Set Goals, Constraints & Taste"]
-        H2["Approve Consequential Choices & Final Outcomes"]
-    end
-
-    subgraph AGENT["2. AI AGENT (Carries the Oway Method)"]
-        P1["Pillar 1: Idea & Sourced Research"]
-        P2["Pillar 2: Shared Vision & 6-Layer UI/UX Design"]
-        P3["Pillar 3: Slice Execution (Test-First Red -> Green)"]
-        P4["Pillar 4: Scales from 1 Page to Polyrepo"]
-        P1 --> P2 --> P3 --> P4
-    end
-
-    subgraph ENGINE["3. DETERMINISTIC ENGINE (Pillar 0 — Machine Enforcement)"]
-        G1["Pre-Tool & Commit Gates<br/>(cgspec_hook.py)"]
-        G2["Red-Green Ancestry & Proof Seals<br/>(verify.py / parity.py)"]
-        G3["Health, Drift & Quota Guards<br/>(doctor.py / quota.py)"]
-    end
-
-    H1 ==>|"Ordinary words"| P1
-    P2 ==>|"Visual prototypes & trade-offs"| H2
-    H2 ==>|"Signed approval record"| P3
-    P1 -.->|"Checked by"| ENGINE
-    P2 -.->|"Checked by"| ENGINE
-    P3 ==>|"Gated at every commit & push"| ENGINE
-    ENGINE ==>|"Verified evidence checklist"| H2
-
-    classDef humanBox fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
-    classDef agentBox fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
-    classDef engineBox fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
-    class H1,H2 humanBox
-    class P1,P2,P3,P4 agentBox
-    class G1,G2,G3 engineBox
+  You(("Owner (You)")) --> LO["LeadOway<br/>orchestrates, confirms 3 first parts, cuts slices"]
+  LO --> LP["LeadProduct<br/>intent, scope, 01/02/05 spines"]
+  LO --> LU["LeadUIX<br/>8 design layers, style packs, real references"]
+  LO --> LD["LeadDev<br/>architecture, ADRs, worktrees, per-item proofs"]
+  LO --> LQ["LeadQA<br/>Tester + QAArchitect + LeadQADelivery (Git & CI)"]
+  LO -. wakes .-> LK["LeadKeeper<br/>read-only sentinel hub"]
+  KP["KeeperOway / Product / UIX / Dev / QA"] -- "verifies first" --> LK
+  LK -- "[KEEPER] warning" --> LO
+  LK -- "short alert" --> You
 ```
 
-| Pillar | What It Guarantees |
+### Repository Tree (Installed Once in Your Platform, Never Copied Per Project)
+
+| Folder | What Lives Here |
 | --- | --- |
-| **0 — Deterministic Feedback** | The agent turns checkable rules into scripts under `docs/_cgspec/04-checks/` and runs them on every change. AI judgment is used only for what no script can measure. |
-| **1 — Idea & Research** | Identifies goal type first (`money`, `learning`, `personal`, `client`). A commercial goal requires a sourced market research record before design begins. |
-| **2 — Shared Vision & Design** | The agent leads with up to 6 real design references, helps articulate taste, and walks a fixed 6-layer UI path from user tasks to motion before coding. |
-| **3 — Build (Test-First)** | Requires a failing test commit (`RED`) before implementation (`GREEN`), small single-purpose files, and zero duplicated logic (DRY). |
-| **4 — Any Size** | Scales uniformly from a single-page site to a multi-service polyrepo while keeping each repository independent. |
+| [`agents/`](agents/README.md) | 49 canonical role cards (`oway/`, `keeper/`, `product/`, `uix/`, `dev/`, `qa/`, `shared/`) + 5 `TEAM.md` team contracts |
+| [`skills/`](skills/) | 36 shared skills: 10 `oway-*` workflow skills, [`free-ui-ux-scout`](skills/free-ui-ux-scout/SKILL.md), and 25 MIT-licensed Addy Osmani skills |
+| [`docs/oway/`](docs/oway/README.md) | Oway v0.4 method specs, templates (`project`, `milestone`, `slice`, `proof-item`, `adr`, `team`, `role-card`), config schema, takeover guide |
+| [`engine/oway/`](engine/oway/) | Pure-stdlib Oway CLI (`sync`, `setup`, `doctor`, `index`, `freeze`, `submit`, `check`, `review`, `guard`, `stop-hook`, `keeper`, `style`) |
+| [`om/`](om/README.md) | Everyday medium workflow (`om-plan`, `om-assist`, `om-caps`, `om-review`) synced alongside Oway across all 5 harnesses |
+| [`docs/METHOD.md`](docs/METHOD.md) | Legacy CGSpec v0.3 enforcement spec kept intact for `oway takeover --from cgspec-0.3` and v0.3 consumer tests |
 
----
+### Consumer Project Tree (`my-project/`)
 
-## Why Oway? (Ungoverned AI vs. Oway Governance)
+Initialized with `oway setup` (no copied engine or skills inside the project):
 
-| Dimension | Ungoverned AI Coding | With Oway |
-| --- | --- | --- |
-| **Project Memory** | Lost across chat sessions; repeated prompting | Versioned in **5 Living Spines**, **ADRs**, and a structured state ledger |
-| **Test Discipline** | Tests written after code, mocked away, or skipped | Enforced **Red -> Implementation -> Green** Git commit ancestry |
-| **UI / UX Quality** | Generic layouts and silent visual regressions | Approved HTML prototypes + **Playwright visual parity** (`desktop`/`mobile`, `light`/`dark`) |
-| **Code Review** | Same agent grades its own homework | **Independent cross-model review** + outcome-based human closure checklist |
-| **Safety & Scope** | Accidental `git reset --hard`, leaked secrets, out-of-scope edits | **Pre-tool & pre-commit gates** block destructive Git, secrets, emojis, and unapproved scope |
-
----
-
-## Repository Architecture: The 5 Spines & Engine State
-
-When Oway is installed into a project, it structures architectural knowledge and machine verification into three clear zones:
-
-```mermaid
-flowchart LR
-    subgraph SPINES["The 5 Living Spines (docs/spines/)"]
-        S1["01-INTENT<br/>Why & Who"]
-        S2["02-OOUX<br/>Domain Objects & Nouns"]
-        S3["03-EXPERIENCE<br/>Flows & 6 UI Layers"]
-        S4["04-ARCHITECTURE<br/>System, Data & Security"]
-        S5["05-DELIVERY<br/>Environments & CI"]
-        S1 --> S2 --> S3 --> S4 --> S5
-    end
-
-    subgraph RECORDS["Bounded Decisions & Work"]
-        ADR["docs/adrs/<br/>Architectural Decisions"]
-        PROTO["docs/prototypes/<br/>Visual Authority"]
-        SLICE["docs/slices/<br/>Bounded Feature Slices"]
-    end
-
-    subgraph STATE["Engine & Cryptographic State (docs/_cgspec/)"]
-        ENG["01-engine/<br/>Vendored Python Verifiers"]
-        CHK["04-checks/<br/>Project Custom Rules"]
-        ST["07-state/<br/>Approvals, Runs & Proof Seals"]
-    end
-
-    SPINES ==> RECORDS
-    RECORDS ==> STATE
-
-    classDef spineNode fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#2e1065
-    classDef recNode fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
-    classDef stateNode fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    class S1,S2,S3,S4,S5 spineNode
-    class ADR,PROTO,SLICE recNode
-    class ENG,CHK,ST stateNode
+```text
+my-project/
+  AGENTS.md                  # rules loaded first
+  CONSTRAINTS.md             # deterministic code rules & checkers (owned by QA)
+  _oway/
+    INDEX.md                 # auto-generated index rebuilt by `oway index` (LeadQADelivery owns script, KeeperQA verifies)
+    config.json              # Oway version, language, teams, picked Dev builders, path classes
+    capabilities.json        # external tools, channels, browsers declared once
+    LEDGER.md / INBOX.md     # append-only decision ledger & scrubbed owner inbox
+    project.md               # Goal -> What you get -> The proof you will have
+    spines/                  # 01-intent, 02-objects, 03-experience, 04-architecture, 05-delivery
+    design/                  # UIX references/, brand/, versions/vN/ (prototype.html, screenshots/, note.md)
+    agents/                  # README.md + project-only <team>/TEAM.md & overrides (base cards stay in Oway tool)
+    milestones/ & slices/    # bounded deliverables (`*.matrix.md`, `*.walkthrough.md`)
+    decisions/ & boards/     # ADRs and multi-model board round logs
+    keeper/                  # read-only KeeperX notes & LeadKeeper reports
+    state/ & evidence/       # checkpoint.json, frozen criteria, visual-baselines/, hash-chained logs
 ```
 
 ---
 
-## Deterministic Slice Lifecycle (`oway-slice`)
+## 2. How Work Flows & The Proof Loop
 
-Every feature or fix is executed as a bounded **Slice** (`SLICE-XXX`) with explicit outcomes (`OUT-1`, `OUT-2`, ...). No slice can be closed on a passing unit test alone:
+1. **Step 0 (`OwayHelpers`)**: Checks `~/.oway/profile.md` (interviews once if absent), writes `_oway/config.json`, picks active Dev builders, initializes `_oway/agents/README.md`, and verifies with `oway doctor`.
+2. **Three First Parts**: Every project, milestone, and slice opens in fixed order: **The goal** -> **What you get** -> **The proof you will have**.
+3. **Change Tiers (`T0`–`T3`) & 8 Stages**: Every edit is sized before coding (`T0 Tweak` <= 3 files/40 lines, `T1 Bounded` <= 400 lines, `T2 Feature`, `T3 Structural`), gated across Brainstorming, Design, Architecture, Milestones, Coding, Testing, CI/CD, and Follow-up.
+4. **The Proof Loop**:
+   - `proof-matrix-author` drafts checks and failing-first verifiers; owner approves; `oway freeze` hashes criteria and locks write zones.
+   - Dev builders implement inside exclusive worktree files, calling `oway submit` per proof item while `oway stop-hook` blocks stopping on `OPEN`, `FAIL`, `INSUFFICIENT`, or `NEEDS_REVIEW` (capped at 3 rounds, pivoting after 2 identical failures).
+   - `LeadQATester` / `QATester` independently re-run proofs without reading builder claims; `LeadQADelivery` manages Git, waits on CI with non-polling `gh pr checks <pr> --watch`, and escalates `main` merges through `LeadQADelivery -> LeadQA -> Owner`.
 
-```mermaid
-flowchart LR
-    A["1. Slice Freeze &<br/>Capability Preflight"] --> B["2. RED Commit<br/>Failing Test Proven"]
-    B --> C["3. GREEN Commit<br/>Bounded Implementation"]
-    C --> D["4. Runtime & Visual Parity<br/>Playwright + Registered Checks"]
-    D --> E["5. Independent Review<br/>Cross-Model Verification"]
-    E --> F["6. Outcome Closure<br/>SSH-Signed Proof Seal"]
+---
 
-    classDef stepPrep fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
-    classDef stepRed fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#7f1d1d
-    classDef stepGreen fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    classDef stepVerify fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
-    classDef stepSeal fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#3b0764
+## 3. TeamUIX: 8 Design Layers & Real References
 
-    class A stepPrep
-    class B stepRed
-    class C stepGreen
-    class D,E stepVerify
-    class F stepSeal
+For UI work, [`LeadUIX`](agents/uix/leaduix.md) and [`agents/uix/TEAM.md`](agents/uix/TEAM.md) follow [`skills/oway-uix`](skills/oway-uix/SKILL.md) and [`skills/free-ui-ux-scout`](skills/free-ui-ux-scout/SKILL.md):
+
+1. Read `spines/01-intent.md` first (never redo Product scope).
+2. **Layer 0 & 5a**: Scout up to 6 contrasting real browser references (`oway scout` on Godly/Land-book, Chrome DevTools MCP on Mobbin/Refero/live sites), present a visual carousel + screenshot sketch invite (`Name what you feel`), and pick from the 117 MIT style packs & 50 color themes (`oway style`).
+3. **Layers 1–4**: Task map -> Screen map + flows -> Grey wireframe (`Not yet`: no colors/fonts/icons) -> Clickable grey behavior prototype with Playwright journeys & test IDs in `_oway/design/versions/vN/`.
+4. **Layers 5b–7 & Lock**: DTCG `tokens.dtcg.json` (plus `getdesign` / permissive design systems) -> real frontend screens with mocked data preserving Layer 4 journeys -> motion tokens -> 65 anti-slop browser checks -> independent `QATester` rubric lock (`min >= 3`, `mean >= 3.5`) into `_oway/evidence/visual-baselines/`.
+
+---
+
+## 4. Shared Skill Stack (`skills/`)
+
+| Group | Skills | Purpose |
+| --- | --- | --- |
+| **Oway Workflows (10)** | `oway-init`, `oway-adopt`, `oway-forge`, `oway-uix`, `oway-council`, `oway-slice`, `oway-migrate`, `oway-operate`, `oway-team-review`, `oway-pivot` | Stage gates, UIX layers, slices, council boards, migrations, ops, and reviews |
+| **UIX Reference Scout (1)** | `free-ui-ux-scout` | Free Godly, Land-book, Mobbin, Refero live scouting + visual carousel blueprints |
+| **Addy Osmani Core (25, MIT)** | `interview-me`, `idea-refine`, `spec-driven-development`, `constraint-driven-development`, `frontend-ui-engineering`, `api-and-interface-design`, `planning-and-task-breakdown`, `incremental-implementation`, `test-driven-development`, `browser-testing-with-devtools`, `code-review-and-quality`, `security-and-hardening`, `performance-optimization`, `debugging-and-error-recovery`, `ci-cd-and-automation`, `git-workflow-and-versioning`, `shipping-and-launch`, `documentation-and-adrs`, `context-engineering`, `source-driven-development`, `doubt-driven-development`, `code-simplification`, `deprecation-and-migration`, `observability-and-instrumentation`, `using-agent-skills` | Loaded explicitly per role card across Product, UIX, Dev, and QA (MIT license in [LICENSE-agent-skills-MIT.txt](docs/oway/LICENSE-agent-skills-MIT.txt)) |
+| **Oway Medium (`om/`, 2)** | `om-plan`, `om-assist` | Light `Quick` / `Task` / `Mission` daily driver synced via `oway sync` |
+
+---
+
+## 5. Quickstart & Multi-Harness Installation
+
+### Sync One Checkout Into All 5 Local AI Harnesses
+
+```bash
+python3 engine/oway sync --tools pi,opencode,claude,codex,antigravity,oway --oway-skills --oway-agents
+python3 engine/oway sync --tools pi,opencode,claude,codex,antigravity,oway --oway-skills --oway-agents --check
 ```
 
----
+### Initialize a Platform & Consumer Project
 
-## Collaboration Contract & Packaged Workflows
+```bash
+oway platform init
+oway setup --language en --builder DevBackend --builder DevFrontend
+oway doctor
+```
 
-### Who Does What
+### Legacy v0.3 Plugin / Sandbox Commands
 
-| Area | You Decide | The Agent Does Alone | The Agent Must Ask You |
-| --- | --- | --- | --- |
-| **Product** | Goals, audience, scope | Turns plain words into intent, actors, nouns, flows; surfaces gaps | Conflicting goals or scope growth |
-| **Design** | Taste, priorities, chosen direction | Finds up to 6 real references, builds HTML prototypes, checks visual parity | Choice between real design alternatives |
-| **Architecture** | Constraints (cost, hosting, privacy, licenses) | Researches, runs spikes, drafts ADRs and spines | Consequential or hard-to-reverse trade-offs |
-| **Delivery** | What ships first | Slices, failing tests, code, runtime proof, review packets | Irreversible actions (data deletion, production deploy, publishing) |
-| **Method** | Nothing | Follows Oway, repairs drift, updates records, respects quota budget | Never burdens you with method plumbing |
-
-### The 9 Workflows (`skills/`)
-
-Skills under `skills/` load on demand for the task at hand (`oway-pivot` is included as a compatibility alias), paired with the v0.4 Oway team roles under `docs/oway/roles/`:
-
-| Skill | When to Use It | What It Produces |
-| --- | --- | --- |
-| `oway-init` | Starting a brand-new project from an idea | Initializes `docs/spines/`, `docs/_cgspec/01-engine/`, hooks, and initial intent |
-| `oway-adopt` | Bringing an existing codebase under Oway governance | Read-only discovery, legacy baseline snapshot (`SLICE-000`), and staged adoption |
-| `oway-forge` | Shaping product intent, domain nouns (OOUX), and system architecture | Updates Spines `01` to `05` and records architectural decisions (`ADR-XXX`) |
-| `oway-uix` | Designing or refining user interfaces before implementation | Sourced visual references, interactive HTML prototypes, and Playwright journeys |
-| `oway-council` | Resolving high-stakes architectural or product trade-offs | Structured multi-perspective analysis with explicit recommendation |
-| `oway-slice` | Building a bounded feature or fix end-to-end | Frozen slice spec, Red-Green commits, runtime/visual proof, and outcome closure |
-| `oway-migrate` | Schema, data, or cross-service migrations | Rollback-safe migration plan, verification scripts, and supersession records |
-| `oway-operate` | Day-2 operations, health diagnostics, quota, and recovery | Runs `doctor.py`, `quota.py`, checkpoint recovery, and incident verification |
-| `oway-team-review` | Auditing a slice or release candidate before closure | Independent reviewer verdict bound to the exact 40-hex Git revision |
-
----
-
-## Navigation Map
-
-| If you want to... | Read |
-| --- | --- |
-| Understand the complete method and its rules | [Current Method Specification](docs/METHOD.md) |
-| Check what is implemented vs. what still needs live rehearsal | [Implementation Status](docs/STATUS.md) |
-| Read the short operating contract installed into projects | [Short Agent Contract](engine/CONTRACT.md) |
-| Inspect engine CLI commands, state files, and JSON schemas | [Engine Formats & Commands](engine/FORMATS.md) |
-| Contribute to Oway itself | [Contributor Entry](AGENTS.md) |
-| Browse historical v0.1 records, ADRs, and research benchmarks | [Documentation Map](docs/00-INDEX.md) |
-
----
-
-## Quickstart & Installation
-
-### 1. Try Oway in a Disposable Sandbox
+For existing CGSpec v0.3 consumer sandboxes or plugin upgrades:
 
 ```bash
 mkdir -p /tmp/oway-example
@@ -205,38 +132,28 @@ python3 engine/doctor.py --root /tmp/oway-example
 python3 engine/install.py verify --root /tmp/oway-example
 ```
 
-### 2. Install or Upgrade the Host Plugin
-
-Keep the host plugin and the project's vendored engine (`docs/_cgspec/01-engine/`) in step: update the plugin directory first, then run the project `upgrade` command below.
-
 - **Claude Code:** `claude plugin update oway@<marketplace>`
-- **Antigravity:** `agy plugin install <plugin-directory>` (re-import/reinstall when updating the directory)
-- **Codex:** `codex plugin marketplace add <plugin-directory>` and install `oway@oway-local` (or `codex plugin marketplace upgrade <marketplace>` for a Git marketplace)
+- **Antigravity:** `agy plugin install <plugin-directory>`
+- **Codex:** `codex plugin marketplace add <plugin-directory>` and install `oway@oway-local`
 
-The root `plugin.json` and `.agents/plugins/marketplace.json` package the same ten skills for Claude Code, Codex, and Antigravity.
-
-### 3. Upgrade an Installed Project
-
-For an existing v0.2/v0.3 project, refresh its vendored engine, Claude/Antigravity hooks, and workspace skills:
-
-```bash
-python3 <current-plugin>/engine/install.py upgrade --root <project>
-python3 <current-plugin>/engine/install.py verify --root <project>
-python3 <current-plugin>/engine/doctor.py --root <project>
-```
-
-Replaced skill copies are archived automatically under `docs/_cgspec/_archive/agent-skills/`.
-
-> [!NOTE]
-> For legacy v0.1 layouts, `install.py upgrade --from-v1 --root <project>` produces a staged migration report before publication and stops where legacy links or decisions need human review. Do not pass `--apply` on a live project until the report, rollback, and ownership are settled.
-
-### 4. Validate This Repository
+### Validate This Repository
 
 ```bash
 python3 -m unittest discover -s tests -t .
-claude plugin validate . --strict
+python3 .githooks/source_precommit.py
 ```
 
-First installation of governance on a GitHub repository requires an owner-reviewed baseline before the Oway check can gate protected branches. The exact trust sequence and the limits of local hooks are detailed in [Section 8 of the Method Specification](docs/METHOD.md#8-enforcement-engine): no local script alone proves a message came from the human when the agent controls the same shell.
+---
 
-CortexGate is optional and independent of Oway; using this method does not require that service.
+## Navigation Map
+
+| If you want to... | Read |
+| --- | --- |
+| Learn Oway v0.4 (teams, proof loop, 8 design layers, rules) | [Oway Method Entry](docs/oway/README.md) |
+| Browse all 49 role cards & 5 `TEAM.md` team contracts | [Agent Roles (`agents/`)](agents/README.md) |
+| Look up canonical Oway & `om` terminology | [Canonical Glossary](docs/GLOSSARY.md) |
+| Check implementation status & honest remaining limits | [Implementation Status](docs/STATUS.md) |
+| Inspect engine CLI commands & formats | [Engine Formats](engine/FORMATS.md) · [Short Contract](engine/CONTRACT.md) |
+| Use everyday Oway Medium (`Quick` / `Task` / `Mission`) | [om Overview](om/README.md) |
+| Read legacy v0.3 enforcement specification | [Legacy v0.3 Method Specification](docs/METHOD.md) |
+| Contribute to this repository | [Contributor Entry](AGENTS.md) |

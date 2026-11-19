@@ -21,7 +21,7 @@ This folder is the method part of v0.4. The engine (`engine/`), the installed sk
 | [Example setup](example-setup.md) | What a project looks like once Oway is set up: the repo tree, GitHub, one slice from start to end, the Platform |
 | [Templates](templates/) | Blank files to start from: project, the five spines, milestone, slice, proof item, keeper finding, team, role card, ADR, profile |
 | [Config schema](schemas/oway-config.schema.json) | What `_oway/config.json` may hold |
-| [Role cards](roles/) | One card per role (48 canonical roles across Oway, Product, UIX, Dev, QA, Keepers) |
+| [Role cards & teams](../../agents/README.md) | 49 canonical role cards (with unified `agents/keeper/`) + 5 `TEAM.md` contracts |
 | [Canonical glossary](../GLOSSARY.md) | Shared Oway and om terminology |
 
 ## Glossary

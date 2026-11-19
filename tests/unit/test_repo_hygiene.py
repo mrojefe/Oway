@@ -138,11 +138,12 @@ class ReadmeHygieneTests(unittest.TestCase):
 
 
 class VersionParityTests(unittest.TestCase):
-    """P4-05: SemVer 0.3.12 parity across all 4 manifests."""
+    """SemVer parity across all 4 manifests and engine/VERSION."""
 
-    def test_all_four_manifests_at_0_3_12(self):
+    def test_all_four_manifests_match_engine_version_and_semver(self):
         version = (REPO / "engine/VERSION").read_text(encoding="utf-8").strip()
-        self.assertEqual(version, "0.3.12")
+        self.assertRegex(version, r"^\d+\.\d+\.\d+$")
+        self.assertEqual(version, "0.3.13")
         for rel in ("plugin.json", ".claude-plugin/plugin.json"):
             data = json.loads((REPO / rel).read_text(encoding="utf-8"))
             self.assertEqual(data["version"], version, f"{rel} version mismatch")
