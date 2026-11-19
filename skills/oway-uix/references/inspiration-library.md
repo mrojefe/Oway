@@ -4,10 +4,10 @@ A folder of references the user has liked, kept outside any one project so every
 
 ## Location
 
-`$CGSPEC_INSPIRATION` if set, otherwise `~/.cgspec/inspiration/`. One sub-folder per reference:
+`$OWAY_INSPIRATION` if set, otherwise `~/.oway/inspiration/`. One sub-folder per reference:
 
 ```text
-~/.cgspec/inspiration/
+~/.oway/inspiration/
   2026-10-19-linear-issue-list/
     screenshot.png          (or several: desktop.png, phone.png, detail.png)
     ref.md

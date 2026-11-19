@@ -9,6 +9,7 @@ Screenshots are references only: the rights belong to the sites.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 import urllib.parse
@@ -17,8 +18,15 @@ from pathlib import Path
 
 AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+DEFAULT_GODLY_URL = "https://godly.website"
+DEFAULT_GODLY_CDN_URL = "https://cdn.recent.design"
+DEFAULT_LANDBOOK_URL = "https://land-book.com"
 GODLY_IMG = r"https://cdn\.recent\.design/items/([a-zA-Z0-9]+)/0/poster/960\.webp"
 LANDBOOK_LINK = r"<a[^>]+href=[\"|'](/websites/([^\"|']+))[\"|'][^>]*>.*?<img[^>]+src=[\"|']([^\"|']+)[\"|']"
+
+
+def _base_url(env_var: str, default: str) -> str:
+    return (os.environ.get(env_var) or default).rstrip("/")
 
 
 def fetch(url: str, timeout: int = 12) -> bytes | None:
@@ -49,22 +57,26 @@ def download(img_url: str, dest: Path) -> bool:
 
 
 def godly(query: str, limit: int) -> list[dict]:
-    url = "https://godly.website/" + (f"?q={urllib.parse.quote(query)}" if query else "")
+    base = _base_url("OWAY_SCOUT_GODLY_URL", DEFAULT_GODLY_URL)
+    cdn = _base_url("OWAY_SCOUT_GODLY_CDN_URL", DEFAULT_GODLY_CDN_URL)
+    url = f"{base}/" + (f"?q={urllib.parse.quote(query)}" if query else "")
     raw = fetch(url)
     if not raw:
         return []
-    ids = list(dict.fromkeys(re.findall(GODLY_IMG, raw.decode("utf-8", errors="ignore"))))
+    pattern = re.escape(cdn) + r"/items/([a-zA-Z0-9]+)/0/poster/960\.webp"
+    ids = list(dict.fromkeys(re.findall(pattern, raw.decode("utf-8", errors="ignore"))))
     return [{"source": "Godly (high craft)",
              "title": f"Aesthetic interface #{i + 1}" + (f" ({query.title()})" if query else ""),
-             "image_url": f"https://cdn.recent.design/items/{item}/0/poster/960.webp",
-             "ref_url": "https://godly.website", "platform": "web",
+             "image_url": f"{cdn}/items/{item}/0/poster/960.webp",
+             "ref_url": base, "platform": "web",
              "style": "High-craft modern web / fluid micro-interactions / dark and light themes",
              "tags": ["Modern craft", "Micro-interactions", "Typography hierarchy"]}
             for i, item in enumerate(ids[:limit])]
 
 
 def landbook(query: str, limit: int) -> list[dict]:
-    url = "https://land-book.com/" if not query else f"https://land-book.com/websites?search={urllib.parse.quote(query)}"
+    base = _base_url("OWAY_SCOUT_LANDBOOK_URL", DEFAULT_LANDBOOK_URL)
+    url = f"{base}/" if not query else f"{base}/websites?search={urllib.parse.quote(query)}"
     raw = fetch(url)
     if not raw:
         return []
@@ -75,7 +87,7 @@ def landbook(query: str, limit: int) -> list[dict]:
         seen.add(img)
         out.append({"source": "Land-book (SaaS showcase)",
                     "title": re.sub(r"^\d+-", "", slug).replace("-", " ").title()[:45],
-                    "image_url": img, "ref_url": f"https://land-book.com{link}", "platform": "web",
+                    "image_url": img, "ref_url": f"{base}{link}", "platform": "web",
                     "style": "Production SaaS / high-conversion layouts / data display",
                     "tags": ["SaaS UI", "Dashboard", "Conversion flow"]})
         if len(out) >= limit:
