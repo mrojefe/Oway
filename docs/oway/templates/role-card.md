@@ -1,11 +1,11 @@
 # Template: role card
-Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-15T15:00:00Z
+Created: 2026-11-15T12:30:00Z · Last edited: 2026-11-19T10:48:00Z
 
 One file per agent: LeadOway, a Dev builder (DevData), KeeperQA, or an agent created on the fly.
 
 | Section | What goes in it |
 | --- | --- |
-| Header | name, description, type, state, created, approved, owner, updated |
+| Header | name, description, type, state, created, approved, owner, updated, proof |
 | What it does | Numbered list of its jobs |
 | Skills it loads | e.g. from agent-skills |
 | What it reads and writes | Two columns |
@@ -26,6 +26,7 @@ created: <date>    # filled by a script from Git
 approved: no       # becomes "<date> by @your-github-username" after your GitHub review
 owner: <agent>     # who keeps THIS FILE up to date, e.g. LeadOway or LeadQA; never the agent described here
 updated: <date> by <agent>   # last edit and who made it; filled by a script
+proof: none        # proof reference once approved, or none for draft cards
 ---
 
 # <Role name>
